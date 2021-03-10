@@ -5,8 +5,6 @@ import './Courier.sol';
 
 contract Procurer {
     Market marketContract;
-    Supplier supplierContract;
-    Courier courierContract;
 
     uint256 orderId;
 
@@ -31,10 +29,8 @@ contract Procurer {
         bool isFinance;
     }    
     
-    constructor(Market marketAddress, Supplier supplierAddress, Courier courierAddress) public {
+    constructor(Market marketAddress) public {
         marketContract = marketAddress;
-        supplierContract = supplierAddress;
-        courierContract = courierAddress;
     }
     
     modifier isFinanceEmployee(address employeeAddress) {
