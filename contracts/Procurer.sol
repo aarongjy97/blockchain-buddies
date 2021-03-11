@@ -4,9 +4,12 @@ import './Supplier.sol';
 import './Courier.sol';
 
 contract Procurer {
-    Market marketContract;
-
+    address owner;
     uint256 orderId;
+
+    constructor() public {
+        owner = msg.sender;
+    }
 
     mapping(address => Employee) employees;
     mapping(uint256 => PurchaseOrder) purchaseOrders;
@@ -28,10 +31,6 @@ contract Procurer {
         string name;
         bool isFinance;
     }    
-    
-    constructor(Market marketAddress) public {
-        marketContract = marketAddress;
-    }
     
     modifier isFinanceEmployee(address employeeAddress) {
         require(employees[employeeAddress].isFinance, 'Employee is not a finance employee');
