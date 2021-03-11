@@ -7,6 +7,17 @@ contract Procurer {
 
     address _owner;
 
+    /**
+     * Ordered => Procurer places an order, to be accepted or rejected
+     * Accepted => Supplier accepts order from procurer
+     * Rejected => Supplier rejects order from procurer
+     * Delivering => Accepted order is passed to courier for delivery
+     * Delivered => Delivering order is passed to procurer, pending transfer
+     * Closed => Payment for delivered order has been transferred to supplier
+    */
+    enum InternalOrderStatus { ordered, accepted, rejected, delivering, delivered, closed }
+    enum EmployeeType { Finance, Logistics }
+
     struct PurchaseOrder {
         address employee;
         address supplier;
@@ -16,7 +27,7 @@ contract Procurer {
         uint256 quantity;  
         uint256 dateCreated; 
         string employeeName;
-        bool isClosed;
+        EmployeeType employeeType;
     }
 
     struct Employee {
@@ -35,13 +46,13 @@ contract Procurer {
 
     modifier isFinanceEmployee {
         require(employees[msg.sender] != 0, "Only employee can perform this function");
-        require(employees[msg.sender].isFinance, 'Employee is not a finance employee');
+        require(employees[msg.sender].employeeType == EmployeeType.Finance, 'Employee is not a finance employee');
         _;
     }
    
     modifier isLogisticsEmployee(address employeeAddress) {
         require(employees[msg.sender] != 0, "Only employee can perform this function");
-        require(!employees[msg.sender].isFinance, 'Employee is not a logistics employee');
+        require(employees[msg.sender].employeeType == EmployeeType.Logistics, 'Employee is not a logistics employee');
         _;
     }
 
@@ -79,6 +90,13 @@ contract Procurer {
      * @calls Market contract
      */
     function deliveredByCourier(uint256 orderId, uint256 companyId) public {
+    }
+
+    /**
+     * Adds an employee address to the contract, permitting the employee
+     * to carry out functions on the contract.
+     */
+    function addEmployee(address newEmployee) public {
     }
     
 }
