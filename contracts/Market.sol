@@ -7,17 +7,24 @@ import "./Courier.sol";
 
 contract Market {
    ERC20 erc20;
-   Supplier[] supplierContracts;
-   Procurer[] companies;
+
+   address _owner;
+
+   /**
+    * Ordered => Procurer places an order, to be accepted or rejected
+    * Accepted => Supplier accepts order from procurer
+    * Rejected => Supplier rejects order from procurer
+    * Delivering => Accepted order is passed to courier for delivery
+    * Delivered => Delivering order is passed to procurer, pending transfer
+    * Closed => Payment for delivered order has been transferred to supplier
+    */
+   enum OrderStatus { ordered, accepted, rejected, delivering, delivered, closed }
 
    mapping(address => Procurer) procurers;
-
-   // companies[address].employees
-   // var companyA = Company.at(companies[address]) ->
-   // companyA.createPurchaseOrder...
-   
-   // *** Accessing functions from address
-   // Company _company = Company(address)
+   mapping(address => Supplier) suppliers;
+   mapping(address => Courier) couriers;
+   mapping(uint256 => PurchaseOrder) orders;
+   mapping(uint256 => Product) products;
    
    uint256 orderId;
 
@@ -27,103 +34,107 @@ contract Market {
       uint256 quantityAvailable;
       uint256 price;
       string productName;
+      bool listed;
    }
 
+   // @TODO decide on whether supplier and couriers need employees
    struct PurchaseOrder {
-      address LogisticsEmployee;
+      address procurer;
       address supplier;
-      address deliveryCourier;
+      address courier;
       uint256 productId;
       uint256 price;  
-      date dateCreated; 
+      uint256 dateCreated; 
       string employeeName;
       bool isClosed;
    }
 
-   // constructor
    constructor(ERC20 erc20Address) public {
       erc20 = erc20Address;
+      _owner = msg.sender;
    }
 
-   // events
-   event createPurchaseOrder(Product product, uint256 quantity, uint256 price);
-   event deletePurchaseOrder(uint256 orderId);
-   event orderDelivered(uint OrderId);
+   /* ==================== Modifiers ==================== */
 
-   // modifiers
-   modifier isFinanceEmployee(address employeeAddress) {
-      require(employeeToCompany[employeeAddress].employees[employeeAddress].isFinance, 'Employee is not a finance employee');
-      _;
-   }
-   
-   modifier isLogisticsEmployee(address employeeAddress) {
-      require(!employeeToCompany[employeeAddress].employees[employeeAddress].isFinance, 'Employee is not a logistics employee');
+   modifier ownerOnly() {
+      require(msg.sender == _owner, "Only contract owner is allowed to perform this action");
       _;
    }
 
-   modifier supplierOnly(address supplierAddress) {
-      require(suppliers[supplierAddress] != 0);
+   modifier supplierOnly() {
+      require(suppliers[msg.sender] != 0, "Only registered supplier is allowed to perform this action");
       _;
    }
 
-   // Logistics team functions
-   function createPurchaseOrder(Product product, uint256 quantity, uint256 price) public isLogisticsEmployee returns (uint256) {
-      require();
-
-      employeeToCompany[msg.sender].purchaseOrders[orderId] = PurchaseOrder(msg.sender, product.supplier, _, product.productId, price, block.timestamp, '', false);
-
-      return orderId++;
+   modifier procurerOnly() {
+      require(procurers[msg.sender] != 0, "Only registered procurer is allowed to perform this action");
+      _;
    }
 
-   function deletePurchaseOrder(uint256 orderId) public {
-      delete company.purchaseOrders[id];
+   modifier courierOnly {
+      require(couriers[msg.sender] != 0, "Only registered courier is allowed to perform this action");
    }
 
+
+   /* ==================== Procurer Functions ==================== */
+
+   /**
+    * Creates a purchase order for a product listed, which waits for pending approval from the supplier.
+    * @called Procurer contract
+    * @return Order ID of the newly created purchase order
+    */
+   function createPurchaseOrder(Product product, uint256 quantity, uint256 price) public procurerOnly returns (uint256) {
+   }
+
+   /**
+    * Procurer accepts that the delivery has been delivered.
+    * Will transfer the funds to the supplier.
+    * @called Procurer contract
+    */
    function deliveredByDelivery(uint256 orderId, uint256 companyId) public {
-      require(companies[companyId].purchaseOrders[orderId].LogisticsEmployee == msg.sender);     // Check that the person accepting the order is the person who created the order
-      // acknowledge goods in good condition (Skipz)
-      
-      // wire money to supplier
-      // ERC token transferFrom...
-
-      // close purchase order
-      companies[companyId].purchaseOrders[orderId].isClosed = true;
-      emit orderDelivered(orderId);
    }
 
-   // Finance team functions
-   function approvePurchaseOrder(uint256 orderId) public {
-      // require purchase order to be approved by supplier before
+   /* ==================== Supplier Functions ==================== */
 
-      // approve PO
-      
-      // grants permission to logistics team to buy
+   /**
+    * Supplier accepts a purchase order, which waits for the supplier to assign a courier for delivery.
+    * @called Supplier contract
+    */ 
+   function acceptPurchaseOrder(uint256 orderId) public {
    }
 
-   // Supplier functions 
-   function listProduct(uint256 productId, uint256 quantityAvailable, uint256 price, string name) supplierOnly(msg.sender) {
-      
-      Product memory p = Product(msg.sender, productId, quantityAvailable, price, name);
-      
+   /**
+    * Supplier rejects a purchase order, hence the order will not have any further actions.
+    * @called Supplier contract
+    */
+   function rejectPurchaseorder(uint256 orderId) public {
+   }
+
+   /**
+    * Supplier lists a product on the marketplace, allowing procurers to procure the products.
+    * @called Supplier contract
+    */
+   function listProduct(uint256 productId, uint256 quantityAvailable, uint256 price, string name) supplierOnly {      
    } 
 
+   /**
+    * Supplier unlists a product on the marketplace, no further purchases can be performed with this product.
+    * Innately, the product is disabled and can be reenabled for further trade.
+    * @called Supplier contract
+    */
    function unlistProduct(uint256 productId) public {
-      // unlist
    }
 
-   function assignCourier(uint256 courierId) public {
-      
+   /**
+    * Supplier assigns a courier to deliver an order made by a procurer.
+    * @called Supplier contract
+    */
+   function assignCourier(uint256 courierId, uint256 orderId) public {
    }
 
-   function approveSalesOrder(uint256 orderId) public {
-      
-   }
+   /* ==================== Courier Functions ==================== */
 
-   // Delivery courier functions
-   function receivedByDelivery(uint256 orderId) public {
-      // require
-
-      // acknowledgement
+   function receivedByCourier(uint256 orderId) public {
    }
    
 }
