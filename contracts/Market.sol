@@ -7,10 +7,8 @@ import "./Courier.sol";
 
 contract Market {
    ERC20 erc20;
-   Supplier[] supplierContracts;
+   Supplier[] suppliers;
    Procurer[] companies;
-
-   mapping(address => Procurer) procurers;
 
    // companies[address].employees
    // var companyA = Company.at(companies[address]) ->
@@ -50,20 +48,23 @@ contract Market {
    event deletePurchaseOrder(uint256 orderId);
    event orderDelivered(uint OrderId);
 
-   // modifiers
-   modifier isFinanceEmployee(address employeeAddress) {
-      require(employeeToCompany[employeeAddress].employees[employeeAddress].isFinance, 'Employee is not a finance employee');
-      _;
-   }
-   
-   modifier isLogisticsEmployee(address employeeAddress) {
-      require(!employeeToCompany[employeeAddress].employees[employeeAddress].isFinance, 'Employee is not a logistics employee');
-      _;
-   }
-
    modifier supplierOnly(address supplierAddress) {
       require(suppliers[supplierAddress] != 0);
       _;
+   }
+
+   // Procurer
+   function registerProcurer() returns (address){
+      Procurer p = new Procurer();
+      procurers.push(p);
+      return p;
+   }
+
+   // Supplier
+   function registerSupplier() returns (address){
+      Supplier s = new Supplier();
+      suppliers.push(s);
+      return s;
    }
 
    // Logistics team functions
