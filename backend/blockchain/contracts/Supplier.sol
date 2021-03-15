@@ -19,7 +19,7 @@ contract Supplier {
 
    mapping(uint256 => Product) products;
 
-   function listProduct(uint256 productId, uint256 quantityAvailable, uint256 price, string name) returns (uint256) {
+   function listProduct(uint256 productId, uint256 quantityAvailable, uint256 price, string memory name) public returns (uint256) {
 
       Product memory p = Product(msg.sender, productId, quantityAvailable, price, name);
       products[numProducts] = p;
@@ -27,7 +27,7 @@ contract Supplier {
       return numProducts++;
    }
 
-   function unlistProduct(uint256 productId) {
+   function unlistProduct(uint256 productId) public {
 
       delete products[productId];
    }
