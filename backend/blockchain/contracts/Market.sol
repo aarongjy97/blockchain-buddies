@@ -277,8 +277,22 @@ contract Market {
    /**
     * @notice Supplier lists a product on the marketplace, allowing procurers to procure the products.
     * @dev Called by a Supplier contract
+    * @return Product ID
     */
-   function listProduct(uint256 _productId, uint256 quantityAvailable, uint256 price, string memory name) public supplierOnly {      
+   function listProduct(uint256 quantityAvailable, uint256 price, string memory name) public supplierOnly returns (uint256) {      
+      Product memory _p = Product(
+         msg.sender,
+         productId,
+         quantityAvailable,
+         price,
+         name,
+         true
+      );
+
+      products[productId] = _p;
+      productId++;
+
+      return _p.productId;
    } 
 
    /**
@@ -286,8 +300,17 @@ contract Market {
     * Innately, the product is disabled and can be reenabled for further trade.
     * @dev Called by a Supplier contract
     */
-   function unlistProduct(uint256 _productId) public {
+   function unlistProduct(uint256 _productId) public supplierOnly {
+      require(products[_productId].supplier != address(0), "Product does not exist");
+      require(products[_productId].supplier == msg.sender, "Unauthorised supplier");
+      products[_productId].listed = false;
    }
+
+   // function relistProduct(uint256 _productId) public supplierOnly {}
+
+   // function updateProductPrice() {}
+
+   // function updateProductQuantity() {}
 
    /**
     * @notice Supplier assigns a courier to deliver an order made by a procurer.
