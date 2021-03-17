@@ -245,7 +245,15 @@ contract Market {
     * Will transfer the funds to the supplier.
     * @dev Called by a Procurer contract
     */
-   function deliveredByDelivery(uint256 _orderId, uint256 companyId) public {
+   function deliveredByDelivery(uint256 _orderId, uint256 companyId) public procurerOnly {
+      require(orders[_orderId].status != OrderStatus.notCreated, "Order does not exist");
+      require(orders[_orderId].procurer == msg.sender, "Only valid procurer can approve this purchase order");
+      require(orders[_orderId].status == OrderStatus.Ordered, "Current status of order is not ordered");
+
+      // transfer funds to supplier upon confirmation of delivery by procurer (items are in good condition)
+      erc20.transfer(orders[_orderId].supplier,orders[_orderId].price * orders[_orderId].quantity);
+      orders[_orderId].status = OrderStatus.Delivered;
+      orders[_orderId].procurerFinanceEmployee = tx.origin;
    }
 
    /* ==================== Supplier Functions ==================== */
@@ -258,6 +266,9 @@ contract Market {
       require(orders[_orderId].status != OrderStatus.notCreated, "Order does not exist");
       require(orders[_orderId].supplier == msg.sender, "Only valid supplier can approve this purchase order");
       require(orders[_orderId].status == OrderStatus.InternalApproved, "Current status of order is not internal approved");
+
+      // assuming that funds from procurer are transfered to marketplace upon approval from supplier 
+      require(erc20.transferFrom(orders[_orderId].procurer, address(this), orders[_orderId].price * orders[_orderId].quantity), "Insufficient funds in procurer's account");
       orders[_orderId].status = OrderStatus.SupplierApproved;
       orders[_orderId].supplierEmployee = tx.origin;
    }
@@ -308,9 +319,25 @@ contract Market {
 
    // function relistProduct(uint256 _productId) public supplierOnly {}
 
-   // function updateProductPrice() {}
+   /**
+    * @notice Supplier updates the price of a product on the marketplace
+    * @dev Called by a Supplier contract
+    */
+   function updateProductPrice(uint256 _productId, uint256 newPrice) public supplierOnly {
+      require(products[_productId].supplier != address(0), "Product does not exist");
+      require(products[_productId].supplier == msg.sender, "Unauthorised supplier");
+      products[_productId].price = newPrice;
+   }
 
-   // function updateProductQuantity() {}
+   /**
+    * @notice Supplier updates the price of a product on the marketplace
+    * @dev Called by a Supplier contract
+    */
+   function updateProductQuantity(uint256 _productId, uint256 newQuantity) {
+      require(products[_productId].supplier != address(0), "Product does not exist");
+      require(products[_productId].supplier == msg.sender, "Unauthorised supplier");
+      products[_productId].quantity = newQuantity;
+   }
 
    /**
     * @notice Supplier assigns a courier to deliver an order made by a procurer.
