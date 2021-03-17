@@ -1,6 +1,6 @@
 const express = require("express");
-const { query, transact } = require("./db.js");
-const procurer = require("./contracts/Procurer");
+const { query, transact } = require("../db.js");
+const procurer = require("../contracts/Procurer");
 
 const router = express.Router();
 

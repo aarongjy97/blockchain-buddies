@@ -1,17 +1,13 @@
 const { Pool } = require('pg')
-const dotenv = require("dotenv");
+const dotenv = require('dotenv').config();
 
-dotenv.config()
-
-const credentials = {
-    user: process.env.user,
-    host: process.env.host,
-    database: process.env.database,
-    password: process.env.password,
-    post: process.env.post
-}
-
-const pool = new Pool(credentials);
+const pool = new Pool({
+  user: process.env.user,
+  host: process.env.host,
+  database: process.env.database,
+  password: process.env.password,
+  post: 5432
+})
 
 const transact = async (callback) => {
     const client = await pool.connect()
@@ -30,6 +26,5 @@ const transact = async (callback) => {
 }
 
 module.exports = {
-    query: pool.query.bind(pool), 
-    transact
+    query: pool.query.bind(pool), transact
 }
