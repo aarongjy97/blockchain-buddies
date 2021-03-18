@@ -1,36 +1,16 @@
 pragma solidity ^0.5.0;
+pragma experimental ABIEncoderV2;
 
-import "./ERC20.sol";
+import "./MarketERC20.sol";
 import "./Procurer.sol";
 import "./Supplier.sol";
 import "./Courier.sol";
+import "./Structs.sol";
 
 contract Market {
    ERC20 erc20;
 
    address _owner;
-
-   /**
-    * @dev
-    * notCreated => Default null value for comparisons in require
-    * Ordered => Procurer places an order, to be approved or rejected by both internally and supplier
-    * InternalApproved => Internal Finance team approved
-    * InternalRejected => Internal Finance team rejected
-    * SupplierApproved => Suplier approves order from procurer
-    * SupplierRejected => Supplier rejects order from procurer
-    * Delivering => Accepted order is passed to courier for delivery
-    * Delivered => Delivering order is passed to procurer, pending transfer
-    */
-   enum OrderStatus { 
-      notCreated,
-      Ordered, 
-      InternalApproved, 
-      SupplierApproved, 
-      InternalRejected, 
-      SupplierRejected, 
-      Delivering, 
-      Delivered
-   }
 
    /* Stakeholders */
    mapping(address => Procurer) procurers;
@@ -38,45 +18,13 @@ contract Market {
    mapping(address => Courier) couriers;
 
    /* Procurers' Purchase Orders */
-   mapping(uint256 => PurchaseOrder) orders;
+   mapping(uint256 => Structs.PurchaseOrder) orders;
 
    /* Suppliers' Products */
-   mapping(uint256 => Product) products;
+   mapping(uint256 => Structs.Product) products;
    
    uint256 orderId;
    uint256 productId;
-
-   struct Product {
-      address supplier;
-      uint256 productId;
-      uint256 quantityAvailable;
-      uint256 price;
-      string productName;
-      bool listed;
-   }
-
-   struct PurchaseOrder {
-      /* Procurer */
-      address procurer;
-      address procurerLogisticsEmployee;
-      address procurerFinanceEmployee;
-   
-      /* Supplier */
-      address supplier;
-      address supplierEmployee;
-
-      /* Courier */
-      address courier;
-      address courierEmployee;
-
-      /* Order Details */ 
-      uint256 productId;
-      uint256 orderId;
-      uint256 quantity;
-      uint256 price;  
-      uint256 dateCreated; 
-      OrderStatus status;
-   }
 
    /* ==================== Events ==================== */
    event Registered(string registerType, address registerer);
@@ -110,29 +58,46 @@ contract Market {
       _;
    }
 
-
    /* ==================== Public Functions ==================== */ 
 
    /**
     * @notice View a product listed in the marketplace.
     * @return Product
     */
-   function viewProduct(uint256 _productId) public view 
-      returns (address supplier,
-               uint256 productId_,
-               uint256 quantityAvailable,
-               uint256 price,
-               string memory productName) {
-
+   function viewProduct(uint256 _productId) public view returns (Structs.Product memory) {
       require(_productId > 0, "Invalid Product ID");
       require(products[_productId].productId != 0, "Product doesn't exist");
       require(products[_productId].listed, "Product is not listed currently");
+      return products[_productId];
+   }
 
-      return (products[_productId].supplier, 
-               products[_productId].productId, 
-               products[_productId].quantityAvailable, 
-               products[_productId].price,
-               products[_productId].productName);
+   /**
+    * @notice Views all available products listed in the marketplace.
+    * @return Product[]
+    */
+   function viewAllProducts() public view returns (Structs.Product[] memory) {
+      Structs.Product[] memory _pa = new Structs.Product[](productId - 1);
+      for (uint256 i = 1; i < productId; i++) {
+         if (products[i].listed) {
+            _pa[i - 1] = products[i];
+         }
+      } 
+      return _pa;
+   }
+
+   /**
+    * @notice Views all available products from a supplier listed in the marketplace
+    * @return Product[]
+    */
+   function viewSupplierProducts(address _supplier) public view returns (Structs.Product[] memory) {
+      Structs.Product[] memory _pa = new Structs.Product[](productId - 1);
+      uint256 j = 0;
+      for (uint256 i = 1; i < productId; i++) {
+         if (products[i].listed && _supplier == products[i].supplier) {
+            _pa[j++] = products[i];
+         }
+      } 
+      return _pa;
    }
 
    /**
@@ -177,6 +142,21 @@ contract Market {
       emit Registered("Courier", msg.sender);
    }
 
+   /* ==================== Common Functions ==================== */
+
+   /**
+    * @notice View a purchase order. Can only be viewed by relevant stakeholders.
+    * @return PurchaseOrder
+    */
+   function viewPurchaseOrder(uint256 _orderId) public view returns (Structs.PurchaseOrder memory) {
+      require(orders[_orderId].status != Structs.OrderStatus.notCreated, "Order does not exist");
+      require(
+         orders[_orderId].procurer == msg.sender || orders[_orderId].supplier == msg.sender || orders[_orderId].courier == msg.sender,
+         "Unauthorised Access to Purchase Order"
+      );
+      return orders[_orderId];
+   }
+
    /* ==================== Procurer Functions ==================== */
 
    /**
@@ -191,7 +171,7 @@ contract Market {
       require(products[_productId].supplier != address(0), "Product does not exist");
       require(products[_productId].price * quantity == price, "Invalid Price");
 
-      PurchaseOrder memory po = PurchaseOrder(
+      Structs.PurchaseOrder memory po = Structs.PurchaseOrder(
          msg.sender,
          tx.origin,
          address(0),
@@ -207,7 +187,7 @@ contract Market {
          quantity,
          price,
          now,
-         OrderStatus.Ordered
+         Structs.OrderStatus.Ordered
       );
 
       orders[orderId] = po;
@@ -221,10 +201,10 @@ contract Market {
     * @dev Called by a Procurer contract, from the finance team only
     */
    function procurerApprovePurchaseOrder(uint256 _orderId) public procurerOnly {
-      require(orders[_orderId].status != OrderStatus.notCreated, "Order does not exist");
+      require(orders[_orderId].status != Structs.OrderStatus.notCreated, "Order does not exist");
       require(orders[_orderId].procurer == msg.sender, "Only valid procurer can approve this purchase order");
-      require(orders[_orderId].status == OrderStatus.Ordered, "Current status of order is not ordered");
-      orders[_orderId].status = OrderStatus.InternalApproved;
+      require(orders[_orderId].status == Structs.OrderStatus.Ordered, "Current status of order is not ordered");
+      orders[_orderId].status = Structs.OrderStatus.InternalApproved;
       orders[_orderId].procurerFinanceEmployee = tx.origin;
    }
 
@@ -233,10 +213,10 @@ contract Market {
     * @dev Called by a Procurer contract, from the finance team only
     */
    function procurerRejectPurchaseOrder(uint256 _orderId) public procurerOnly {
-      require(orders[_orderId].status != OrderStatus.notCreated, "Order does not exist");
+      require(orders[_orderId].status != Structs.OrderStatus.notCreated, "Order does not exist");
       require(orders[_orderId].procurer == msg.sender, "Only valid procurer can approve this purchase order");
-      require(orders[_orderId].status == OrderStatus.Ordered, "Current status of order is not ordered");
-      orders[_orderId].status = OrderStatus.InternalRejected;
+      require(orders[_orderId].status == Structs.OrderStatus.Ordered, "Current status of order is not ordered");
+      orders[_orderId].status = Structs.OrderStatus.InternalRejected;
       orders[_orderId].procurerFinanceEmployee = tx.origin;
    }
 
@@ -245,15 +225,30 @@ contract Market {
     * Will transfer the funds to the supplier.
     * @dev Called by a Procurer contract
     */
-   function deliveredByDelivery(uint256 _orderId, uint256 companyId) public procurerOnly {
-      require(orders[_orderId].status != OrderStatus.notCreated, "Order does not exist");
+   function deliveredByDelivery(uint256 _orderId) public procurerOnly {
+      require(orders[_orderId].status != Structs.OrderStatus.notCreated, "Order does not exist");
       require(orders[_orderId].procurer == msg.sender, "Only valid procurer can approve this purchase order");
-      require(orders[_orderId].status == OrderStatus.Ordered, "Current status of order is not ordered");
+      require(orders[_orderId].status == Structs.OrderStatus.Ordered, "Current status of order is not ordered");
 
       // transfer funds to supplier upon confirmation of delivery by procurer (items are in good condition)
-      erc20.transfer(orders[_orderId].supplier,orders[_orderId].price * orders[_orderId].quantity);
-      orders[_orderId].status = OrderStatus.Delivered;
+      erc20.transferFrom(orders[_orderId].procurer, orders[_orderId].supplier, orders[_orderId].price * orders[_orderId].quantity);
+      orders[_orderId].status = Structs.OrderStatus.Delivered;
       orders[_orderId].procurerFinanceEmployee = tx.origin;
+   }
+
+   /**
+    * @notice View all purchase orders related to procurer.
+    * @return Structs.PurchaseOrder[]
+    */
+   function procurerViewAllPurchaseOrders() public view procurerOnly returns (Structs.PurchaseOrder[] memory) {
+      Structs.PurchaseOrder[] memory _poa = new Structs.PurchaseOrder[](orderId - 1);
+      uint256 j = 0;
+      for (uint256 i = 1; i < orderId; i++) {
+         if (orders[i].status != Structs.OrderStatus.notCreated && msg.sender == orders[i].procurer) {
+            _poa[j++] = orders[i];
+         }
+      } 
+      return _poa;
    }
 
    /* ==================== Supplier Functions ==================== */
@@ -263,13 +258,13 @@ contract Market {
     * @dev Called by a Supplier contract
     */ 
    function supplierApprovePurchaseOrder(uint256 _orderId) public supplierOnly {
-      require(orders[_orderId].status != OrderStatus.notCreated, "Order does not exist");
+      require(orders[_orderId].status != Structs.OrderStatus.notCreated, "Order does not exist");
       require(orders[_orderId].supplier == msg.sender, "Only valid supplier can approve this purchase order");
-      require(orders[_orderId].status == OrderStatus.InternalApproved, "Current status of order is not internal approved");
+      require(orders[_orderId].status == Structs.OrderStatus.InternalApproved, "Current status of order is not internal approved");
 
       // assuming that funds from procurer are transfered to marketplace upon approval from supplier 
       require(erc20.transferFrom(orders[_orderId].procurer, address(this), orders[_orderId].price * orders[_orderId].quantity), "Insufficient funds in procurer's account");
-      orders[_orderId].status = OrderStatus.SupplierApproved;
+      orders[_orderId].status = Structs.OrderStatus.SupplierApproved;
       orders[_orderId].supplierEmployee = tx.origin;
    }
 
@@ -278,10 +273,10 @@ contract Market {
     * @dev Called by a Supplier contract
     */
    function supplierRejectPurchaseorder(uint256 _orderId) public supplierOnly {
-      require(orders[_orderId].status != OrderStatus.notCreated, "Order does not exist");
+      require(orders[_orderId].status != Structs.OrderStatus.notCreated, "Order does not exist");
       require(orders[_orderId].supplier == msg.sender, "Only valid supplier can approve this purchase order");
-      require(orders[_orderId].status == OrderStatus.InternalApproved, "Current status of order is not internal approved");
-      orders[_orderId].status = OrderStatus.SupplierRejected;
+      require(orders[_orderId].status == Structs.OrderStatus.InternalApproved, "Current status of order is not internal approved");
+      orders[_orderId].status = Structs.OrderStatus.SupplierRejected;
       orders[_orderId].supplierEmployee = tx.origin;
    }
 
@@ -291,11 +286,12 @@ contract Market {
     * @return Product ID
     */
    function listProduct(uint256 quantityAvailable, uint256 price, string memory name) public supplierOnly returns (uint256) {      
-      Product memory _p = Product(
+      Structs.Product memory _p = Structs.Product(
          msg.sender,
          productId,
          quantityAvailable,
          price,
+         0,
          name,
          true
       );
@@ -333,10 +329,10 @@ contract Market {
     * @notice Supplier updates the price of a product on the marketplace
     * @dev Called by a Supplier contract
     */
-   function updateProductQuantity(uint256 _productId, uint256 newQuantity) {
+   function updateProductQuantity(uint256 _productId, uint256 newQuantity) public supplierOnly {
       require(products[_productId].supplier != address(0), "Product does not exist");
       require(products[_productId].supplier == msg.sender, "Unauthorised supplier");
-      products[_productId].quantity = newQuantity;
+      products[_productId].quantityAvailable = newQuantity;
    }
 
    /**
@@ -344,13 +340,28 @@ contract Market {
     * @dev Called by a Supplier contract
     */
    function assignCourier(address courier, uint256 _orderId) public supplierOnly {
-      require(orders[_orderId].status != OrderStatus.notCreated, "Order does not exist");
+      require(orders[_orderId].status != Structs.OrderStatus.notCreated, "Order does not exist");
       require(orders[_orderId].supplier == msg.sender, "Only valid supplier can approve this purchase order");
-      require(orders[_orderId].status == OrderStatus.SupplierApproved, "Current status of order is not supplier approved");
+      require(orders[_orderId].status == Structs.OrderStatus.SupplierApproved, "Current status of order is not supplier approved");
       require(courier != address(0), "Invalid courier address");
       require(address(couriers[courier]) == courier, "Courier does not exist");
       
       orders[_orderId].courier = courier;
+   }
+
+   /**
+    * @notice View all purchase orders related to supplier.
+    * @return Structs.PurchaseOrder[]
+    */
+   function supplierViewAllPurchaseOrders() public view supplierOnly returns (Structs.PurchaseOrder[] memory) {
+      Structs.PurchaseOrder[] memory _poa = new Structs.PurchaseOrder[](orderId - 1);
+      uint256 j = 0;
+      for (uint256 i = 1; i < orderId; i++) {
+         if (orders[i].status != Structs.OrderStatus.notCreated && msg.sender == orders[i].supplier) {
+            _poa[j++] = orders[i];
+         }
+      } 
+      return _poa;
    }
 
    /* ==================== Courier Functions ==================== */
@@ -360,12 +371,26 @@ contract Market {
     * @dev Called by a Courier contract
     */
    function receivedByCourier(uint256 _orderId) public courierOnly {
-      require(orders[_orderId].status != OrderStatus.notCreated, "Order does not exist");
+      require(orders[_orderId].status != Structs.OrderStatus.notCreated, "Order does not exist");
       require(orders[_orderId].courier == msg.sender, "Only valid courier can access this purchase order");
-      require(orders[_orderId].status == OrderStatus.SupplierApproved, "Current status of order is not supplier approved");
+      require(orders[_orderId].status == Structs.OrderStatus.SupplierApproved, "Current status of order is not supplier approved");
 
       orders[_orderId].courierEmployee = tx.origin;
-      orders[_orderId].status = OrderStatus.Delivering;
+      orders[_orderId].status = Structs.OrderStatus.Delivering;
    }
    
+   /**
+    * @notice View all purchase orders related to courier.
+    * @return Structs.PurchaseOrder[]
+    */
+   function courierViewAllPurchaseOrders() public view courierOnly returns (Structs.PurchaseOrder[] memory) {
+      Structs.PurchaseOrder[] memory _poa = new Structs.PurchaseOrder[](orderId - 1);
+      uint256 j = 0;
+      for (uint256 i = 1; i < orderId; i++) {
+         if (orders[i].status != Structs.OrderStatus.notCreated && msg.sender == orders[i].courier) {
+            _poa[j++] = orders[i];
+         }
+      } 
+      return _poa;
+   }
 }

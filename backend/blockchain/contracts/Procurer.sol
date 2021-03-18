@@ -1,5 +1,7 @@
 pragma solidity ^0.5.0;
+pragma experimental ABIEncoderV2;
 
+import './Structs.sol';
 import './Market.sol';
 import './Supplier.sol';
 import './Courier.sol';
@@ -7,6 +9,7 @@ import './Courier.sol';
 contract Procurer {
 
     address _owner;
+    Market market;
 
     enum EmployeeType { NonEmployee, Disabled, Finance, Logistics }
 
@@ -17,20 +20,24 @@ contract Procurer {
 
     mapping(address => Employee) employees;
 
-    constructor() public {
+    constructor(Market _marketAddress) public {
         _owner = msg.sender;
+        market = _marketAddress;
     }
 
     /* ==================== Modifiers ==================== */
 
-    modifier isFinanceEmployee {
+    modifier isEmployee {
         require(employees[msg.sender].employeeType != EmployeeType.NonEmployee, "Only employee can perform this function");
+        _;
+    }
+
+    modifier isFinanceEmployee {
         require(employees[msg.sender].employeeType == EmployeeType.Finance, 'Employee is not a finance employee');
         _;
     }
    
     modifier isLogisticsEmployee {
-        require(employees[msg.sender].employeeType != EmployeeType.NonEmployee, "Only employee can perform this function");
         require(employees[msg.sender].employeeType == EmployeeType.Logistics, 'Employee is not a logistics employee');
         _;
     }
@@ -40,7 +47,7 @@ contract Procurer {
      * Only Logistics Employees are allowed to create purchase orders.
      * @dev Calls Market contract
      */
-    function createPurchaseOrder(uint256 _productId, uint256 quantity, uint256 price) public isLogisticsEmployee returns (uint256) {
+    function createPurchaseOrder(uint256 _productId, uint256 quantity, uint256 price) public isEmployee isLogisticsEmployee returns (uint256) {
     }
     
     /**
@@ -51,7 +58,7 @@ contract Procurer {
      * Purchase orders that are rejected previously cannot be approved.
      * @dev Calls Market contract
      */
-    function approvePurchaseOrder(uint256 orderId) public isFinanceEmployee {
+    function approvePurchaseOrder(uint256 orderId) public isEmployee isFinanceEmployee {
     }
     
     /**
@@ -59,9 +66,15 @@ contract Procurer {
      * Changes the status of the purchase order from Ordered to Rejected.
      * Only Finance Employees are allowed to approve purchase orders.
      */
-    function rejectPurchaseOrder(uint256 orderId) public {
+    function rejectPurchaseOrder(uint256 orderId) public isEmployee {
     }
     
+    /**
+     */
+    function viewPurchaseOrder(uint256 orderId) public view isEmployee returns (Structs.PurchaseOrder memory) {
+        return market.viewPurchaseOrder(orderId);
+    }
+
     /**
      * Confirms the delivery has been received by the delivery courier.
      * Changes the status of the purchase order from Delivering to Delivered.
@@ -69,7 +82,7 @@ contract Procurer {
      * If the transfer goes through, the status will be eventually changes to Closed.
      * @dev Calls Market contract
      */
-    function deliveredByCourier(uint256 orderId, uint256 companyId) public {
+    function deliveredByCourier(uint256 orderId, uint256 companyId) isEmployee public {
     }
 
     /**
