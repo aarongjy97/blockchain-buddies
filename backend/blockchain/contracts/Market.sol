@@ -8,9 +8,12 @@ import "./Courier.sol";
 import "./Structs.sol";
 
 contract Market {
-   ERC20 erc20;
 
+   ERC20 erc20;
    address _owner;
+
+   uint256 orderId;
+   uint256 productId;
 
    /* Stakeholders */
    mapping(address => Procurer) procurers;
@@ -22,12 +25,28 @@ contract Market {
 
    /* Suppliers' Products */
    mapping(uint256 => Structs.Product) products;
-   
-   uint256 orderId;
-   uint256 productId;
 
    /* ==================== Events ==================== */
    event Registered(string registerType, address registerer);
+
+   /* === Supplier Events === */
+   event Listed(address supplier, address supplierEmployee, uint256 _productId, uint256 quantity, uint256 price);
+   event Unlisted(address supplier, address supplierEmployee, uint256 _productId);
+   event Relisted(address supplier, address supplierEmployee, uint256 _productId);
+   event ProductPriceUpdate(address supplier, address supplierEmployee, uint256 _productId, uint256 newPrice);
+   event ProductQuantityUpdate(address supplier, address supplierEmployee, uint256 _productId, uint256 newQuantity);
+
+   /* === Order Events === */
+   event OrderCreated(uint256 _orderId, address procurer, address logisticsEmployee, uint256 _productId, uint256 _quantity, uint256 price);
+   event OrderInternalApproved(uint256 _orderId, address procurer, address financeEmployee);
+   event OrderInternalRejected(uint256 _orderId, address procurer, address financeEmployee);
+   event OrderSupplierApproved(uint256 _orderId, address supplier, address supplierEmployee);
+   event OrderSupplierRejected(uint256 _orderId, address supplier, address supplierEmployee);
+   event OrderCourierAssigned(uint256 _orderId, address supplier, address supplierEmployee, address courier);
+   event OrderCourierDelivering(uint256 _orderId, address supplier, address courier, address courierEmployee);
+   event OrderDelivered(uint256 _orderId, address procurer);
+
+   /* ==================== Constructor ==================== */
 
    constructor(ERC20 erc20Address) public {
       erc20 = erc20Address;
@@ -193,6 +212,8 @@ contract Market {
       orders[orderId] = po;
       orderId++;
 
+      emit OrderCreated(po.orderId, msg.sender, tx.origin, _productId, quantity, price);
+
       return po.orderId;
    }
 
@@ -206,6 +227,8 @@ contract Market {
       require(orders[_orderId].status == Structs.OrderStatus.Ordered, "Current status of order is not ordered");
       orders[_orderId].status = Structs.OrderStatus.InternalApproved;
       orders[_orderId].procurerFinanceEmployee = tx.origin;
+
+      emit OrderInternalApproved(_orderId, msg.sender, tx.origin);
    }
 
    /**
@@ -218,6 +241,8 @@ contract Market {
       require(orders[_orderId].status == Structs.OrderStatus.Ordered, "Current status of order is not ordered");
       orders[_orderId].status = Structs.OrderStatus.InternalRejected;
       orders[_orderId].procurerFinanceEmployee = tx.origin;
+   
+      emit OrderInternalRejected(_orderId, msg.sender, tx.origin);
    }
 
    /**
@@ -225,7 +250,7 @@ contract Market {
     * Will transfer the funds to the supplier.
     * @dev Called by a Procurer contract
     */
-   function deliveredByDelivery(uint256 _orderId) public procurerOnly {
+   function deliveredByCourier(uint256 _orderId) public procurerOnly {
       require(orders[_orderId].status != Structs.OrderStatus.notCreated, "Order does not exist");
       require(orders[_orderId].procurer == msg.sender, "Only valid procurer can approve this purchase order");
       require(orders[_orderId].status == Structs.OrderStatus.Ordered, "Current status of order is not ordered");
@@ -234,6 +259,8 @@ contract Market {
       erc20.transferFrom(orders[_orderId].procurer, orders[_orderId].supplier, orders[_orderId].price * orders[_orderId].quantity);
       orders[_orderId].status = Structs.OrderStatus.Delivered;
       orders[_orderId].procurerFinanceEmployee = tx.origin;
+
+      emit OrderDelivered(_orderId, msg.sender);
    }
 
    /**
@@ -266,6 +293,8 @@ contract Market {
       require(erc20.transferFrom(orders[_orderId].procurer, address(this), orders[_orderId].price * orders[_orderId].quantity), "Insufficient funds in procurer's account");
       orders[_orderId].status = Structs.OrderStatus.SupplierApproved;
       orders[_orderId].supplierEmployee = tx.origin;
+   
+      emit OrderSupplierApproved(_orderId, msg.sender, tx.origin);
    }
 
    /**
@@ -278,6 +307,12 @@ contract Market {
       require(orders[_orderId].status == Structs.OrderStatus.InternalApproved, "Current status of order is not internal approved");
       orders[_orderId].status = Structs.OrderStatus.SupplierRejected;
       orders[_orderId].supplierEmployee = tx.origin;
+
+      /* Decrease Allowance of Market */
+      Procurer _p = Procurer(orders[_orderId].procurer);
+      _p.supplierRejectPurchaseOrder(orders[_orderId].price);
+
+      emit OrderSupplierRejected(_orderId, msg.sender, tx.origin);
    }
 
    /**
@@ -299,6 +334,8 @@ contract Market {
       products[productId] = _p;
       productId++;
 
+      emit Listed(msg.sender, tx.origin, _p.productId, quantityAvailable, price);
+
       return _p.productId;
    } 
 
@@ -311,9 +348,22 @@ contract Market {
       require(products[_productId].supplier != address(0), "Product does not exist");
       require(products[_productId].supplier == msg.sender, "Unauthorised supplier");
       products[_productId].listed = false;
+
+      emit Unlisted(msg.sender, tx.origin, _productId);
    }
 
-   // function relistProduct(uint256 _productId) public supplierOnly {}
+   /**
+    * @notice Supplier relists a product on the marketplace that has been previously unlisted.
+    * @dev Called by a Supplier contract
+    */
+   function relistProduct(uint256 _productId) public supplierOnly {
+      require(products[_productId].supplier != address(0), "Product does not exist");
+      require(products[_productId].supplier == msg.sender, "Unauthorised supplier");
+      require(!products[_productId].listed, "Product listed, cannot be relisted");
+      products[_productId].listed = true;   
+
+      emit Relisted(msg.sender, tx.origin, _productId);
+   }
 
    /**
     * @notice Supplier updates the price of a product on the marketplace
@@ -323,6 +373,8 @@ contract Market {
       require(products[_productId].supplier != address(0), "Product does not exist");
       require(products[_productId].supplier == msg.sender, "Unauthorised supplier");
       products[_productId].price = newPrice;
+
+      emit ProductPriceUpdate(msg.sender, tx.origin, _productId, newPrice);
    }
 
    /**
@@ -333,6 +385,8 @@ contract Market {
       require(products[_productId].supplier != address(0), "Product does not exist");
       require(products[_productId].supplier == msg.sender, "Unauthorised supplier");
       products[_productId].quantityAvailable = newQuantity;
+
+      emit ProductQuantityUpdate(msg.sender, tx.origin, _productId, newQuantity);
    }
 
    /**
@@ -347,6 +401,8 @@ contract Market {
       require(address(couriers[courier]) == courier, "Courier does not exist");
       
       orders[_orderId].courier = courier;
+
+      emit OrderCourierAssigned(_orderId, msg.sender, tx.origin, courier);
    }
 
    /**
@@ -377,6 +433,8 @@ contract Market {
 
       orders[_orderId].courierEmployee = tx.origin;
       orders[_orderId].status = Structs.OrderStatus.Delivering;
+
+      emit OrderCourierDelivering(_orderId, orders[_orderId].supplier, msg.sender, tx.origin);
    }
    
    /**
