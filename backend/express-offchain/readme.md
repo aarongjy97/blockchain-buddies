@@ -10,7 +10,7 @@ Using the terminal, run the following commands:
 
 1. <code>cd /sql</code>
 2. <code>psql</code>
-3. If you haven't already, then <code>create database blockchainbuddies</code>
+3. If you haven't already, then <code>create database blockchainbuddies;</code>
 4. <code>\c blockchainbuddies</code>
 5. <code>\i init.sql</code>
 
