@@ -1,3 +1,5 @@
+const axios = require("axios");
+
 const market = artifacts.require("Market");
 const procurer = artifacts.require("Procurer");
 const ERC20 = artifacts.require("ERC20");
@@ -14,7 +16,7 @@ module.exports = async function (deployer, network, accounts) {
       address: accounts[2],
       id: 1,
       name: "Dell",
-      employees: [{ 1: accounts[3] }],
+      employees: [{ id: 1, address: accounts[3] }],
     },
 
     /* Supplier 2 */
@@ -22,7 +24,7 @@ module.exports = async function (deployer, network, accounts) {
       address: accounts[4],
       id: 2,
       name: "Foxconn",
-      employees: [{ 2: accounts[5] }],
+      employees: [{ id: 2, address: accounts[5] }],
     },
 
     /* Supplier 3 */
@@ -30,7 +32,7 @@ module.exports = async function (deployer, network, accounts) {
       address: accounts[6],
       id: 3,
       name: "TSMC",
-      employees: [{ 3: accounts[7] }],
+      employees: [{ id: 3, address: accounts[7] }],
     },
 
     /* Procurer 1 */
@@ -38,7 +40,10 @@ module.exports = async function (deployer, network, accounts) {
       address: accounts[8],
       id: 1,
       name: "AMD",
-      employees: [{ 1: accounts[9] }, { 2: accounts[10] }],
+      employees: [
+        { id: 1, address: accounts[9] },
+        { id: 2, address: accounts[10] },
+      ],
     },
 
     /* Procurer 2 */
@@ -46,7 +51,10 @@ module.exports = async function (deployer, network, accounts) {
       address: accounts[9],
       id: 2,
       name: "Apple",
-      employees: [{ 3: accounts[10] }, { 4: accounts[11] }],
+      employees: [
+        { id: 3, address: accounts[10] },
+        { id: 4, address: accounts[11] },
+      ],
     },
 
     /* Procurer 3 */
@@ -54,7 +62,10 @@ module.exports = async function (deployer, network, accounts) {
       address: accounts[12],
       id: 3,
       name: "Google",
-      employees: [{ 5: accounts[13] }, { 6: accounts[14] }],
+      employees: [
+        { id: 5, address: accounts[13] },
+        { id: 6, address: accounts[14] },
+      ],
     },
 
     /* Courier 1 */
@@ -62,7 +73,7 @@ module.exports = async function (deployer, network, accounts) {
       address: accounts[15],
       id: 1,
       name: "NinjaVan",
-      employees: [{ 1: accounts[16] }],
+      employees: [{ id: 1, address: accounts[16] }],
     },
 
     /* Courier 2 */
@@ -70,7 +81,7 @@ module.exports = async function (deployer, network, accounts) {
       address: accounts[17],
       id: 2,
       name: "DHL",
-      employees: [{ 2: accounts[18] }],
+      employees: [{ id: 2, address: accounts[18] }],
     },
   };
 
@@ -79,18 +90,47 @@ module.exports = async function (deployer, network, accounts) {
     from: stakeholders.Market,
   });
 
-  await deployer.deploy(procurer, market.address, ERC20.address, { from: stakeholders.AMD.address });
-  await deployer.deploy(procurer, market.address, ERC20.address, { from: stakeholders.Apple.address });
-  await deployer.deploy(procurer, market.address, ERC20.address, { from: stakeholders.Google.address });
+  await deployer.deploy(procurer, market.address, ERC20.address, {
+    from: stakeholders.AMD.address,
+  });
+  await deployer.deploy(procurer, market.address, ERC20.address, {
+    from: stakeholders.Apple.address,
+  });
+  await deployer.deploy(procurer, market.address, ERC20.address, {
+    from: stakeholders.Google.address,
+  });
 
-  await deployer.deploy(supplier, market.address, ERC20.address, { from: stakeholders.Dell.address });
-  await deployer.deploy(supplier, market.address, ERC20.address, { from: stakeholders.Foxconn.address });
-  await deployer.deploy(supplier, market.address, ERC20.address, { from: stakeholders.TSMC.address });
+  await deployer.deploy(supplier, market.address, ERC20.address, {
+    from: stakeholders.Dell.address,
+  });
+  await deployer.deploy(supplier, market.address, ERC20.address, {
+    from: stakeholders.Foxconn.address,
+  });
+  await deployer.deploy(supplier, market.address, ERC20.address, {
+    from: stakeholders.TSMC.address,
+  });
 
-  await deployer.deploy(courier, market.address, ERC20.address, { from: stakeholders.NinjaVan.address });
-  await deployer.deploy(courier, market.address, ERC20.address, { from: stakeholders.DHL.address });
+  await deployer.deploy(courier, market.address, ERC20.address, {
+    from: stakeholders.NinjaVan.address,
+  });
+  await deployer.deploy(courier, market.address, ERC20.address, {
+    from: stakeholders.DHL.address,
+  });
+
+  await syncWithDatabase(stakeholders);
 };
 
-async function addSupplierEmployee(accounts) {
-    
+async function syncWithDatabase(stakeholders) {
+  const procurers = [stakeholders.AMD, stakeholders.Apple, stakeholders.Google];
+  const suppliers = [
+    stakeholders.Dell,
+    stakeholders.Foxconn,
+    stakeholders.TSMC,
+  ];
+  const couriers = [stakeholders.NinjaVan, stakeholders.DHL];
+
+  await axios.post('http://localhost:5000/api/init/procurer', procurers);
+  await axios.post('http://localhost:5000/api/init/supplier', suppliers);
+  await axios.post('http://localhost:5000/api/init/courier', couriers);
+
 }

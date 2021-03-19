@@ -6,21 +6,20 @@ drop table if exists courier cascade ;
 drop table if exists courierEmployee cascade ;
 drop table if exists product cascade ;
 drop type if exists employeeType ;
-drop type if exists orderStatus ;
 
 create type employeeType as enum ('finance', 'logistics');
-create type orderStatus as enum ('ordered', 'internalapproved', 'internalrejected', 'supplierapproved', 'supplierrejected', 'delivering', 'delivered');
 
 CREATE TABLE Supplier(
+    id serial not null,
     address varchar (255) not null,
     name varchar (100) not null,
-    primary key (address)
+    primary key (id)
 );
 
 create table SupplierEmployee(
     id serial not null,
     address varchar (255) not null,
-    company varchar (255) not null,
+    company int not null,
     name varchar (100) not null,
     email varchar (100) not null,
     password varchar (100) not null,
@@ -29,16 +28,17 @@ create table SupplierEmployee(
 );
 
 create table Procurer (
+    id serial not null,
     address varchar (255) not null,
     name varchar (100) not null,
-    primary key (address)
+    primary key (id)
 );
 
 create table ProcurerEmployee (
     id serial not null,
     address varchar (255) not null,
     employeeType employeeType not null,
-    company varchar (255) not null,
+    company int not null,
     name varchar (100) not null,
     email varchar (100) not null,
     password varchar (100) not null,
@@ -47,15 +47,16 @@ create table ProcurerEmployee (
 );
 
 create table Courier (
+    id serial not null,
     address varchar (255) not null,
     name varchar (100) not null,
-    primary key (address)
+    primary key (id)
 );
 
 create table CourierEmployee (
     id serial not null,
     address varchar (255) not null,
-    company varchar (255) not null,
+    company int not null,
     name varchar (100) not null,
     email varchar (100) not null,
     password varchar (100) not null,
@@ -65,7 +66,7 @@ create table CourierEmployee (
 
 create table product (
     id integer not null,
-    supplier varchar (255) not null,
+    supplier int not null,
     productName varchar (255) not null,
     productImage bytea, 
     foreign key (supplier) references Supplier on update cascade,
