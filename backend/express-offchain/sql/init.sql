@@ -5,7 +5,6 @@ drop table if exists supplierEmployee cascade ;
 drop table if exists courier cascade ;
 drop table if exists courierEmployee cascade ;
 drop table if exists product cascade ;
-drop table if exists PurchaseOrder cascade ;
 drop type if exists employeeType ;
 drop type if exists orderStatus ;
 
@@ -65,47 +64,12 @@ create table CourierEmployee (
 );
 
 create table product (
-    id serial not null,
+    id integer not null,
     supplier varchar (255) not null,
-    quantity int not null,
-    price int not null,
-    listed boolean not null,
     productName varchar (255) not null,
     productImage bytea, 
     foreign key (supplier) references Supplier on update cascade,
     primary key (id)
-);
-
-create table PurchaseOrder (
-    id serial not null,
-    procurer varchar (255) not null, 
-    procurerLogisticsEmployee int,
-    procurerFinanceEmployee int,
-
-    supplier varchar (255),
-    supplierEmployee int,
-
-    courier varchar (255),
-    courierEmployee int,
-
-    productId int not null,
-    quantity int not null,
-    price int not null, 
-    dateOfPurchase timestamp not null,
-    orderStatus orderStatus not null,
-
-    primary key (id),
-    foreign key (procurer) references Procurer on update cascade,
-    foreign key (procurerLogisticsEmployee) references ProcurerEmployee,
-    foreign key (procurerFinanceEmployee) references ProcurerEmployee,
-    
-    foreign key (supplier) references Supplier on update cascade,
-    foreign key (supplierEmployee) references SupplierEmployee,
-    
-    foreign key (courier) references Courier on update cascade,
-    foreign key (courierEmployee) references CourierEmployee,
-    
-    foreign key (productId) references Product
 );
 
 begin;
@@ -140,7 +104,5 @@ insert into courier (address, name) values
 insert into courieremployee (address, company, name, email, password) values 
 ('1', '1', 'James Lim', 'jameslim@njv.com', 'password'),
 ('2', '2', 'Scott Koh', 'scottkoh@dhl.com', 'password');
-
--- @TODO create mock products here and in blockchain
 
 commit;
