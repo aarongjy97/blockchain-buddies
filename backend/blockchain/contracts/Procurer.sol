@@ -57,7 +57,7 @@ contract Procurer {
      * Only Logistics Employees are allowed to create purchase orders.
      * @dev Calls Market contract
      */
-    function createPurchaseOrder(uint256 _productId, uint256 quantity, uint256 price) public isLogisticsEmployee returns (uint256) {
+    function createPurchaseOrder(uint _productId, uint quantity, uint price) public isLogisticsEmployee returns (uint) {
         market.createPurchaseOrder(_productId, quantity, price);
     }
     
@@ -69,7 +69,7 @@ contract Procurer {
      * Purchase orders that are rejected previously cannot be approved.
      * @dev Calls Market contract
      */
-    function approvePurchaseOrder(uint256 orderId) public isFinanceEmployee {
+    function approvePurchaseOrder(uint orderId) public isFinanceEmployee {
         erc20.increaseAllowance(address(market), viewPurchaseOrder(orderId).price);
         market.procurerApprovePurchaseOrder(orderId);
     }
@@ -80,7 +80,7 @@ contract Procurer {
      * Only Finance Employees are allowed to approve purchase orders.
      * @dev Calls Market Contract
      */
-    function rejectPurchaseOrder(uint256 orderId) public isFinanceEmployee {
+    function rejectPurchaseOrder(uint orderId) public isFinanceEmployee {
         market.procurerRejectPurchaseOrder(orderId);
     }
 
@@ -88,7 +88,7 @@ contract Procurer {
      * @notice Supplier rejected the purchase order, to remove allowance given to market contract.
      * @dev Calls ERC20 Contract
      */
-    function supplierRejectPurchaseOrder(uint256 price) public {
+    function supplierRejectPurchaseOrder(uint price) public {
         require(msg.sender == address(market), "Only Executable from Market Contract");
         erc20.decreaseAllowance(address(market), price);
     }
@@ -98,7 +98,7 @@ contract Procurer {
      * @dev Calls Market Contract to view order.
      * @return Structs.PurchaseOrder
      */
-    function viewPurchaseOrder(uint256 orderId) public view isEmployee returns (Structs.PurchaseOrder memory) {
+    function viewPurchaseOrder(uint orderId) public view isEmployee returns (Structs.PurchaseOrder memory) {
         return market.viewPurchaseOrder(orderId);
     }
 
@@ -118,7 +118,7 @@ contract Procurer {
      * If the transfer goes through, the status will be eventually changes to Closed.
      * @dev Calls Market contract
      */
-    function deliveredByCourier(uint256 orderId) isLogisticsEmployee isLogisticsEmployee public {
+    function deliveredByCourier(uint orderId) isLogisticsEmployee isLogisticsEmployee public {
         market.deliveredByCourier(orderId);
     }
 
@@ -128,7 +128,7 @@ contract Procurer {
      * @notice Adds an employee address to the contract, permitting the employee
      * to carry out functions on the contract.
      */
-    function addEmployee(address newEmployee, uint256 employeeType, string memory name) public ownerOnly {
+    function addEmployee(address newEmployee, uint employeeType, string memory name) public ownerOnly {
 
         require(employeeType == 1 || employeeType == 2, "Invalid Employee Type");
         require(newEmployee != address(0), "Invalid Address");

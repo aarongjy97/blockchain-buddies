@@ -26,10 +26,10 @@ library Structs {
 
     struct Product {
       address supplier;
-      uint256 productId;
-      uint256 quantityAvailable;
-      uint256 price;
-      uint256 numSold;
+      uint productId;
+      uint quantityAvailable;
+      uint price;
+      uint numSold;
       string productName;
       bool listed;
     }
@@ -49,11 +49,11 @@ library Structs {
       address courierEmployee;
 
       /* Order Details */ 
-      uint256 productId;
-      uint256 orderId;
-      uint256 quantity;
-      uint256 price;  
-      uint256 dateCreated; 
+      uint productId;
+      uint orderId;
+      uint quantity;
+      uint price;  
+      uint dateCreated; 
       OrderStatus status;
     
     }
