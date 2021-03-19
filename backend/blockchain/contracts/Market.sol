@@ -390,6 +390,31 @@ contract Market {
    }
 
    /**
+    * @notice View supplier's own product
+    * @return Struct.Product
+    */
+   function supplierViewSelfProduct(uint256 _productId) public view supplierOnly returns (Structs.Product memory) {
+      require(products[_productId].supplier != address(0), "Product does not exist");
+      require(products[_productId].supplier == msg.sender, "Unauthorised supplier");
+      return products[_productId];
+   }
+
+   /**
+    * @notice View all of supplier's own products
+    * @return Struct.Product[]
+    */
+   function supplierViewAllSelfProducts() public view supplierOnly returns (Structs.Product[] memory) {
+      Structs.Product[] memory _pa = new Structs.Product[](productId - 1);
+      uint256 j = 0;
+      for (uint256 i = 1; i < productId; i++) {
+         if (msg.sender == products[i].supplier) {
+            _pa[j++] = products[i];
+         }
+      } 
+      return _pa;
+   }
+
+   /**
     * @notice Supplier assigns a courier to deliver an order made by a procurer.
     * @dev Called by a Supplier contract
     */

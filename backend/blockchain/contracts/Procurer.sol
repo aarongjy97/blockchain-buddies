@@ -50,6 +50,8 @@ contract Procurer {
         _;
     }
 
+    /* ==================== Order Functions ==================== */
+
     /**
      * @notice Creates a purchase order for the finance team to approve.
      * Only Logistics Employees are allowed to create purchase orders.
@@ -119,6 +121,8 @@ contract Procurer {
     function deliveredByCourier(uint256 orderId) isLogisticsEmployee isLogisticsEmployee public {
         market.deliveredByCourier(orderId);
     }
+
+    /* ==================== Admin Functions ==================== */
 
     /**
      * @notice Adds an employee address to the contract, permitting the employee
