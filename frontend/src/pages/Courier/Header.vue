@@ -1,13 +1,6 @@
 <template>
   <body>
     <header id="Header">
-      <!-- <img
-        class="logo"
-        src="../assets/logo.svg"
-        alt="logo"
-        height="100"
-        width="100"
-      /> -->
       <nav>
         <ul class="nav__links">
           <li>
