@@ -47,6 +47,10 @@ contract Supplier {
       employees[_employee] = _newEmployee;
    }
 
+   function registerAsSupplier() public ownerOnly {
+      market.registerAsSupplier();
+   }
+
    /* ==================== Product Functions ==================== */
 
    /**   

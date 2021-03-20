@@ -12,6 +12,7 @@ create type employeeType as enum ('finance', 'logistics');
 CREATE TABLE Supplier(
     id serial not null,
     address varchar (255) not null,
+    ownerAddress varchar (255) not null,
     name varchar (100) not null,
     primary key (id)
 );
@@ -30,6 +31,7 @@ create table SupplierEmployee(
 create table Procurer (
     id serial not null,
     address varchar (255) not null,
+    ownerAddress varchar (255) not null,
     name varchar (100) not null,
     primary key (id)
 );
@@ -49,6 +51,7 @@ create table ProcurerEmployee (
 create table Courier (
     id serial not null,
     address varchar (255) not null,
+    ownerAddress varchar (255) not null,
     name varchar (100) not null,
     primary key (id)
 );
@@ -75,20 +78,20 @@ create table product (
 
 begin;
 
-insert into supplier (address, name) values
-('1', 'Dell'),
-('2', 'Foxconn'),
-('3', 'TSMC');
+insert into supplier (address, ownerAddress, name) values
+('1', '1', 'Dell'),
+('2', '2', 'Foxconn'),
+('3', '3', 'TSMC');
 
 insert into supplieremployee (address, company, name, email, password) values
 ('1', '1', 'John Snow', 'johnsnow@dell.com', 'password'),
 ('2', '2', 'Carl John', 'carljohn@foxc.com', 'password'),
 ('3', '3', 'Carl Snow', 'carlsnow@tsmc.com', 'password');
 
-insert into procurer (address, name) values 
-('1', 'AMD'),
-('2', 'Apple'),
-('3', 'Google');
+insert into procurer (address, ownerAddress, name) values 
+('1', '1', 'AMD'),
+('2', '2', 'Apple'),
+('3', '3', 'Google');
 
 insert into procureremployee (address, company, employeeType, name, email, password) values 
 ('1', '1', 'finance',   'Charlotte Wang', 'charwang@amd.com', 'password'),
@@ -98,9 +101,9 @@ insert into procureremployee (address, company, employeeType, name, email, passw
 ('5', '3', 'finance',   'Aaron Goh',      'aarongoh@gle.com', 'password'),
 ('6', '3', 'logistics', 'Arnold Ng',      'arnoldng@gle.com', 'password');
 
-insert into courier (address, name) values 
-('1', 'NinjaVan'),
-('2', 'DHL');
+insert into courier (address, ownerAddress, name) values 
+('1', '1', 'NinjaVan'),
+('2', '2', 'DHL');
 
 insert into courieremployee (address, company, name, email, password) values 
 ('1', '1', 'James Lim', 'jameslim@njv.com', 'password'),
