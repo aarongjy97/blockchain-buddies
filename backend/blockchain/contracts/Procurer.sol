@@ -145,5 +145,9 @@ contract Procurer {
         }
 
     }
+
+    function registerAsProcurer() public ownerOnly {
+        market.registerAsProcurer();
+    }
     
 }

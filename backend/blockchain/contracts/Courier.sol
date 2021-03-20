@@ -47,6 +47,10 @@ contract Courier {
         employees[_employee] = _newEmployee;
     }
 
+    function registerAsCourier() public ownerOnly {
+        market.registerAsCourier();
+    }
+
     /* ==================== Order Functions ==================== */
 
     /**
