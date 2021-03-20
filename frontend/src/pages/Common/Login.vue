@@ -64,12 +64,12 @@ export default {
       console.log(result.data);
       if (result.status == 200) {
         return result.data["role"] == "procurer"
-          ? this.$router.push("procurer-home")
+          ? this.$router.push("procurer-main")
           : result.data["role"] == "supplier"
-          ? this.$router.push("supplier-home")
+          ? this.$router.push("supplier-main")
           : result.data["role"] == "courier"
-          ? this.$router.push("courier-home")
-          : "Not found";
+          ? this.$router.push("courier-main")
+          : null;
       }
     },
   },
