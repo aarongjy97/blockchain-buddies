@@ -53,7 +53,7 @@ contract Supplier {
     * @notice View supplier's own product
     * @return Struct.Product
     */
-   function viewSelfProduct(uint256 _productId) public view employeeOnly returns (Structs.Product memory) {
+   function viewSelfProduct(uint _productId) public view employeeOnly returns (Structs.Product memory) {
       return market.supplierViewSelfProduct(_productId);
    }
 
@@ -70,7 +70,7 @@ contract Supplier {
     * @dev Calls Market Contract
     * @return Product ID
     */
-   function listProduct(uint256 quantityAvailable, uint256 price, string memory name) public employeeOnly returns (uint256) {
+   function listProduct(uint quantityAvailable, uint price, string memory name) public employeeOnly returns (uint) {
       return market.listProduct(quantityAvailable, price, name);
    }
 
@@ -79,7 +79,7 @@ contract Supplier {
     * Innately, the product is disabled and can be reenabled for further trade.
     * @dev Calls Market Contract
     */
-   function unlistProduct(uint256 _productId) public employeeOnly {
+   function unlistProduct(uint _productId) public employeeOnly {
       market.unlistProduct(_productId);
    }
 
@@ -87,7 +87,7 @@ contract Supplier {
     * @notice Supplier relists a product on the marketplace that has been previously unlisted.
     * @dev Calls Market Contract
     */
-   function relistProduct(uint256 _productId) public employeeOnly {
+   function relistProduct(uint _productId) public employeeOnly {
       market.relistProduct(_productId);
    }
 
@@ -95,7 +95,7 @@ contract Supplier {
     * @notice Supplier updates the price of a product on the marketplace
     * @dev Calls Market Contract
     */
-   function updateProductPrice(uint256 _productId, uint256 newPrice) public employeeOnly {
+   function updateProductPrice(uint _productId, uint newPrice) public employeeOnly {
       market.updateProductPrice(_productId, newPrice);
    }
 
@@ -103,7 +103,7 @@ contract Supplier {
     * @notice Supplier updates the price of a product on the marketplace
     * @dev Calls Market Contract
     */
-   function updateProductQuantity(uint256 _productId, uint256 newQuantity) public employeeOnly {
+   function updateProductQuantity(uint _productId, uint newQuantity) public employeeOnly {
       market.updateProductQuantity(_productId, newQuantity);
    }
 
@@ -113,7 +113,7 @@ contract Supplier {
     * @notice Supplier approves a purchase order, which waits for the supplier to assign a courier for delivery.
     * @dev Calls Market Contract
     */ 
-   function supplierApprovePurchaseOrder(uint256 _orderId) public employeeOnly {
+   function supplierApprovePurchaseOrder(uint _orderId) public employeeOnly {
       market.supplierApprovePurchaseOrder(_orderId);
    }
 
@@ -121,7 +121,7 @@ contract Supplier {
     * @notice Supplier rejects a purchase order, hence the order will not have any further actions.
     * @dev Calls Market Contract
     */
-   function supplierRejectPurchaseOrder(uint256 _orderId) public employeeOnly {
+   function supplierRejectPurchaseOrder(uint _orderId) public employeeOnly {
       market.supplierRejectPurchaseorder(_orderId);
    }
 
@@ -129,7 +129,7 @@ contract Supplier {
     * @notice Supplier assigns a courier to deliver an order made by a procurer.
     * @dev Calls Market Contract
     */
-   function assignCourier(address courier, uint256 _orderId) public employeeOnly {
+   function assignCourier(address courier, uint _orderId) public employeeOnly {
       market.assignCourier(courier, _orderId);
    }
 
@@ -145,7 +145,7 @@ contract Supplier {
     * @notice View a purchase order. Can only be viewed by relevant stakeholders.
     * @return PurchaseOrder
     */
-   function viewPurchaseOrder(uint256 _orderId) public view employeeOnly returns (Structs.PurchaseOrder memory) {
+   function viewPurchaseOrder(uint _orderId) public view employeeOnly returns (Structs.PurchaseOrder memory) {
       return market.viewPurchaseOrder(_orderId);
    }
 }

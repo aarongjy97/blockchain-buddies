@@ -53,7 +53,7 @@ contract Courier {
     * @notice View a purchase order. Can only be viewed by relevant stakeholders.
     * @return PurchaseOrder
     */
-    function viewPurchaseOrder(uint256 _orderId) public view employeeOnly returns (Structs.PurchaseOrder memory) {
+    function viewPurchaseOrder(uint _orderId) public view employeeOnly returns (Structs.PurchaseOrder memory) {
         return market.viewPurchaseOrder(_orderId);
     }
 
@@ -69,7 +69,7 @@ contract Courier {
      * @notice Courier acknowledges they have received the goods to be delivered from the supplier.
      * @dev Calls Market Contract
      */
-    function receivedByCourier(uint256 _orderId) public employeeOnly {
+    function receivedByCourier(uint _orderId) public employeeOnly {
         market.receivedByCourier(_orderId);
     }
 
