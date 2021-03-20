@@ -58,7 +58,7 @@ export default {
         password: this.password,
       };
       await axios
-        .get("http://localhost:5000/api/login/procureremployee", login)
+        .get("http://localhost:5000/api/login/procureremployee", { params: login } )
         .then((res) => {
           if (res.status == 200) {
             // let data = res.json();
