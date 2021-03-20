@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/procureremployee", async (req, res, next) => {
   try {
 
-    const { email, password } = req.body;
+    const { email, password } = req.query;
     
     await transact(async (query) => {
 
@@ -38,7 +38,7 @@ router.get("/procureremployee", async (req, res, next) => {
 router.get("/supplieremployee", async (req, res, next) => {
   try {
 
-    const { email, password } = req.body;
+    const { email, password } = req.query;
     
     await transact(async (query) => {
 
@@ -69,7 +69,7 @@ router.get("/supplieremployee", async (req, res, next) => {
 router.get("/courieremployee", async (req, res, next) => {
   try {
 
-    const { email, password } = req.body;
+    const { email, password } = req.query;
     
     await transact(async (query) => {
 
