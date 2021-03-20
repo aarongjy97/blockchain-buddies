@@ -4,17 +4,17 @@
       <nav>
         <ul class="nav__links">
           <li>
-            <router-link to="/home" exact
-              ><a id="navi" href="#">About</a></router-link
+            <router-link to="/procurer-products" exact
+              ><a id="navi" href="#">Products</a></router-link
             >
           </li>
           <li>
-            <router-link to="/modules" exact
-              ><a id="navi" href="#">Modules</a></router-link
+            <router-link to="/procurer-orders" exact
+              ><a id="navi" href="#">Order Status</a></router-link
             >
           </li>
           <li>
-            <router-link to="/account" exact
+            <router-link to="/procurer-account" exact
               ><a id="navi" href="#">Account</a></router-link
             >
           </li>

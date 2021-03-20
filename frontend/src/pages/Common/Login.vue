@@ -45,11 +45,8 @@ export default {
   name: "login",
   data: function() {
     return {
-      name: "",
       email: "",
       password: "",
-      password2: "",
-      year: "",
     };
   },
 };
