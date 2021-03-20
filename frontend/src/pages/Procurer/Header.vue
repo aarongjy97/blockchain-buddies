@@ -4,7 +4,7 @@
       <nav>
         <ul class="nav__links">
           <li>
-            <router-link to="/procurer-products" exact
+            <router-link to="/procurer-main" exact
               ><a id="navi" href="#">Products</a></router-link
             >
           </li>
