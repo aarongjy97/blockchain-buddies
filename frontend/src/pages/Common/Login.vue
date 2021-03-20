@@ -57,15 +57,20 @@ export default {
         email: this.email,
         password: this.password,
       };
-      await axios
-        .get("http://localhost:5000/api/login/procureremployee", { params: login } )
-        .then((res) => {
-          if (res.status == 200) {
-            // let data = res.json();
-            this.$router.push("procurer-home");
-          }
-        })
-        .catch((err) => console.log(err));
+      const result = await axios.get(
+        "http://localhost:5000/api/login/procureremployee",
+        { params: login }
+      );
+      console.log(result.data);
+      if (result.status == 200) {
+        return result.data["role"] == "procurer"
+          ? this.$router.push("procurer-home")
+          : result.data["role"] == "supplier"
+          ? this.$router.push("supplier-home")
+          : result.data["role"] == "courier"
+          ? this.$router.push("courier-home")
+          : "Not found";
+      }
     },
   },
 };

@@ -6,11 +6,9 @@ const router = express.Router();
 /* Procurer Employee Login */
 router.get("/procureremployee", async (req, res, next) => {
   try {
+    const { email, password } = req.query;
 
-    const { email, password } = req.body;
-    
     await transact(async (query) => {
-
       const employee = (
         await query(
           `
@@ -21,13 +19,12 @@ router.get("/procureremployee", async (req, res, next) => {
           [email]
         )
       ).rows[0];
-      
+
       if (employee.password !== password) {
         return res.status(500).send("Invalid Password");
       }
 
       return res.status(200).send(employee);
-
     });
   } catch (error) {
     return res.status(500).send("Login Failed");
@@ -37,11 +34,9 @@ router.get("/procureremployee", async (req, res, next) => {
 /* Supplier Employee Login */
 router.get("/supplieremployee", async (req, res, next) => {
   try {
+    const { email, password } = req.query;
 
-    const { email, password } = req.body;
-    
     await transact(async (query) => {
-
       const employee = (
         await query(
           `
@@ -52,13 +47,12 @@ router.get("/supplieremployee", async (req, res, next) => {
           [email]
         )
       ).rows[0];
-      
+
       if (employee.password !== password) {
         return res.status(500).send("Invalid Password");
       }
 
       return res.status(200).send(employee);
-
     });
   } catch (error) {
     return res.status(500).send("Login Failed");
@@ -68,11 +62,9 @@ router.get("/supplieremployee", async (req, res, next) => {
 /* Courier Employee Login */
 router.get("/courieremployee", async (req, res, next) => {
   try {
+    const { email, password } = req.query;
 
-    const { email, password } = req.body;
-    
     await transact(async (query) => {
-
       const employee = (
         await query(
           `
@@ -83,13 +75,12 @@ router.get("/courieremployee", async (req, res, next) => {
           [email]
         )
       ).rows[0];
-      
+
       if (employee.password !== password) {
         return res.status(500).send("Invalid Password");
       }
 
       return res.status(200).send(employee);
-
     });
   } catch (error) {
     return res.status(500).send("Login Failed");
