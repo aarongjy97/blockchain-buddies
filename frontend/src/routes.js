@@ -11,7 +11,7 @@ Vue.use(Router);
 export default new Router({
   routes: [
     { path: "/", name: "login", component: Login },
-    { path: "/supplier", component: SupplierMain },
+    { path: "/supplier-main", component: SupplierMain },
     { path: "/supplier-listing", component: SupplierListing },
     { path: "/supplier-products", component: SupplierProducts },
     { path: "/supplier-orders", component: SupplierOrders },

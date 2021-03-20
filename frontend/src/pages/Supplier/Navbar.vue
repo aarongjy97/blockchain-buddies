@@ -1,32 +1,23 @@
 <template>
-  <body>
-    <header id="Header">
-      <nav>
-        <ul class="nav__links">
-          <li>
-            <router-link to="/supplier-listing" exact
-              ><a id="navi" href="#">Listing</a></router-link
-            >
-          </li>
-          <li>
-            <router-link to="/supplier-products" exact
-              ><a id="navi" href="#">Listed Products</a></router-link
-            >
-          </li>
-          <li>
-            <router-link to="/supplier-orders" exact
-              ><a id="navi" href="#">Orders</a></router-link
-            >
-          </li>
-          <li>
-            <router-link to="/supplier-account" exact
-              ><a id="navi" href="#">Account</a></router-link
-            >
-          </li>
-        </ul>
-      </nav>
-    </header>
-  </body>
+  <div>
+    <b-navbar toggleable="md" type="light" variant="light" class='navbar fixed-top'>
+        <b-navbar-brand to="/supplier-main" id="nav">
+          Procurement Marketplace
+        </b-navbar-brand>
+          
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav class="ml-auto">
+          <b-nav-item to="/supplier-listing">Listing</b-nav-item>
+          <b-nav-item to="/supplier-products">Listed Products</b-nav-item>
+          <b-nav-item to="/supplier-orders">Orders</b-nav-item>
+          <b-nav-item to="/supplier-account">Account</b-nav-item>
+        </b-navbar-nav>
+      </b-collapse>
+      
+    </b-navbar>
+  </div>
 </template>
 
 <script></script>

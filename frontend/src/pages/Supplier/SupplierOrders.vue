@@ -1,19 +1,19 @@
 <template>
 <b-container>
-  <Header v-bind:title="msg"></Header>
+  <Navbar v-bind:title="msg"></Navbar>
   <h1>Supplier Orders</h1>
 </b-container>
 </template>
 
 <script>
-import Header from "./Header.vue";
+import Navbar from "./Navbar.vue";
 export default {
   name: "App",
   data() {
     return {};
   },
   components: {
-    Header,
+    Navbar,
   },
 };
 </script>
