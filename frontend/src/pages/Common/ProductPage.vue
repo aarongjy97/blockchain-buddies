@@ -2,87 +2,27 @@
   <main class="container">
     <!-- Left Column / Headphones Image -->
     <div class="left-column">
-      <img data-image="black" src="../../assets/dell_computer.jpeg" alt="" />
-      <img data-image="blue" src="../../assets/dell_computer.jpeg" alt="" />
-      <img
-        data-image="red"
-        class="active"
-        src="../../assets/dell_computer.jpeg"
-        alt=""
-      />
+      <img src="../../assets/dell_computer.jpeg" alt="" />
     </div>
 
     <!-- Right Column -->
     <div class="right-column">
       <!-- Product Description -->
       <div class="product-description">
-        <span>Headphones</span>
-        <h1>Beats EP</h1>
+        <h1>Dell Computer</h1>
         <p>
-          The preferred choice of a vast range of acclaimed DJs. Punchy,
-          bass-focused sound and high isolation. Sturdy headband and on-ear
-          cushions suitable for live performance
+          Fastest pc eva
         </p>
       </div>
-
-      <!-- Product Configuration -->
-      <div class="product-configuration">
-        <!-- Product Color -->
-        <div class="product-color">
-          <span>Color</span>
-
-          <div class="color-choose">
-            <div>
-              <input
-                data-image="red"
-                type="radio"
-                id="red"
-                name="color"
-                value="red"
-                checked
-              />
-              <label for="red"><span></span></label>
-            </div>
-            <div>
-              <input
-                data-image="blue"
-                type="radio"
-                id="blue"
-                name="color"
-                value="blue"
-              />
-              <label for="blue"><span></span></label>
-            </div>
-            <div>
-              <input
-                data-image="black"
-                type="radio"
-                id="black"
-                name="color"
-                value="black"
-              />
-              <label for="black"><span></span></label>
-            </div>
-          </div>
-        </div>
-
-        <!-- Cable Configuration -->
-        <div class="cable-config">
-          <span>Cable configuration</span>
-
-          <div class="cable-choose">
-            <button>Straight</button>
-            <button>Coiled</button>
-            <button>Long-coiled</button>
-          </div>
-
-          <a href="#">How to configurate your headphones</a>
-        </div>
-      </div>
-
       <!-- Product Pricing -->
       <div class="product-price">
-        <span>148$</span>
+        <b-form-input
+          id="quantity"
+          v-model="text"
+          placeholder="Enter Quantity"
+        ></b-form-input>
+        <Br></br>
+        <span>$2000.00</span>
         <a href="#" class="cart-btn">Add to cart</a>
       </div>
     </div>
@@ -116,12 +56,12 @@ body {
 
 /* Columns */
 .left-column {
-  width: 65%;
+  width: 50%;
   position: relative;
 }
 
 .right-column {
-  width: 35%;
+  width: 50%;
   margin-top: 60px;
 }
 
@@ -131,12 +71,8 @@ body {
   position: absolute;
   left: 0;
   top: 0;
-  opacity: 0;
-  transition: all 0.3s ease;
-}
-
-.left-column img.active {
   opacity: 1;
+  transition: all 0.3s ease;
 }
 
 /* Product Description */
@@ -164,90 +100,8 @@ body {
   line-height: 24px;
 }
 
-/* Product Color */
-.product-color {
-  margin-bottom: 30px;
-}
-
-.color-choose div {
-  display: inline-block;
-}
-
-.color-choose input[type="&amp;quot;radio&amp;quot;"] {
-  display: none;
-}
-
-.color-choose input[type="&amp;quot;radio&amp;quot;"] + label span {
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  margin: -1px 4px 0 0;
-  vertical-align: middle;
-  cursor: pointer;
-  border-radius: 50%;
-}
-
-.color-choose input[type="&amp;quot;radio&amp;quot;"] + label span {
-  border: 2px solid #ffffff;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.33);
-}
-
-.color-choose input[type="&amp;quot;radio&amp;quot;"]#red + label span {
-  background-color: #c91524;
-}
-.color-choose input[type="&amp;quot;radio&amp;quot;"]#blue + label span {
-  background-color: #314780;
-}
-.color-choose input[type="&amp;quot;radio&amp;quot;"]#black + label span {
-  background-color: #323232;
-}
-
-.color-choose input[type="&amp;quot;radio&amp;quot;"]:checked + label span {
-  /* background-image: url(images/check-icn.svg); */
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-/* Cable Configuration */
-.cable-choose {
-  margin-bottom: 20px;
-}
-
-.cable-choose button {
-  border: 2px solid #e1e8ee;
-  border-radius: 6px;
-  padding: 13px 20px;
-  font-size: 14px;
-  color: #5e6977;
-  background-color: #fff;
-  cursor: pointer;
-  transition: all 0.5s;
-}
-
-.cable-choose button:hover,
-.cable-choose button:active,
-.cable-choose button:focus {
-  border: 2px solid #86939e;
-  outline: none;
-}
-
-.cable-config {
-  border-bottom: 1px solid #e1e8ee;
-  margin-bottom: 20px;
-}
-
-.cable-config a {
-  color: #358ed7;
-  text-decoration: none;
-  font-size: 12px;
-  position: relative;
-  margin: 10px 0;
-  display: inline-block;
-}
-
 /* Product Price */
 .product-price {
-  display: flex;
   align-items: center;
 }
 
@@ -270,5 +124,10 @@ body {
 }
 .cart-btn:hover {
   background-color: #64af3d;
+}
+
+#quantity {
+ width: 50%;
+ margin: auto;
 }
 </style>
