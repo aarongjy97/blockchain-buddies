@@ -41,13 +41,32 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "login",
-  data: function() {
+  data() {
     return {
       email: "",
       password: "",
     };
+  },
+  methods: {
+    async login() {
+      const login = {
+        email: this.email,
+        password: this.password,
+      };
+      await axios
+        .get("http://localhost:5000/api/login/procureremployee", login)
+        .then((res) => {
+          if (res.status == 200) {
+            // let data = res.json();
+            this.$router.push("procurer-home");
+          }
+        })
+        .catch((err) => console.log(err));
+    },
   },
 };
 </script>
