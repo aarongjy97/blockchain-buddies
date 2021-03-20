@@ -4,12 +4,10 @@ const { query, transact } = require("../db.js");
 const router = express.Router();
 
 router.post("/procurer", async (req, res, next) => {
-
   const procurers = req.body;
 
   try {
     await transact(async (query) => {
-
       for (const procurer of procurers) {
         await query(
           `
@@ -50,12 +48,10 @@ router.post("/procurer", async (req, res, next) => {
 });
 
 router.post("/supplier", async (req, res, next) => {
-
   const suppliers = req.body;
 
   try {
     await transact(async (query) => {
-
       for (const supplier of suppliers) {
         await query(
           `
@@ -96,12 +92,10 @@ router.post("/supplier", async (req, res, next) => {
 });
 
 router.post("/courier", async (req, res, next) => {
-
   const couriers = req.body;
 
   try {
     await transact(async (query) => {
-
       for (const courier of couriers) {
         await query(
           `
