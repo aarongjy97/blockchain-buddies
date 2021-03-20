@@ -141,7 +141,117 @@
 		},
 		{
 			"name": "Supplier Functions",
-			"item": []
+			"item": [
+				{
+					"name": "List Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "employeeAddress",
+									"value": "0xFDAF2919C5a1910E6bF562aDC0Aa093731dF9E4E",
+									"type": "text"
+								},
+								{
+									"key": "quantity",
+									"value": "200",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Intel i5",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "10",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/supplier/listproduct",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"supplier",
+								"listproduct"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View Self Product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/supplier/viewselfproduct?employeeAddress=0xFDAF2919C5a1910E6bF562aDC0Aa093731dF9E4E&productId=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"supplier",
+								"viewselfproduct"
+							],
+							"query": [
+								{
+									"key": "employeeAddress",
+									"value": "0xFDAF2919C5a1910E6bF562aDC0Aa093731dF9E4E"
+								},
+								{
+									"key": "productId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View All Self Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/supplier/viewallselfproduct?employeeAddress=0xFDAF2919C5a1910E6bF562aDC0Aa093731dF9E4E",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"supplier",
+								"viewallselfproduct"
+							],
+							"query": [
+								{
+									"key": "employeeAddress",
+									"value": "0xFDAF2919C5a1910E6bF562aDC0Aa093731dF9E4E"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
