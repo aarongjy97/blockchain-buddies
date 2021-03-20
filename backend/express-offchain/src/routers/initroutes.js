@@ -14,6 +14,15 @@ router.post("/procurer", async (req, res, next) => {
         await query(
           `
             update procurer
+            set ownerAddress=$1
+            where id=$2
+          `,
+          [procurer.ownerAddress, procurer.id]
+        );
+
+        await query(
+          `
+            update procurer
             set address=$1
             where id=$2
           `,
@@ -57,6 +66,15 @@ router.post("/supplier", async (req, res, next) => {
           [supplier.address, supplier.id]
         );
 
+        await query(
+          `
+            update supplier
+            set ownerAddress=$1
+            where id=$2
+          `,
+          [supplier.ownerAddress, supplier.id]
+        );
+
         for (const employee of supplier.employees) {
           await query(
             `
@@ -92,6 +110,15 @@ router.post("/courier", async (req, res, next) => {
             where id=$2
           `,
           [courier.address, courier.id]
+        );
+
+        await query(
+          `
+            update courier
+            set ownerAddress=$1
+            where id=$2
+          `,
+          [courier.ownerAddress, courier.id]
         );
 
         for (const employee of courier.employees) {
