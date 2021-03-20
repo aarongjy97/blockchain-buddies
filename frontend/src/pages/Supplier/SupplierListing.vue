@@ -1,7 +1,7 @@
 <template>
 <b-container>
   <Header v-bind:title="msg"></Header>
-  <h1>SupplierMain</h1>
+  <h1>Supplier Listing Page</h1>
 </b-container>
 </template>
 
