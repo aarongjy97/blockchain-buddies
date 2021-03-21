@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "ganache": "ganache-cli --accounts=20 "
+    "ganache": "ganache-cli --accounts=21 "
   },
   "dependencies": {
     "@openzeppelin/contracts": "^2.5.0",

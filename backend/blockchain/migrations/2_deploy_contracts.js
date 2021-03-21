@@ -180,7 +180,7 @@ module.exports = async function (deployer, network, accounts) {
     [ninjavan, dhl]
   );
 
-  // await syncWithDatabase(stakeholders);
+  await syncWithDatabase(stakeholders);
 };
 
 async function syncWithDatabase(stakeholders) {

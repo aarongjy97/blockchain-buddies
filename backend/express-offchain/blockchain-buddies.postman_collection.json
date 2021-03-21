@@ -738,10 +738,135 @@
 				{
 					"name": "Delivered By Courier",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "employeeAddress",
+									"value": "{{logisticsemployeeaddress}}",
+									"type": "text"
+								},
+								{
+									"key": "orderId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
-							"raw": ""
+							"raw": "{{base_url}}/api/procurer/deliveredbycourier",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"procurer",
+								"deliveredbycourier"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Courier Functions",
+			"item": [
+				{
+					"name": "View Purchase Order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "employeeAddress",
+									"value": "{{courieremployeeaddress}}",
+									"type": "text"
+								},
+								{
+									"key": "orderId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/courier/viewpurchaseorder",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"courier",
+								"viewpurchaseorder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View All Purchase Orders",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "employeeAddress",
+									"value": "{{courieremployeeaddress}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/courier/viewallpurchaseorders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"courier",
+								"viewallpurchaseorders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Received By Courier",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "orderId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "employeeAddress",
+									"value": "{{courieremployeeaddress}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/courier/receivedbycourier",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"courier",
+								"receivedbycourier"
+							]
 						}
 					},
 					"response": []
@@ -776,15 +901,19 @@
 		},
 		{
 			"key": "supplieremployeeaddress",
-			"value": "0xFDAF2919C5a1910E6bF562aDC0Aa093731dF9E4E"
+			"value": "0x28FFFbD7Dc20c934410155339438885b6A8624C2"
 		},
 		{
 			"key": "logisticsemployeeaddress",
-			"value": "0xbcac4a3C3E3eC9B4F8148E5FB39d84B47D06814D"
+			"value": "0xE52015956864FC6B75f70E2d8FAF9151993F9Cd7"
 		},
 		{
 			"key": "financeemployeeaddress",
-			"value": "0xD654F45A6D5d8293517C85D0BEe630634Dc803B7"
+			"value": "0x99c34d1E490D84e5da8Db0d7509002A5545e1508"
+		},
+		{
+			"key": "courieremployeeaddress",
+			"value": "0x942b3784A89e39e8D78A425CCA6A8AA4Fd9c273F"
 		}
 	]
 }
