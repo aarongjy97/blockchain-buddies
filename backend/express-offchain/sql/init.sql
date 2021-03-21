@@ -6,6 +6,7 @@ drop table if exists courier cascade ;
 drop table if exists courierEmployee cascade ;
 drop table if exists product cascade ;
 drop type if exists employeeType ;
+drop table if exists market cascade ;
 
 create type employeeType as enum ('finance', 'logistics');
 
@@ -76,6 +77,13 @@ create table product (
     primary key (id)
 );
 
+create table market (
+    id serial not null,
+    address varchar (255) not null,
+    erc20address varchar (255) not null,
+    primary key (id)
+);
+
 begin;
 
 insert into supplier (address, ownerAddress, name) values
@@ -108,5 +116,8 @@ insert into courier (address, ownerAddress, name) values
 insert into courieremployee (address, company, name, email, password) values 
 ('1', '1', 'James Lim', 'jameslim@njv.com', 'password'),
 ('2', '2', 'Scott Koh', 'scottkoh@dhl.com', 'password');
+
+insert into market (address, erc20address) values 
+('1', '1');
 
 commit;

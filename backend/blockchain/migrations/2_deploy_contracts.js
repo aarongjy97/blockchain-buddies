@@ -194,6 +194,12 @@ async function syncWithDatabase(stakeholders) {
   ];
   const couriers = [stakeholders.NinjaVan, stakeholders.DHL];
 
+  const data = {
+    marketAddress: market.address,
+    erc20Address: ERC20.address
+  }
+
+  await axios.post("http://localhost:5000/api/init/market", data)
   await axios.post("http://localhost:5000/api/init/procurer", procurers);
   await axios.post("http://localhost:5000/api/init/supplier", suppliers);
   await axios.post("http://localhost:5000/api/init/courier", couriers);

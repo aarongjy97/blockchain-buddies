@@ -3,6 +3,35 @@ const { query, transact } = require("../db.js");
 
 const router = express.Router();
 
+router.post("/market", async (req, res, next) => {
+  const { marketAddress, erc20Address } = req.body;
+  try {
+    await transact(async (query) => {
+      await query(
+        `
+          update market
+          set address=$1
+          where id=1
+        `,
+        [marketAddress]
+      );
+
+      await query(
+        `
+          update market
+          set erc20address=$1
+          where id=1
+        `,
+        [erc20Address]
+      );
+    });
+    return res.status(202).send("Market Address Updated");
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("Market Address Update Failed");
+  }
+});
+
 router.post("/procurer", async (req, res, next) => {
   const procurers = req.body;
 

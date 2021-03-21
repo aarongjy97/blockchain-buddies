@@ -7,6 +7,7 @@ const supplierRouter = require('./src/routers/supplierroutes');
 const loginRouter = require('./src/routers/loginroutes');
 const initRouter = require('./src/routers/initroutes');
 const courierRouter = require('./src/routers/courierroutes');
+const marketRouter = require('./src/routers/marketroutes');
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use('/api/init', initRouter);
 app.use('/api/procurer', procurerRouter);
 app.use('/api/supplier', supplierRouter);
 app.use('/api/courier', courierRouter);
+app.use('/api/market', marketRouter);
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`)
