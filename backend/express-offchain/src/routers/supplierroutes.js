@@ -14,10 +14,14 @@ async function getSupplierContractAddress(employeeAddress) {
         select S.address 
         from supplier S join supplieremployee E on (E.company = S.id) 
         where E.address = $1;
-      `,
+        `,
         [employeeAddress]
       )
     ).rows[0];
+
+    if (address == undefined) {
+      throw new Error("Invalid Employee Address");
+    }
 
     return address.address;
   });
