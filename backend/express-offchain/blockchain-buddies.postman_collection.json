@@ -14,7 +14,21 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "{{base_url}}/api/market/viewproduct?productId=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"market",
+								"viewproduct"
+							],
+							"query": [
+								{
+									"key": "productId",
+									"value": "1"
+								}
+							]
 						}
 					},
 					"response": []
@@ -25,7 +39,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "{{base_url}}/api/market/viewallproducts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"market",
+								"viewallproducts"
+							]
 						}
 					},
 					"response": []
@@ -36,7 +58,21 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "{{base_url}}/api/market/viewsupplierproducts?supplier=123",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"market",
+								"viewsupplierproducts"
+							],
+							"query": [
+								{
+									"key": "supplier",
+									"value": "123"
+								}
+							]
 						}
 					},
 					"response": []
