@@ -20,11 +20,6 @@ async function rejectPurchaseOrder(orderId, employeeAddress, contractAddress) {
     return await procurerContract.rejectPurchaseOrder(orderId, { from: employeeAddress });
 }
 
-async function supplierRejectPurchaseOrder(price, employeeAddress, contractAddress) {
-    const procurerContract = await procurerContractInterface.at(contractAddress);
-    return await procurerContract.supplierRejectPurchaseOrder(price, { from: employeeAddress });
-}
-
 async function viewPurchaseOrder(orderId, employeeAddress, contractAddress) {
     const procurerContract = await procurerContractInterface.at(contractAddress);
     return await procurerContract.viewPurchaseOrder(orderId, { from: employeeAddress });
@@ -45,7 +40,6 @@ module.exports = {
     createPurchaseOrder: createPurchaseOrder,
     approvePurchaseOrder: approvePurchaseOrder,
     rejectPurchaseOrder: rejectPurchaseOrder,
-    supplierRejectPurchaseOrder: supplierRejectPurchaseOrder,
     viewPurchaseOrder: viewPurchaseOrder,
     viewAllPurchaseOrders: viewAllPurchaseOrders,
     deliveredByCourier: deliveredByCourier
