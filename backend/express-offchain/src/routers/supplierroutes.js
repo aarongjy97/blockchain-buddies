@@ -27,8 +27,8 @@ async function getSupplierContractAddress(employeeAddress) {
   });
 }
 
-router.get("/viewselfproduct", async (req, res, next) => {
-  const { employeeAddress, productId } = req.query;
+router.post("/viewselfproduct", async (req, res, next) => {
+  const { employeeAddress, productId } = req.body;
   try {
     const address = await getSupplierContractAddress(employeeAddress);
     const result = await supplier.viewSelfProduct(
@@ -44,8 +44,8 @@ router.get("/viewselfproduct", async (req, res, next) => {
   }
 });
 
-router.get("/viewallselfproduct", async (req, res, next) => {
-  const { employeeAddress } = req.query;
+router.post("/viewallselfproducts", async (req, res, next) => {
+  const { employeeAddress } = req.body;
   try {
     const address = await getSupplierContractAddress(employeeAddress);
     const result = await supplier.viewAllSelfProducts(employeeAddress, address);
@@ -81,7 +81,7 @@ router.post("/listproduct", async (req, res, next) => {
   }
 });
 
-router.post("/unlistproduct", async (req, res, next) => {
+router.put("/unlistproduct", async (req, res, next) => {
   const { productId, employeeAddress } = req.body;
   try {
     const address = await getSupplierContractAddress(employeeAddress);
@@ -98,7 +98,7 @@ router.post("/unlistproduct", async (req, res, next) => {
   }
 });
 
-router.post("/relistproduct", async (req, res, next) => {
+router.put("/relistproduct", async (req, res, next) => {
   const { productId, employeeAddress } = req.body;
   try {
     const address = await getSupplierContractAddress(employeeAddress);
@@ -115,7 +115,7 @@ router.post("/relistproduct", async (req, res, next) => {
   }
 });
 
-router.post("/updateproductprice", async (req, res, next) => {
+router.put("/updateproductprice", async (req, res, next) => {
   const { productId, newPrice, employeeAddress } = req.body;
   try {
     const address = await getSupplierContractAddress(employeeAddress);
@@ -137,7 +137,7 @@ router.post("/updateproductprice", async (req, res, next) => {
   }
 });
 
-router.post("/updateproductquantity", async (req, res, next) => {
+router.put("/updateproductquantity", async (req, res, next) => {
   const { productId, newQuantity, employeeAddress } = req.body;
   try {
     const address = await getSupplierContractAddress(employeeAddress);
@@ -159,7 +159,7 @@ router.post("/updateproductquantity", async (req, res, next) => {
   }
 });
 
-router.post("/approvepurchaseorder", async (req, res, next) => {
+router.put("/approvepurchaseorder", async (req, res, next) => {
   const { orderId, employeeAddress } = req.body;
   try {
     const address = await getSupplierContractAddress(employeeAddress);
@@ -176,7 +176,7 @@ router.post("/approvepurchaseorder", async (req, res, next) => {
   }
 });
 
-router.post("/rejectpurchaseorder", async (req, res, next) => {
+router.put("/rejectpurchaseorder", async (req, res, next) => {
   const { orderId, employeeAddress } = req.body;
   try {
     const address = await getSupplierContractAddress(employeeAddress);
@@ -193,7 +193,7 @@ router.post("/rejectpurchaseorder", async (req, res, next) => {
   }
 });
 
-router.post("/assigncourier", async (req, res, next) => {
+router.put("/assigncourier", async (req, res, next) => {
   const { courier, orderId, employeeAddress } = req.body;
   try {
     const address = await getSupplierContractAddress(employeeAddress);

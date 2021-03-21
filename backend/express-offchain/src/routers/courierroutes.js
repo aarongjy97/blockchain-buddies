@@ -63,7 +63,7 @@ router.post("/viewallpurchaseorders", async (req, res, next) => {
   }
 });
 
-router.post("/receivedbycourier", async (req, res, next) => {
+router.put("/receivedbycourier", async (req, res, next) => {
   const { orderId, employeeAddress } = req.body;
   try {
     const address = await getCourierContractAddress(employeeAddress);

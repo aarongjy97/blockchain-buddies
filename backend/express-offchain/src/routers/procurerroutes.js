@@ -46,7 +46,7 @@ router.post("/createpurchaseorder", async (req, res, next) => {
   }
 });
 
-router.post("/approvepurchaseorder", async (req, res, next) => {
+router.put("/approvepurchaseorder", async (req, res, next) => {
   const { orderId, employeeAddress } = req.body;
   try {
     const address = await getProcurerContractAddress(employeeAddress);
@@ -63,7 +63,7 @@ router.post("/approvepurchaseorder", async (req, res, next) => {
   }
 });
 
-router.post("/rejectpurchaseorder", async (req, res, next) => {
+router.put("/rejectpurchaseorder", async (req, res, next) => {
   const { orderId, employeeAddress } = req.body;
   try {
     const address = await getProcurerContractAddress(employeeAddress);
@@ -118,7 +118,7 @@ router.post("/viewallpurchaseorders", async (req, res, next) => {
   }
 });
 
-router.post("/deliveredbycourier", async (req, res, next) => {
+router.put("/deliveredbycourier", async (req, res, next) => {
   const { orderId, employeeAddress } = req.body;
   try {
     const address = await getProcurerContractAddress(employeeAddress);
