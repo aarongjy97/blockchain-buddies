@@ -2,16 +2,12 @@
   <div class="card product_item">
     <div class="body">
       <div class="cp_img">
-        <img
-          src="../../assets/dell_computer.jpeg"
-          alt="Product"
-          class="img-fluid"
-        />
+        <img src="../../assets/dell_computer.jpeg" alt="Product" />
       </div>
       <div class="product_details">
         <a href="product"><h5>Dell Computer</h5></a>
         <ul class="product_price list-unstyled">
-          <li class="old_price">$2000.00</li>
+          <li class="old_price">$2000</li>
         </ul>
       </div>
     </div>
@@ -39,7 +35,7 @@ body {
   -o-transform: translate(-50%);
   -khtml-transform: translate(-50%);
   width: 100%;
-  padding: 15px;
+  height: 20px;
   transition: all 0.2s ease-in-out;
 }
 
@@ -55,7 +51,7 @@ body {
 }
 
 .product_item .product_details {
-  padding-top: 110%;
+  padding-top: 70%;
   text-align: center;
 }
 
