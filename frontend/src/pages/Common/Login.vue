@@ -42,7 +42,6 @@
 
 <script>
 import axios from "axios";
-
 export default {
   name: "login",
   data() {
@@ -78,7 +77,6 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css?family=Poppins&display=swap");
-
 .signinpage {
   font-family: Poppins, sans-serif;
   text-align: center;
@@ -86,7 +84,6 @@ export default {
   margin: 0 auto;
   background: #f2f2f2;
 }
-
 .container {
   width: 100%;
   min-height: 100vh;
@@ -101,7 +98,6 @@ export default {
   padding: 15px;
   background: #f2f2f2;
 }
-
 .wrapper {
   width: 1170px;
   background: #fff;
@@ -125,7 +121,6 @@ export default {
   position: relative;
   z-index: 1;
 }
-
 .sideimg::before {
   content: "";
   display: block;
@@ -162,17 +157,14 @@ export default {
   font-size: 36px;
   z-index: 2;
 }
-
 .login-section h4 {
   font-size: 20px;
   z-index: 4;
 }
-
 .login-box-header {
   padding: 10px;
   margin: 10px;
 }
-
 .form-login input {
   border: 3px solid #ba9977;
   padding: 10px;
@@ -181,7 +173,6 @@ export default {
   margin: 20px auto;
   font-size: 18px;
 }
-
 .form-login button {
   font-size: 15px;
   height: 40px;

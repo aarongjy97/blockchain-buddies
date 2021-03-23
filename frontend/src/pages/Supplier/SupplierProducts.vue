@@ -1,7 +1,7 @@
 <template>
 <b-container>
   <Navbar v-bind:title="msg"></Navbar>
-  <h1>Supplier Main Page</h1>
+  <h1>Supplier Listed Products</h1>
 </b-container>
 </template>
 
