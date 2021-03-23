@@ -52,44 +52,44 @@ module.exports = async function (deployer, network, accounts) {
 
     /* Procurer 2 */
     Apple: {
-      ownerAddress: accounts[9],
+      ownerAddress: accounts[11],
       address: "",
       id: 2,
       name: "Apple",
       employees: [
-        { id: 3, address: accounts[10], name: "Vicki Yew" },
-        { id: 4, address: accounts[11], name: "Jian Bin Huang" },
+        { id: 3, address: accounts[12], name: "Vicki Yew" },
+        { id: 4, address: accounts[13], name: "Jian Bin Huang" },
       ],
     },
 
     /* Procurer 3 */
     Google: {
-      ownerAddress: accounts[12],
+      ownerAddress: accounts[14],
       address: "",
       id: 3,
       name: "Google",
       employees: [
-        { id: 5, address: accounts[13], name: "Aaron Goh" },
-        { id: 6, address: accounts[14], name: "Arnold Ng" },
+        { id: 5, address: accounts[15], name: "Aaron Goh" },
+        { id: 6, address: accounts[16], name: "Arnold Ng" },
       ],
     },
 
     /* Courier 1 */
     NinjaVan: {
-      ownerAddress: accounts[15],
+      ownerAddress: accounts[17],
       address: "",
       id: 1,
       name: "NinjaVan",
-      employees: [{ id: 1, address: accounts[16], name: "James Lim" }],
+      employees: [{ id: 1, address: accounts[18], name: "James Lim" }],
     },
 
     /* Courier 2 */
     DHL: {
-      ownerAddress: accounts[17],
+      ownerAddress: accounts[19],
       address: "",
       id: 2,
       name: "DHL",
-      employees: [{ id: 2, address: accounts[18], name: "Scott Koh" }],
+      employees: [{ id: 2, address: accounts[20], name: "Scott Koh" }],
     },
   };
 
@@ -194,6 +194,12 @@ async function syncWithDatabase(stakeholders) {
   ];
   const couriers = [stakeholders.NinjaVan, stakeholders.DHL];
 
+  const data = {
+    marketAddress: market.address,
+    erc20Address: ERC20.address
+  }
+
+  await axios.post("http://localhost:5000/api/init/market", data)
   await axios.post("http://localhost:5000/api/init/procurer", procurers);
   await axios.post("http://localhost:5000/api/init/supplier", suppliers);
   await axios.post("http://localhost:5000/api/init/courier", couriers);

@@ -6,7 +6,7 @@ Create a <code>.env</code> in this directory, and copy the format of <code>.env.
 
 Ensure that psql is running at port 5432, and change the login details for psql accordingly.
 
-Using the terminal, run the following commands:
+To initialize the database, using the terminal, run the following commands:
 
 1. <code>cd /sql</code>
 2. <code>psql</code>
@@ -14,5 +14,7 @@ Using the terminal, run the following commands:
 4. <code>\c blockchainbuddies</code>
 5. <code>\i init.sql</code>
 
-The database should be set up, and you can run <code>npm start</code> to boot the express server.
+Ensure that the contracts have been compiled in <code>../blockchain</code> before starting the server.
+
+Run <code>npm start</code> to boot the express server.
 

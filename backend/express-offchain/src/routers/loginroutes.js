@@ -24,7 +24,7 @@ router.get("/procureremployee", async (req, res, next) => {
         return res.status(500).send("Invalid Password");
       }
 
-      employee.role = 'procurer';
+      employee.role = "procurer";
 
       return res.status(200).send(employee);
     });
@@ -54,7 +54,7 @@ router.get("/supplieremployee", async (req, res, next) => {
         return res.status(500).send("Invalid Password");
       }
 
-      employee.role = 'supplier';
+      employee.role = "supplier";
 
       return res.status(200).send(employee);
     });
@@ -84,7 +84,7 @@ router.get("/courieremployee", async (req, res, next) => {
         return res.status(500).send("Invalid Password");
       }
 
-      employee.role = 'courier';
+      employee.role = "courier";
 
       return res.status(200).send(employee);
     });

@@ -6,6 +6,80 @@
 	},
 	"item": [
 		{
+			"name": "Public",
+			"item": [
+				{
+					"name": "View Product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/market/viewproduct?productId=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"market",
+								"viewproduct"
+							],
+							"query": [
+								{
+									"key": "productId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View All Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/market/viewallproducts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"market",
+								"viewallproducts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View Supplier Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/market/viewsupplierproducts?supplier=123",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"market",
+								"viewsupplierproducts"
+							],
+							"query": [
+								{
+									"key": "supplier",
+									"value": "123"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Login",
 			"item": [
 				{
@@ -26,12 +100,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/login/procureremployee?email=aarongoh@gle.com&password=password",
-							"protocol": "http",
+							"raw": "{{base_url}}/api/login/procureremployee?email=aarongoh@gle.com&password=password",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "5000",
 							"path": [
 								"api",
 								"login",
@@ -69,12 +141,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/login/courieremployee?email=scottkoh@dhl.com&password=password",
-							"protocol": "http",
+							"raw": "{{base_url}}/api/login/courieremployee?email=scottkoh@dhl.com&password=password",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "5000",
 							"path": [
 								"api",
 								"login",
@@ -112,12 +182,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/api/login/supplieremployee?email=johnsnow@dell.com&password=password",
-							"protocol": "http",
+							"raw": "{{base_url}}/api/login/supplieremployee?email=johnsnow@dell.com&password=password",
 							"host": [
-								"localhost"
+								"{{base_url}}"
 							],
-							"port": "5000",
 							"path": [
 								"api",
 								"login",
@@ -141,7 +209,785 @@
 		},
 		{
 			"name": "Supplier Functions",
-			"item": []
+			"item": [
+				{
+					"name": "View Self Product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/supplier/viewselfproduct?employeeAddress={{supplieremployeeaddress}}&productId=3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"supplier",
+								"viewselfproduct"
+							],
+							"query": [
+								{
+									"key": "employeeAddress",
+									"value": "{{supplieremployeeaddress}}"
+								},
+								{
+									"key": "productId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View All Self Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/supplier/viewallselfproduct?employeeAddress={{supplieremployeeaddress}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"supplier",
+								"viewallselfproduct"
+							],
+							"query": [
+								{
+									"key": "employeeAddress",
+									"value": "{{supplieremployeeaddress}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "employeeAddress",
+									"value": "{{supplieremployeeaddress}}",
+									"type": "text"
+								},
+								{
+									"key": "quantity",
+									"value": "200",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Intel i5",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "10",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/supplier/listproduct",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"supplier",
+								"listproduct"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unlist Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "productId",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "employeeAddress",
+									"value": "{{supplieremployeeaddress}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/supplier/unlistproduct",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"supplier",
+								"unlistproduct"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Relist Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "employeeAddress",
+									"value": "{{supplieremployeeaddress}}",
+									"type": "text"
+								},
+								{
+									"key": "productId",
+									"value": "3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/supplier/relistproduct",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"supplier",
+								"relistproduct"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product Price",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "employeeAddress",
+									"value": "{{supplieremployeeaddress}}",
+									"type": "text"
+								},
+								{
+									"key": "productId",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "newPrice",
+									"value": "40",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/supplier/updateproductprice",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"supplier",
+								"updateproductprice"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product Quantity",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "employeeAddress",
+									"value": "{{supplieremployeeaddress}}",
+									"type": "text"
+								},
+								{
+									"key": "productId",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "newQuantity",
+									"value": "600",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/supplier/updateproductquantity",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"supplier",
+								"updateproductquantity"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Supplier Approve Purchase Order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "employeeAddress",
+									"value": "{{supplieremployeeaddress}}",
+									"type": "text"
+								},
+								{
+									"key": "orderId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/supplier/approvepurchaseorder",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"supplier",
+								"approvepurchaseorder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Supplier Reject Purchase Order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "employeeAddress",
+									"value": "{{supplieremployeeaddress}}",
+									"type": "text"
+								},
+								{
+									"key": "orderId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/supplier/rejectpurchaseorder",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"supplier",
+								"rejectpurchaseorder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Courier",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "employeeAddress",
+									"value": "{{supplieremployeeaddress}}",
+									"type": "text"
+								},
+								{
+									"key": "orderId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "courier",
+									"value": "courier",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/supplier/assigncourier",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"supplier",
+								"assigncourier"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View All Purchase Orders",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "employeeAddress",
+									"value": "{{supplieremployeeaddress}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/supplier/viewallpurchaseorders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"supplier",
+								"viewallpurchaseorders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View Purchase Order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "employeeAddress",
+									"value": "{{supplieremployeeaddress}}",
+									"type": "text"
+								},
+								{
+									"key": "orderId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/supplier/viewpurchaseorder",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"supplier",
+								"viewpurchaseorder"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Procurer Functions",
+			"item": [
+				{
+					"name": "Create Purchase Order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "employeeAddress",
+									"value": "{{logisticsemployeeaddress}}",
+									"type": "text"
+								},
+								{
+									"key": "productId",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "quantity",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "80",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/procurer/createpurchaseorder",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"procurer",
+								"createpurchaseorder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Approve Purchase Order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "employeeAddress",
+									"value": "{{financeemployeeaddress}}",
+									"type": "text"
+								},
+								{
+									"key": "orderId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/procurer/approvepurchaseorder",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"procurer",
+								"approvepurchaseorder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reject Purchase Order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "employeeAddress",
+									"value": "{{financeemployeeaddress}}",
+									"type": "text"
+								},
+								{
+									"key": "orderId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/procurer/rejectpurchaseorder",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"procurer",
+								"rejectpurchaseorder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View Purchase Order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "employeeAddress",
+									"value": "{{logisticsemployeeaddress}}",
+									"type": "text"
+								},
+								{
+									"key": "orderId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/procurer/viewpurchaseorder",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"procurer",
+								"viewpurchaseorder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View All Purchase Orders",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "employeeAddress",
+									"value": "{{financeemployeeaddress}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/procurer/viewallpurchaseorders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"procurer",
+								"viewallpurchaseorders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delivered By Courier",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "employeeAddress",
+									"value": "{{logisticsemployeeaddress}}",
+									"type": "text"
+								},
+								{
+									"key": "orderId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/procurer/deliveredbycourier",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"procurer",
+								"deliveredbycourier"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Courier Functions",
+			"item": [
+				{
+					"name": "View Purchase Order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "employeeAddress",
+									"value": "{{courieremployeeaddress}}",
+									"type": "text"
+								},
+								{
+									"key": "orderId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/courier/viewpurchaseorder",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"courier",
+								"viewpurchaseorder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View All Purchase Orders",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "employeeAddress",
+									"value": "{{courieremployeeaddress}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/courier/viewallpurchaseorders",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"courier",
+								"viewallpurchaseorders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Received By Courier",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "orderId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "employeeAddress",
+									"value": "{{courieremployeeaddress}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/courier/receivedbycourier",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"courier",
+								"receivedbycourier"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000"
+		},
+		{
+			"key": "supplieremployeeaddress",
+			"value": "0x28FFFbD7Dc20c934410155339438885b6A8624C2"
+		},
+		{
+			"key": "logisticsemployeeaddress",
+			"value": "0xE52015956864FC6B75f70E2d8FAF9151993F9Cd7"
+		},
+		{
+			"key": "financeemployeeaddress",
+			"value": "0x99c34d1E490D84e5da8Db0d7509002A5545e1508"
+		},
+		{
+			"key": "courieremployeeaddress",
+			"value": "0x942b3784A89e39e8D78A425CCA6A8AA4Fd9c273F"
 		}
 	]
 }

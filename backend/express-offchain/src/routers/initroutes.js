@@ -3,14 +3,50 @@ const { query, transact } = require("../db.js");
 
 const router = express.Router();
 
-router.post("/procurer", async (req, res, next) => {
+router.post("/market", async (req, res, next) => {
+  const { marketAddress, erc20Address } = req.body;
+  try {
+    await transact(async (query) => {
+      await query(
+        `
+          update market
+          set address=$1
+          where id=1
+        `,
+        [marketAddress]
+      );
 
+      await query(
+        `
+          update market
+          set erc20address=$1
+          where id=1
+        `,
+        [erc20Address]
+      );
+    });
+    return res.status(202).send("Market Address Updated");
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("Market Address Update Failed");
+  }
+});
+
+router.post("/procurer", async (req, res, next) => {
   const procurers = req.body;
 
   try {
     await transact(async (query) => {
-
       for (const procurer of procurers) {
+        await query(
+          `
+            update procurer
+            set ownerAddress=$1
+            where id=$2
+          `,
+          [procurer.ownerAddress, procurer.id]
+        );
+
         await query(
           `
             update procurer
@@ -41,12 +77,10 @@ router.post("/procurer", async (req, res, next) => {
 });
 
 router.post("/supplier", async (req, res, next) => {
-
   const suppliers = req.body;
 
   try {
     await transact(async (query) => {
-
       for (const supplier of suppliers) {
         await query(
           `
@@ -55,6 +89,15 @@ router.post("/supplier", async (req, res, next) => {
             where id=$2
           `,
           [supplier.address, supplier.id]
+        );
+
+        await query(
+          `
+            update supplier
+            set ownerAddress=$1
+            where id=$2
+          `,
+          [supplier.ownerAddress, supplier.id]
         );
 
         for (const employee of supplier.employees) {
@@ -78,12 +121,10 @@ router.post("/supplier", async (req, res, next) => {
 });
 
 router.post("/courier", async (req, res, next) => {
-
   const couriers = req.body;
 
   try {
     await transact(async (query) => {
-
       for (const courier of couriers) {
         await query(
           `
@@ -92,6 +133,15 @@ router.post("/courier", async (req, res, next) => {
             where id=$2
           `,
           [courier.address, courier.id]
+        );
+
+        await query(
+          `
+            update courier
+            set ownerAddress=$1
+            where id=$2
+          `,
+          [courier.ownerAddress, courier.id]
         );
 
         for (const employee of courier.employees) {
