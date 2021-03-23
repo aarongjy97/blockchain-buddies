@@ -9,7 +9,7 @@
 
 <script>
 import Header from "./Header.vue";
-import ProductBox from "../Common/ProductBox.vue";
+import ProductBox from "./ProductBox.vue";
 export default {
   name: "App",
   data() {
