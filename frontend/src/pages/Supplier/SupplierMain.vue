@@ -1,5 +1,5 @@
 <template>
-<div class='page'>
+<div>
   <Navbar></Navbar>
   <h1>Supplier Main Page</h1>
   <br>
@@ -7,7 +7,10 @@
   <h2>Products</h2>
   <ul v-if='products.length'>
     <li v-for="product in products" :key="product.name">
-      {{ product.name }}
+      Name: {{ product.name }}
+      Price: {{ product.price }}
+      Qty: {{ product.quantity }}
+      Sold: {{ product.numSold }}
     </li>
   </ul>
   <div v-else>There are no products listed</div>
@@ -28,17 +31,22 @@ export default {
   methods: {
     async viewAll() {
       try{
-        const result = await Supplier.viewAllSelfProducts(1); // where to get the address?
-        console.log(result.data);
+        const details = this.$store.state.details;
+        console.log('details:', details);
+
+        const result = await Supplier.viewAllSelfProducts(details.address);
+        console.log('products:', result.data);
 
         this.products = result.data.map(p => ({
-          name: p.productName
+          name: p.productName,
+          price: p.price,
+          quantity: p.quantityAvailable,
+          numSold: p.numSold,
         }))
       }
       catch (err) {
         console.log(err)
       }
-      
     }
   },
   components: {

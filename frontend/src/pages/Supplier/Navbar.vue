@@ -10,9 +10,10 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
           <b-nav-item to="/supplier-listing">Listing</b-nav-item>
-          <b-nav-item to="/supplier-products">Listed Products</b-nav-item>
+          <b-nav-item to="/supplier-main">Listed Products</b-nav-item>
           <b-nav-item to="/supplier-orders">Orders</b-nav-item>
           <b-nav-item to="/supplier-account">Account</b-nav-item>
+          <b-nav-item to="/" v-on:click='logout()'>Logout</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
       
@@ -20,7 +21,15 @@
   </div>
 </template>
 
-<script></script>
+<script>
+export default {
+  methods: {
+    logout() {
+      this.$store.dispatch('clearData');
+    }
+  }
+}
+</script>
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css?family=Poppins&display=swap");

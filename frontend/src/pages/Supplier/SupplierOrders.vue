@@ -1,14 +1,14 @@
 <template>
-<b-container>
-  <Navbar v-bind:title="msg"></Navbar>
+<div>
+  <Navbar></Navbar>
   <h1>Supplier Orders</h1>
-</b-container>
+</div>
 </template>
 
 <script>
 import Navbar from "./Navbar.vue";
 export default {
-  name: "App",
+  name: "SupplierOrders",
   data() {
     return {};
   },
