@@ -3,7 +3,7 @@ import Router from "vue-router";
 import Login from "./pages/Common/Login.vue";
 import ProcurerMain from "./pages/Procurer/ProcurerMain.vue";
 import SupplierMain from "./pages/Supplier/SupplierMain.vue";
-import CourierMain from "./pages/Courier/CourierMain.vue";
+// import CourierMain from "./pages/Courier/CourierMain.vue";
 import ProductPage from "./pages/Common/ProductPage.vue";
 import OrderStatusPage from "./pages/Procurer/OrderStatusPage.vue";
 
@@ -14,7 +14,7 @@ export default new Router({
     { path: "/", name: "login", component: Login },
     { path: "/procurer-main", name: "procurer-main", component: ProcurerMain },
     { path: "/supplier-main", name: "supplier-main", component: SupplierMain },
-    { path: "/courier-main", name: "courier-main", component: CourierMain },
+    // { path: "/courier-main", name: "courier-main", component: CourierMain },
     { path: "/product", name: "product", component: ProductPage },
     {
       path: "/procurer-orders",
