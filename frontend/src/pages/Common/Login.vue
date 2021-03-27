@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import Login from "../../api/Login";
 export default {
   name: "login",
   data() {
@@ -52,15 +52,11 @@ export default {
   },
   methods: {
     async login() {
-      const login = {
-        email: this.email,
-        password: this.password,
-      };
-      const result = await axios.get(
-        "http://localhost:5000/api/login/procureremployee",
-        { params: login }
-      );
+      const result = await Login.supplierLogin(this.email, this.password);
       console.log(result.data);
+
+      await this.$store.commit('storeDetails', result.data);
+
       if (result.status == 200) {
         return result.data["role"] == "procurer"
           ? this.$router.push("procurer-main")
