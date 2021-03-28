@@ -26,7 +26,16 @@
                   placeholder="Password"
                   v-model="password"
                 />
-
+                <div>
+                  <b-form-group label="Employee Type:">
+                    <b-form-radio-group v-model="employee">
+                      <b-form-radio value="Procurer">Procurer</b-form-radio>
+                      <b-form-radio value="Supplier">Supplier</b-form-radio>
+                      <b-form-radio value="Courier">Courier</b-form-radio>
+                    </b-form-radio-group>
+                  </b-form-group>
+                </div>
+                <br>
                 <button id="signin-btn" class="btn btn-primary btn-sm">
                   Sign In
                 </button>
@@ -48,23 +57,43 @@ export default {
     return {
       email: "",
       password: "",
+      employee: "",
     };
   },
   methods: {
     async login() {
-      const result = await Login.supplierLogin(this.email, this.password);
-      console.log(result.data);
-
-      await this.$store.commit('storeDetails', result.data);
-
-      if (result.status == 200) {
-        return result.data["role"] == "procurer"
-          ? this.$router.push("procurer-main")
-          : result.data["role"] == "supplier"
-          ? this.$router.push("supplier-main")
-          : result.data["role"] == "courier"
-          ? this.$router.push("courier-main")
-          : null;
+      if (this.employee == 'Procurer') {
+        try {
+          const result = await Login.procurerLogin(this.email, this.password);
+          console.log(result.data);
+          await this.$store.commit('storeDetails', result.data);
+          this.$router.push("procurer-main");
+        }
+        catch(e) {
+          alert('Wrong Employee Type');
+        }
+      }
+      else if (this.employee == 'Supplier') {
+        try {
+          const result = await Login.supplierLogin(this.email, this.password);
+          console.log(result.data);
+          await this.$store.commit('storeDetails', result.data);
+          this.$router.push("supplier-main");
+        }
+        catch(e) {
+          alert('Wrong Employee Type');
+        }
+      }
+      else if (this.employee == 'Courier') {
+        try {
+          const result = await Login.courierLogin(this.email, this.password);
+          console.log(result.data);
+          await this.$store.commit('storeDetails', result.data);
+          this.$router.push("courier-main");
+        }
+        catch(e) {
+          alert('Wrong Employee Type');
+        }
       }
     },
   },
@@ -176,7 +205,7 @@ export default {
   text-align: center;
   background-color: #ba9977;
   border: solid white;
-  radius: 3px;
+  /* radius: 3px; */
 }
 
 .signup-wrap {
