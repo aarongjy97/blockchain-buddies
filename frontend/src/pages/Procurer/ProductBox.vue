@@ -5,9 +5,16 @@
         <img src="../../assets/dell_computer.jpeg" alt="Product" />
       </div>
       <div class="product_details">
-        <a href="product"><h5>Dell Computer</h5></a>
+        <router-link
+          :to="{ name: 'product', params: { product_id: product_id } }"
+        >
+          {{ product_price }}
+        </router-link>
+        <!-- <a href="product">
+          <h5>{{ product_price }}</h5>
+        </a> -->
         <ul class="product_price list-unstyled">
-          <li class="old_price">$2000</li>
+          <li class="old_price">${{ product_price }}</li>
         </ul>
       </div>
     </div>
@@ -15,7 +22,17 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    supplier_id: String,
+    product_id: Number,
+    product_name: String,
+    product_price: Number,
+  },
+  data() {
+    return {};
+  },
+};
 </script>
 
 <style>

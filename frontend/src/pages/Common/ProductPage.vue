@@ -9,20 +9,20 @@
     <div class="right-column">
       <!-- Product Description -->
       <div class="product-description">
-        <h1>Dell Computer</h1>
+        <h1>{{ product_name }}</h1>
         <p>
-          Fastest pc eva
+          {{ product_desc }}
         </p>
       </div>
       <!-- Product Pricing -->
       <div class="product-price">
         <b-form-input
           id="quantity"
-          v-model="text"
+          v-model="quantity"
           placeholder="Enter Quantity"
         ></b-form-input>
         <Br></br>
-        <span>$2000.00</span>
+        <span>${{ product_price }}</span>
         <a href="#" class="cart-btn">Add to cart</a>
       </div>
     </div>
@@ -30,11 +30,23 @@
 </template>
 
 <script>
+// import Procurer from "../../api/Procurer"
 export default {
   props: {
-    id: String,
+    supplier_id: String,
+    product_id: Number,
+    product_name: String,
+    product_price: Number,
+    product_desc: String,
   },
+  methods: {
+    async createPurchaseOrder() {
+      // const details = this.$store.state.details;
+      // const result = await Procurer.createPurchaseOrder(this.quantity, )
+    }
+  }
 };
+
 </script>
 
 <style>
