@@ -5,14 +5,34 @@
   <br>
 
   <h2>Products</h2>
-  <ul v-if='products.length'>
+  <!-- <ul v-if='products.length'>
     <li v-for="product in products" :key="product.name">
       Name: {{ product.name }}
       Price: {{ product.price }}
       Qty: {{ product.quantity }}
       Sold: {{ product.numSold }}
     </li>
-  </ul>
+  </ul> -->
+  <b-container v-if='products.length'>
+    <b-card-group deck v-for="product in products" :key="product.name">
+      <b-card
+        :title='product.name'
+        img-src="https://picsum.photos/600/300/?image=25"
+        img-alt="Image"
+        img-top
+        tag="article"
+        style="max-width: 20rem;"
+        class="mb-2"
+      >
+        <b-card-text>
+          Price: {{ product.price }}
+          Qty: {{ product.quantity }}
+          Sold: {{ product.numSold }}
+        </b-card-text>
+      </b-card>
+    </b-card-group>
+  </b-container>
+  
   <div v-else>There are no products listed</div>
 
 </div>
@@ -42,6 +62,7 @@ export default {
           price: p.price,
           quantity: p.quantityAvailable,
           numSold: p.numSold,
+          id: p.productId,
         }))
       }
       catch (err) {
