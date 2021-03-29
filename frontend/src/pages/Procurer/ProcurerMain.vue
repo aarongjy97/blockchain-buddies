@@ -47,12 +47,9 @@ export default {
       }
     },
   },
-  async mounted() {
+  mounted() {
     this.viewAllProducts();
   },
 };
 </script>
-<style>
-.box {
-}
-</style>
+<style></style>
