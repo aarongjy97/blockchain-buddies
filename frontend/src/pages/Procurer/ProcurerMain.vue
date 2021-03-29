@@ -39,7 +39,7 @@ export default {
           product_name: p.productName,
           product_price: p.price,
           supplier: p.supplier,
-          product_id: p.id,
+          product_id: p.productId,
         }));
         console.log("product:", this.products);
       } catch (e) {
