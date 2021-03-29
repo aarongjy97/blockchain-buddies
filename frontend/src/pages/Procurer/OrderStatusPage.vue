@@ -26,9 +26,10 @@ export default {
   },
   methods: {
     async viewAllPurchaseOrders() {
-      console.log("hello");
       try {
-        const result = await Procurer.viewAllPurchaseOrders();
+        const result = await Procurer.viewAllPurchaseOrders(
+          this.$store.state.details.address
+        );
         this.purchaseOrders = result.data.map((po) => ({
           po_id: po.orderId,
           po_price: po.price,
@@ -42,9 +43,9 @@ export default {
         console.log(err);
       }
     },
-    created() {
-      this.viewAllPurchaseOrders();
-    },
+  },
+  created() {
+    this.viewAllPurchaseOrders();
   },
 };
 </script>
