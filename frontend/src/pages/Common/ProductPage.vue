@@ -35,11 +35,14 @@ export default {
   methods: {
     async createPurchaseOrder() {
       const details = this.$store.state.details;
-      console.log('details:', details);
+      console.log('productId', this.$route.params.product_id);
       console.log('quantity:', this.qty);
-      console.log(this.$route.params.product_id);
-      const result = await Procurer.createPurchaseOrder(this.$route.params.product_id, this.qty, this.$route.params.product_price, details.address)
-      console.log('quantity:', result.data);
+      console.log('price:', this.$route.params.product_price);
+      console.log('details:', details.address);
+      const result = await Procurer.createPurchaseOrder(this.$route.params.product_id, this.qty, this.$route.params.product_price*this.qty, details.address)
+      console.log(result.data)
+      alert("Purchase Order Created")
+      this.$router.back();
     }
   }
 };

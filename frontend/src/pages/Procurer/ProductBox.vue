@@ -31,7 +31,7 @@
 <script>
 export default {
   props: {
-    product_id: Number,
+    product_id: String,
     product_name: String,
     product_price: String,
   },
