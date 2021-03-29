@@ -1,6 +1,6 @@
 <template>
   <div>
-    <procurer-header></procurer-header>
+    <Navbar></Navbar>
     <order-status-header></order-status-header>
     <order-status-box></order-status-box>
   </div>
@@ -9,11 +9,11 @@
 <script>
 import OrderStatusBox from "./OrderStatusBox.vue";
 import OrderStatusHeader from "./OrderStatusHeader.vue";
-import Header from "./Header.vue";
+import Navbar from "./Navbar.vue";
 
 export default {
   components: {
-    "procurer-header": Header,
+    Navbar,
     "order-status-box": OrderStatusBox,
     "order-status-header": OrderStatusHeader,
   },

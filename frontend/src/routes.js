@@ -27,7 +27,11 @@ export default new Router({
       component: SupplierOrders,
     },
     // { path: "/courier-main", name: "courier-main", component: CourierMain },
-    { path: "/product/:product_id", name: "product", component: ProductPage },
+    {
+      path: "/product/:product_id/:product_name/:product_price",
+      name: "product",
+      component: ProductPage,
+    },
     {
       path: "/procurer-orders",
       name: "procurer-orders",

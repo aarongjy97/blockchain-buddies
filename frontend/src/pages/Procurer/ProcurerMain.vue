@@ -1,23 +1,22 @@
 <template>
   <div>
-    <procurer-header></procurer-header>
-    <ul v-if="products.length">
-      <li v-for="p in products" :key="p.product_name">
-        <div class="col-lg-3 col-md-4 col-sm-12">
+    <Navbar></Navbar>
+    <div v-if="products.length">
+      <div v-for="p in products" :key="p.product_name">
+        <div class="box col-lg-3 col-md-4">
           <product-box
-            v-bind:supplier_id="p.supplier_id"
+            v-bind:product_id="p.product_id"
             v-bind:product_name="p.product_name"
             v-bind:product_price="p.product_price"
-            v-bind:product_id="p.product_id"
           ></product-box>
         </div>
-      </li>
-    </ul>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import Header from "./Header.vue";
+import Navbar from "./Navbar.vue";
 import ProductBox from "./ProductBox.vue";
 import Market from "../../api/Market";
 
@@ -29,7 +28,7 @@ export default {
     };
   },
   components: {
-    "procurer-header": Header,
+    Navbar,
     "product-box": ProductBox,
   },
   methods: {
@@ -42,6 +41,7 @@ export default {
           supplier: p.supplier,
           product_id: p.id,
         }));
+        console.log("product:", this.products);
       } catch (e) {
         console.log(e);
       }
@@ -52,4 +52,7 @@ export default {
   },
 };
 </script>
-<style></style>
+<style>
+.box {
+}
+</style>

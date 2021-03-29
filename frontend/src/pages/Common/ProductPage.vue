@@ -9,40 +9,37 @@
     <div class="right-column">
       <!-- Product Description -->
       <div class="product-description">
-        <h1>{{ product_name }}</h1>
+        <h1>{{ this.$route.params.product_name }}</h1>
         <p>
-          {{ product_desc }}
+          {{ this.$route.params.product_desc }}
         </p>
       </div>
       <!-- Product Pricing -->
       <div class="product-price">
         <b-form-input
           id="quantity"
-          v-model="quantity"
+          v-model="qty"
           placeholder="Enter Quantity"
         ></b-form-input>
         <Br></br>
-        <span>${{ product_price }}</span>
-        <a href="#" class="cart-btn">Add to cart</a>
+        <span>${{ this.$route.params.product_price }}</span>
+        <button v-on:click="createPurchaseOrder" class="cart-btn">Add to cart</button>
       </div>
     </div>
   </main>
 </template>
 
 <script>
-// import Procurer from "../../api/Procurer"
+import Procurer from "../../api/Procurer"
 export default {
-  props: {
-    supplier_id: String,
-    product_id: Number,
-    product_name: String,
-    product_price: Number,
-    product_desc: String,
-  },
   methods: {
     async createPurchaseOrder() {
-      // const details = this.$store.state.details;
-      // const result = await Procurer.createPurchaseOrder(this.quantity, )
+      const details = this.$store.state.details;
+      console.log('details:', details);
+      console.log('quantity:', this.qty);
+      console.log(this.$route.params.product_id);
+      const result = await Procurer.createPurchaseOrder(this.$route.params.product_id, this.qty, this.$route.params.product_price, details.address)
+      console.log('quantity:', result.data);
     }
   }
 };
