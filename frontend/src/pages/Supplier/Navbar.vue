@@ -12,7 +12,7 @@
           <b-nav-item to="/supplier-listing">Listing</b-nav-item>
           <b-nav-item to="/supplier-main">Listed Products</b-nav-item>
           <b-nav-item to="/supplier-orders">Orders</b-nav-item>
-          <b-nav-item to="/supplier-account">Account</b-nav-item>
+          <b-nav-item to="/account">Account</b-nav-item>
           <b-nav-item to="/" v-on:click='logout()'>Logout</b-nav-item>
         </b-navbar-nav>
       </b-collapse>

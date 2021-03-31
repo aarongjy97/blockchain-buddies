@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Login from "./pages/Common/Login.vue";
+import Account from "./pages/Common/Account.vue";
 import ProcurerMain from "./pages/Procurer/ProcurerMain.vue";
 import SupplierMain from "./pages/Supplier/SupplierMain.vue";
 import SupplierListing from "./pages/Supplier/SupplierListing.vue";
@@ -14,6 +15,7 @@ Vue.use(Router);
 export default new Router({
   routes: [
     { path: "/", name: "login", component: Login },
+    { path: "/account", name: "account", component: Account },
     { path: "/procurer-main", name: "procurer-main", component: ProcurerMain },
     { path: "/supplier-main", name: "supplier-main", component: SupplierMain },
     {
