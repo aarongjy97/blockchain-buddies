@@ -2,7 +2,20 @@
   <div>
     <Navbar></Navbar>
     <order-status-header></order-status-header>
-    <order-status-box></order-status-box>
+    <div v-if="purchaseOrders.length">
+      <div v-for="po in purchaseOrders" :key="po.po_id">
+        <order-status-box
+          v-bind:po_OrderId="po.po_id"
+          v-bind:product_id="po.product_id"
+          v-bind:supplier_id="po.supplier"
+          v-bind:product_price="po.price"
+          v-bind:product_quantity="po.quantity"
+          v-bind:po_status="po.status"
+          v-bind:po_date="po.date"
+        ></order-status-box>
+      </div>
+      <order-status-box></order-status-box>
+    </div>
   </div>
 </template>
 
@@ -32,11 +45,12 @@ export default {
         );
         this.purchaseOrders = result.data.map((po) => ({
           po_id: po.orderId,
-          po_price: po.price,
-          po_quantity: po.quantity,
-          po_date: po.dateCreated,
-          po_status: po.status,
-          po_supplier: po.supplier,
+          price: po.price,
+          quantity: po.quantity,
+          date: po.dateCreated,
+          status: po.status,
+          supplier: po.supplier,
+          product_id: po.productId,
         }));
         console.log("purchaseOrders:", this.purchaseOrders);
       } catch (err) {

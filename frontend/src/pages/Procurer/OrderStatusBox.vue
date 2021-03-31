@@ -3,20 +3,20 @@
     <div class="table-wrapper">
       <div class="table-row">
         <div class="col-wrapper order-date-number-po">
-          <div class="table-col order-date">23 Mar 2021</div>
-          <div class="table-col order-number">1</div>
+          <div class="table-col order-date">{{ po_date }}</div>
+          <div class="table-col order-number">{{ po_OrderId }}</div>
         </div>
 
         <div class="col-wrapper order-supplier-product-price">
           <div class="col-wrapper order-supplier-product">
-            <div class="table-col order-supplier">1</div>
-            <div class="table-col order-product">1</div>
+            <div class="table-col order-supplier">{{  }}</div>
+            <div class="table-col order-product">{{ product_id }}</div>
           </div>
-          <div class="table-col order-price">$2000 x 4</div>
+          <div class="table-col order-price">{{ product_price }}</div>
         </div>
 
         <div class="col-wrapper order-status-signed">
-          <div class="table-col order-status">Open</div>
+          <div class="table-col order-status">{{ po_status }}</div>
         </div>
       </div>
     </div>
@@ -24,7 +24,20 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    product_id: String,
+    supplier_id: String,
+    product_price: String,
+    product_quantity: String,
+    po_date: String,
+    po_status: String,
+    po_OrderId: String,
+  },
+  data() {
+    return {};
+  },
+};
 </script>
 
 <style scoped>
