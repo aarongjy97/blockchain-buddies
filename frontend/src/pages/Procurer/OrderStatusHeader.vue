@@ -14,8 +14,9 @@
         <div class="table-col order-price">Price</div>
       </div>
 
-      <div class="col-wrapper order-status-signed">
+      <div class="col-wrapper order-status-signed-action">
         <div class="table-col order-status">Status</div>
+        <div class="table-col order-status">Action</div>
       </div>
     </div>
   </div>
@@ -53,7 +54,6 @@ export default {};
 
 .col-wrapper {
   display: flex;
-  /* flex: 1 0; */
   flex-direction: row;
 }
 
@@ -81,14 +81,21 @@ export default {};
   font-weight: 500;
 }
 
-.order-po {
-  width: 100px;
-  flex: 0.5 1;
-}
-
 .order-supplier-product-price {
   flex: 1 0;
-  width: 400+100+100px;
+  width: 100px;
+  @media screen and (max-width: 1200px) {
+    flex-direction: column;
+    width: 200px;
+    div {
+      flex-grow: 0;
+    }
+  }
+}
+
+.order-status-signed-action {
+  flex: 1 0;
+  width: 100px;
   @media screen and (max-width: 1200px) {
     flex-direction: column;
     width: 200px;
@@ -110,20 +117,8 @@ export default {};
 }
 
 .order-price {
-  width: 200px;
-  flex: 2 0;
-}
-
-.order-status-signed {
-  flex: 0 1;
-  width: 100+100px;
-  @media screen and (max-width: 1200px) {
-    flex-direction: column;
-    width: 100px;
-    div {
-      flex-grow: 0;
-    }
-  }
+  width: 100px;
+  flex: 1 0;
 }
 
 .order-status {
@@ -141,10 +136,6 @@ export default {};
 }
 
 .order-sign {
-  width: 100px;
-  flex: 1 0;
-}
-.order-view {
   width: 100px;
   flex: 1 0;
 }

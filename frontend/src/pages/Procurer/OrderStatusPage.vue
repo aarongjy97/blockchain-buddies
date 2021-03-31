@@ -12,9 +12,9 @@
           v-bind:product_quantity="po.quantity"
           v-bind:po_status="po.status"
           v-bind:po_date="po.date"
+          v-bind:employeeType="employeeType"
         ></order-status-box>
       </div>
-      <order-status-box></order-status-box>
     </div>
   </div>
 </template>
@@ -30,6 +30,7 @@ export default {
   data() {
     return {
       purchaseOrders: [],
+      employeeType: "",
     };
   },
   components: {
@@ -60,6 +61,7 @@ export default {
   },
   created() {
     this.viewAllPurchaseOrders();
+    this.employeeType = this.$store.state.details.employeetype;
   },
 };
 </script>

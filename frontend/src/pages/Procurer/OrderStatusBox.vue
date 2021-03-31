@@ -9,21 +9,35 @@
 
         <div class="col-wrapper order-supplier-product-price">
           <div class="col-wrapper order-supplier-product">
-            <div class="table-col order-supplier">{{  }}</div>
+            <div class="table-col order-supplier">
+              {{ "returned address idky need fix" }}
+            </div>
             <div class="table-col order-product">{{ product_id }}</div>
           </div>
           <div class="table-col order-price">{{ product_price }}</div>
         </div>
 
-        <div class="col-wrapper order-status-signed">
+        <div class="col-wrapper order-status-signed-action">
           <div class="table-col order-status">{{ po_status }}</div>
+          <div v-if="isFinance" class="table-col order-status">
+            <button @click="approvePurchaseOrder">Approval Required (Click)</button>
+          </div>
+          <div v-else class="table-col order-status">
+            Not Applicable
+          </div>
         </div>
+        <!-- 
+        <div class="col-wrapper order-actions">
+          <div class="table-col order-actions">hello</div>
+        </div> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Procurer from "../../api/Procurer";
+
 export default {
   props: {
     product_id: String,
@@ -33,9 +47,24 @@ export default {
     po_date: String,
     po_status: String,
     po_OrderId: String,
+    employeeType: String,
   },
   data() {
-    return {};
+    return {
+      isFinance: this.employeeType == "finance" ? true : false,
+    };
+  },
+  methods: {
+    async approvePurchaseOrder() {
+      try {
+        await Procurer.approvePurchaseOrder(
+          this.product_id,
+          this.$store.state.details.address
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    },
   },
 };
 </script>
@@ -129,12 +158,12 @@ export default {
   flex: 2 0;
 }
 
-.order-status-signed {
-  flex: 0 1;
-  width: 100+100px;
+.order-status-signed-action {
+  flex: 1 0;
+  width: 100px;
   @media screen and (max-width: 1200px) {
     flex-direction: column;
-    width: 100px;
+    width: 200px;
     div {
       flex-grow: 0;
     }
