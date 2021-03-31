@@ -19,8 +19,16 @@
 
         <div class="col-wrapper order-status-signed-action">
           <div class="table-col order-status">{{ po_status }}</div>
-          <div v-if="isFinance" class="table-col order-status">
-            <button @click="approvePurchaseOrder">Approval Required (Click)</button>
+          <div
+            v-if="isFinance && !isInternalApproved"
+            class="table-col order-status"
+          >
+            <button @click="approvePurchaseOrder">
+              Approval Required (Click)
+            </button>
+          </div>
+          <div v-else-if="!isInternalApproved" class="table-col order-status">
+            Not Applicable
           </div>
           <div v-else class="table-col order-status">
             Not Applicable
@@ -52,13 +60,14 @@ export default {
   data() {
     return {
       isFinance: this.employeeType == "finance" ? true : false,
+      isInternalApproved: this.po_status == "Internal Approved" ? true : false,
     };
   },
   methods: {
     async approvePurchaseOrder() {
       try {
         await Procurer.approvePurchaseOrder(
-          this.product_id,
+          this.po_OrderId,
           this.$store.state.details.address
         );
       } catch (err) {
