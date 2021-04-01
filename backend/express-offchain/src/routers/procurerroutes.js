@@ -29,6 +29,7 @@ async function getProcurerContractAddress(employeeAddress) {
 
 router.post("/createpurchaseorder", async (req, res, next) => {
   const { productId, quantity, price, employeeAddress } = req.body;
+  console.log(req.body);
   try {
     const address = await getProcurerContractAddress(employeeAddress);
     const result = await procurer.createPurchaseOrder(

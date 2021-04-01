@@ -3,70 +3,28 @@
     <div class="table-wrapper">
       <div class="table-row">
         <div class="col-wrapper order-date-number-po">
-          <div class="table-col order-date">{{ po_date }}</div>
-          <div class="table-col order-number">{{ po_OrderId }}</div>
+          <div class="table-col order-date">23 Mar 2021</div>
+          <div class="table-col order-number">1</div>
         </div>
 
         <div class="col-wrapper order-supplier-product-price">
           <div class="col-wrapper order-supplier-product">
-            <div class="table-col order-supplier">
-              {{ "returned address idky need fix" }}
-            </div>
-            <div class="table-col order-product">{{ product_id }}</div>
+            <div class="table-col order-supplier">1</div>
+            <div class="table-col order-product">1</div>
           </div>
-          <div class="table-col order-price">{{ product_price }}</div>
+          <div class="table-col order-price">$2000 x 4</div>
         </div>
 
-        <div class="col-wrapper order-status-signed-action">
-          <div class="table-col order-status">{{ po_status }}</div>
-          <div v-if="isFinance" class="table-col order-status">
-            <button @click="approvePurchaseOrder">Approval Required (Click)</button>
-          </div>
-          <div v-else class="table-col order-status">
-            Not Applicable
-          </div>
+        <div class="col-wrapper order-status-signed">
+          <div class="table-col order-status">Open</div>
         </div>
-        <!-- 
-        <div class="col-wrapper order-actions">
-          <div class="table-col order-actions">hello</div>
-        </div> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Procurer from "../../api/Procurer";
-
-export default {
-  props: {
-    product_id: String,
-    supplier_id: String,
-    product_price: String,
-    product_quantity: String,
-    po_date: String,
-    po_status: String,
-    po_OrderId: String,
-    employeeType: String,
-  },
-  data() {
-    return {
-      isFinance: this.employeeType == "finance" ? true : false,
-    };
-  },
-  methods: {
-    async approvePurchaseOrder() {
-      try {
-        await Procurer.approvePurchaseOrder(
-          this.product_id,
-          this.$store.state.details.address
-        );
-      } catch (err) {
-        console.log(err);
-      }
-    },
-  },
-};
+export default {};
 </script>
 
 <style scoped>
@@ -158,12 +116,12 @@ export default {
   flex: 2 0;
 }
 
-.order-status-signed-action {
-  flex: 1 0;
-  width: 100px;
+.order-status-signed {
+  flex: 0 1;
+  width: 100+100px;
   @media screen and (max-width: 1200px) {
     flex-direction: column;
-    width: 200px;
+    width: 100px;
     div {
       flex-grow: 0;
     }

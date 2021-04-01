@@ -72,7 +72,8 @@ create table product (
     id integer not null,
     supplier int not null,
     productName varchar (255) not null,
-    productImage bytea, 
+    productDesc varchar (255) not null,
+    productPrice int not null,
     foreign key (supplier) references Supplier on update cascade,
     primary key (id)
 );
