@@ -23,8 +23,19 @@
           <b-list-group-item>Procurer: {{ product.procurer }}</b-list-group-item>
           <b-list-group-item>Status: {{ product.status }}</b-list-group-item>
         </b-list-group>
-        <b-button v-on:click='approve(product.orderId)' variant="success" class='mr-2'>Approve</b-button>
-        <b-button v-on:click='reject(product.orderId)' variant="danger" class='ml-2'>Reject</b-button>
+
+        <div v-if='!isApproved(product.status)'>
+          <b-button v-on:click='approve(product.orderId)' variant="success" class='mr-2'>Approve</b-button>
+          <b-button v-on:click='reject(product.orderId)' variant="danger" class='ml-2'>Reject</b-button>
+        </div>
+        
+        <div v-else>
+          <b-form-group label="Select Courier:">
+            <b-form-select v-model="courier" :options="couriers" required></b-form-select>
+          </b-form-group>
+          <b-button v-on:click='assignCourier(product.orderId, courier)'>Submit</b-button>
+        </div>
+
       </b-card>
     </b-card-group>
   </b-container>
@@ -42,6 +53,8 @@ export default {
     return {
       details: {},
       products: [],
+      couriers: [{text: '-- Select One --', value: null, disabled: true}, 'NinjaVan', 'DHL'], //how to fetch list of couriers
+      courier: null, 
     };
   },
   components: {
@@ -75,19 +88,34 @@ export default {
       try {
         const result = await Supplier.approvePurchaseOrder(orderId, this.details.address);
         console.log('approve PO:', result.data);
-        alert('Approved')
+        alert('Approved');
+        this.$router.go();
       }
       catch(e) {
         console.log(e.response.data);
         alert(e.response.data.reason);
       }
-      
     },
     async reject(orderId) {
       try {
         const result = await Supplier.rejectPurchaseOrder(orderId, this.details.address);
         console.log('reject PO:', result.data);
-        alert('Rejected')
+        alert('Rejected');
+      }
+      catch(e) {
+        console.log(e.response.data);
+        alert(e.response.data.reason);
+      }
+    },
+    isApproved(status) {
+      return status == 'Supplier Approved'
+    },
+    async assignCourier(orderId, courier) {
+      try {
+        console.log(orderId, courier);
+        const result = await Supplier.assignCourier(orderId, courier, this.details.address);
+        console.log('assign courier:', result.data);
+        alert('Assigned courier to ', courier);
       }
       catch(e) {
         console.log(e.response.data);
