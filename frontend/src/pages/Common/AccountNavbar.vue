@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-navbar toggleable="md" type="light" variant="light" class='navbar fixed-top'>
-        <b-navbar-brand to="#" id="nav">
+        <b-navbar-brand to="#" id="nav" disabled>
           Procurement Marketplace
         </b-navbar-brand>
           
