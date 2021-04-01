@@ -1,5 +1,7 @@
 const axios = require("axios");
 
+const products = require("../assets/products");
+
 const market = artifacts.require("Market");
 const procurer = artifacts.require("Procurer");
 const ERC20 = artifacts.require("ERC20");
@@ -181,6 +183,12 @@ module.exports = async function (deployer, network, accounts) {
   );
 
   await syncWithDatabase(stakeholders);
+
+  await listProducts([
+    stakeholders.Dell,
+    stakeholders.Foxconn,
+    stakeholders.TSMC,
+  ]);
 };
 
 async function syncWithDatabase(stakeholders) {
@@ -196,17 +204,17 @@ async function syncWithDatabase(stakeholders) {
 
   const data = {
     marketAddress: market.address,
-    erc20Address: ERC20.address
-  }
+    erc20Address: ERC20.address,
+  };
 
-  await axios.post("http://localhost:5000/api/init/market", data)
+  await axios.post("http://localhost:5000/api/init/market", data);
   await axios.post("http://localhost:5000/api/init/procurer", procurers);
   await axios.post("http://localhost:5000/api/init/supplier", suppliers);
   await axios.post("http://localhost:5000/api/init/courier", couriers);
 
   console.log(
     "\x1b[32m",
-    "********** Ether Addresses Seeded into DB **********"
+    "********** Ether Addresses Seeded into DB **********\n"
   );
 }
 
@@ -250,7 +258,6 @@ async function addStakeholdersToMarket(
   supplierContracts,
   courierContracts
 ) {
-
   const procurers = [stakeholders.AMD, stakeholders.Apple, stakeholders.Google];
   const suppliers = [
     stakeholders.Dell,
@@ -260,15 +267,67 @@ async function addStakeholdersToMarket(
   const couriers = [stakeholders.NinjaVan, stakeholders.DHL];
 
   for (let i = 0; i < procurers.length; i++) {
-    await procurerContracts[i].registerAsProcurer({ from: procurers[i].ownerAddress });
+    await procurerContracts[i].registerAsProcurer({
+      from: procurers[i].ownerAddress,
+    });
   }
 
   for (let i = 0; i < suppliers.length; i++) {
-    await supplierContracts[i].registerAsSupplier({ from: suppliers[i].ownerAddress });
+    await supplierContracts[i].registerAsSupplier({
+      from: suppliers[i].ownerAddress,
+    });
   }
 
   for (let i = 0; i < couriers.length; i++) {
-    await courierContracts[i].registerAsCourier({ from: couriers[i].ownerAddress });
+    await courierContracts[i].registerAsCourier({
+      from: couriers[i].ownerAddress,
+    });
+  }
+}
+
+async function listProducts(suppliers) {
+  const dell = suppliers[0];
+  const foxconn = suppliers[1];
+  const tsmc = suppliers[2];
+
+  for (let i = 0; i < products.dell.length; i++) {
+    const employeeAddress = dell.employees[0].address;
+    await axios.post("http://localhost:5000/api/supplier/listproduct", {
+      ...products.dell[i],
+      employeeAddress,
+    });
+    console.log(
+      "\x1b[36m",
+      `********** ${products.dell[i].name} seeded into ETH network **********`
+    );
   }
 
+  for (let i = 0; i < products.foxconn.length; i++) {
+    const employeeAddress = foxconn.employees[0].address;
+    await axios.post("http://localhost:5000/api/supplier/listproduct", {
+      ...products.foxconn[i],
+      employeeAddress,
+    });
+    console.log(
+      "\x1b[36m",
+      `********** ${products.foxconn[i].name} seeded into ETH network **********`
+    );
+  }
+
+  for (let i = 0; i < products.tsmc.length; i++) {
+    const employeeAddress = tsmc.employees[0].address;
+    await axios.post("http://localhost:5000/api/supplier/listproduct", {
+      ...products.tsmc[i],
+      employeeAddress,
+    });
+    console.log(
+      "\x1b[36m",
+      `********** ${products.tsmc[i].name} seeded into ETH network **********`
+    );
+  }
+
+  console.log(
+    "\x1b[32m",
+    `********** Products Seeded **********\n`
+  );
 }
