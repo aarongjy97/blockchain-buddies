@@ -74,6 +74,16 @@ export default {
         console.log(err);
       }
     },
+    async rejectPurchaseOrder() {
+      try {
+        await Procurer.rejectPurchaseOrder(
+          this.po_OrderId,
+          this.$store.state.details.address
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    },
   },
 };
 </script>
