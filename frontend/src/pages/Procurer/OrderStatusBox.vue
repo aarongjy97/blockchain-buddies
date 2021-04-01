@@ -23,7 +23,7 @@
             <button @click="approvePurchaseOrder">Approval Required (Click)</button>
           </div>
           <div v-else class="table-col order-status">
-            Not Applicable
+            Requires Approval from Finance Team
           </div>
         </div>
         <!-- 
