@@ -23,8 +23,11 @@
             v-if="isFinance && !isInternalApproved"
             class="table-col order-status"
           >
-            <button @click="approvePurchaseOrder">
-              Approval Required (Click)
+            <button class="approve" @click="approvePurchaseOrder">
+              Approve
+            </button>
+            <button class="reject" @click="rejectPurchaseOrder">
+              Reject
             </button>
           </div>
           <div v-else-if="!isInternalApproved" class="table-col order-status">
@@ -210,5 +213,20 @@ export default {
 .order-view {
   width: 100px;
   flex: 1 0;
+}
+
+button {
+  margin-left: 10px;
+  width: 100px;
+}
+
+.approve {
+  background: green;
+  color: #ffff;
+}
+
+.reject {
+  background: red;
+  color: #ffff;
 }
 </style>
