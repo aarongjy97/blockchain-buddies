@@ -6,11 +6,12 @@
     {{ details.company }}
     {{ details.email }}
     {{ details.role }}
+    {{ details.employeetype }}
 </div>
 </template>
 
 <script>
-import Navbar from "../Supplier/Navbar.vue";
+import Navbar from "./AccountNavbar.vue";
 export default {
   name: "Account",
   data() {

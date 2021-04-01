@@ -20,7 +20,7 @@
         <div class="col-wrapper order-status-signed-action">
           <div class="table-col order-status">{{ po_status }}</div>
           <div v-if="isFinance" class="table-col order-status">
-            <button @click="approvePurchaseOrder">Approval Required (Click)</button>
+            <b-button v-if="isNotApproved" v-on:click="approvePurchaseOrder">Approval Required (Click)</b-button>
           </div>
           <div v-else class="table-col order-status">
             Requires Approval from Finance Team
@@ -52,6 +52,7 @@ export default {
   data() {
     return {
       isFinance: this.employeeType == "finance" ? true : false,
+      isNotApproved: this.po_status == "Internal Approved" ? false : true,
     };
   },
   methods: {
@@ -61,6 +62,7 @@ export default {
           this.product_id,
           this.$store.state.details.address
         );
+        alert('Approved');
       } catch (err) {
         console.log(err);
       }
