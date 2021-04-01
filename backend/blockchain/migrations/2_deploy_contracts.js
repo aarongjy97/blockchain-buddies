@@ -340,10 +340,10 @@ async function mintTokensToProcurers(owner, procurers) {
   const erc20 = await ERC20.deployed()
 
   for (const procurer of procurers) {
-    await erc20.mintTokens(procurer, 100, { from: owner });
+    await erc20.mintTokens(procurer, 10000, { from: owner });
     console.log(
       "\x1b[36m",
-      `********** ${procurer} minted ${100} tokens **********`
+      `********** ${procurer} minted ${10000} tokens **********`
     );
   }
 
