@@ -4,7 +4,7 @@ const products = require("../assets/products");
 
 const market = artifacts.require("Market");
 const procurer = artifacts.require("Procurer");
-const ERC20 = artifacts.require("ERC20");
+const ERC20 = artifacts.require("MarketERC20");
 const supplier = artifacts.require("Supplier");
 const courier = artifacts.require("Courier");
 
@@ -123,6 +123,12 @@ module.exports = async function (deployer, network, accounts) {
   );
 
   stakeholders.Google.address = google.address;
+
+  await mintTokensToProcurers(stakeholders.ERC20, [
+    amd.address,
+    apple.address,
+    google.address,
+  ]);
 
   const dell = await deployer.deploy(supplier, market.address, ERC20.address, {
     from: stakeholders.Dell.ownerAddress,
@@ -326,8 +332,21 @@ async function listProducts(suppliers) {
     );
   }
 
-  console.log(
-    "\x1b[32m",
-    `********** Products Seeded **********\n`
-  );
+  console.log("\x1b[32m", `********** Products Seeded **********\n`);
+}
+
+async function mintTokensToProcurers(owner, procurers) {
+
+  const erc20 = await ERC20.deployed()
+
+  for (const procurer of procurers) {
+    await erc20.mintTokens(procurer, 100, { from: owner });
+    console.log(
+      "\x1b[36m",
+      `********** ${procurer} minted ${100} tokens **********`
+    );
+  }
+
+  console.log("\x1b[32m", `********** Tokens Minted **********\n`);
+
 }
