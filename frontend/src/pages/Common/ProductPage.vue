@@ -1,5 +1,6 @@
 <template>
   <main class="container">
+    <Navbar></Navbar>
     <!-- Left Column / Headphones Image -->
     <div class="left-column">
       <img src="../../assets/dell_computer.jpeg" alt="" />
@@ -30,12 +31,16 @@
 </template>
 
 <script>
+import Navbar from "./AccountNavbar.vue";
 import Procurer from "../../api/Procurer"
 export default {
   data() {
     return {
       qty: '',
     };
+  },
+  components: {
+    Navbar,
   },
   methods: {
     async createPurchaseOrder() {

@@ -19,17 +19,16 @@
 
         <div class="col-wrapper order-status-signed-action">
           <div class="table-col order-status">{{ po_status }}</div>
-          <div v-if="isFinance" class="table-col order-status">
-            <b-button v-if="isNotApproved" v-on:click="approvePurchaseOrder">Approval Required (Click)</b-button>
+          <div v-if="isFinance && isOrdered" class="table-col order-status">
+            <b-button v-on:click="approvePurchaseOrder">Approval Required</b-button>
+          </div>
+          <div v-else-if="isDelivered" class="table-col order-status">
+            <b-button v-on:click="receivedOrder">Received Order</b-button>
           </div>
           <div v-else class="table-col order-status">
-            Requires Approval from Finance Team
+            -
           </div>
         </div>
-        <!-- 
-        <div class="col-wrapper order-actions">
-          <div class="table-col order-actions">hello</div>
-        </div> -->
       </div>
     </div>
   </div>
@@ -51,8 +50,9 @@ export default {
   },
   data() {
     return {
-      isFinance: this.employeeType == "finance" ? true : false,
-      isNotApproved: this.po_status == "Internal Approved" ? false : true,
+      isFinance: this.employeeType == "finance",
+      isOrdered: this.po_status == "Ordered",
+      isDelivered: this.po_status == "Delivered",
     };
   },
   methods: {
@@ -63,10 +63,21 @@ export default {
           this.$store.state.details.address
         );
         alert('Approved');
+        this.$router.go();
       } catch (err) {
         console.log(err);
       }
     },
+    async receivedOrder() {
+      try {
+        await Procurer.deliveredByCourier(this.product_id, this.$store.state.details.address);
+        alert('Order received');
+        this.$router.go();
+      }
+      catch(e) {
+        console.log(e);
+      }
+    }
   },
 };
 </script>

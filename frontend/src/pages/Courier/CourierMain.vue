@@ -15,15 +15,15 @@
         style="max-width: 20rem;"
         class="mb-2"
       >
-        <b-card-text>
-          Price: {{ order.price }}
-          Qty: {{ order.quantity }}
-          Date Created: {{ order.dateCreated }}
-          Procurer: {{ order.procurer }}
-          Supplier: {{ order.supplier }}
-          Status: {{ order.status }}
-        </b-card-text>
-        <b-button v-on:click='received(order.orderId)'>Received from supplier</b-button> 
+        <b-list-group class='mb-2'>
+          <b-list-group-item>Pric e: {{ order.price }}</b-list-group-item>
+          <b-list-group-item>Qty: {{ order.quantity }}</b-list-group-item>
+          <b-list-group-item>Date Created: {{ order.dateCreated }}</b-list-group-item>
+          <b-list-group-item>Procurer: {{ order.procurer }}</b-list-group-item>
+          <b-list-group-item>Supplier: {{ order.supplier }}</b-list-group-item>
+          <b-list-group-item>Status: {{ order.status }}</b-list-group-item>
+        </b-list-group>
+        <b-button v-if='order.status=="Delivering"' v-on:click='received(order.orderId)'>Received from supplier</b-button> 
       </b-card> 
     </b-card-group>
   </b-container>

@@ -24,12 +24,12 @@
           <b-list-group-item>Status: {{ product.status }}</b-list-group-item>
         </b-list-group>
 
-        <div v-if='!isApproved(product.status)'>
+        <div v-if='product.status=="Internal Approved"'>
           <b-button v-on:click='approve(product.orderId)' variant="success" class='mr-2'>Approve</b-button>
           <b-button v-on:click='reject(product.orderId)' variant="danger" class='ml-2'>Reject</b-button>
         </div>
         
-        <div v-else>
+        <div v-if='product.status=="Supplier Approved"'>
           <b-form-group label="Select Courier:">
             <b-form-select v-model="courier" :options="couriers" required></b-form-select>
           </b-form-group>
@@ -106,9 +106,6 @@ export default {
         console.log(e.response.data);
         alert(e.response.data.reason);
       }
-    },
-    isApproved(status) {
-      return status == 'Supplier Approved'
     },
     async assignCourier(orderId, courier) {
       try {
