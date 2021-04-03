@@ -50,7 +50,7 @@ export default {
           po_id: po.orderId,
           price: po.price,
           quantity: po.quantity,
-          date: po.dateCreated,
+          date: new Date(po.dateCreated*1000).toLocaleString(),
           status: po.status,
           supplier_name: po.supplierName,
           product_id: po.productId,

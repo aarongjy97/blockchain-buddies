@@ -16,7 +16,7 @@
       >
         <!-- <b-card-text></b-card-text> -->
         <b-list-group class='mb-2'>
-          <b-list-group-item>Product ID: {{ product.productId }}</b-list-group-item>
+          <b-list-group-item>Product: {{ product.productName }}</b-list-group-item>
           <b-list-group-item>Price: {{ product.price }}</b-list-group-item>
           <b-list-group-item>Qty: {{ product.quantity }}</b-list-group-item>
           <b-list-group-item>Date Created: {{ product.dateCreated }}</b-list-group-item>
@@ -77,10 +77,11 @@ export default {
           orderId: p.orderId,
           quantity: p.quantity,
           price: p.price,
-          dateCreated: p.dateCreated,
+          dateCreated: new Date(p.dateCreated*1000).toLocaleString(),
           procurerName: p.procurerName,
           status: p.status,
           courierName: p.courierName,
+          productName: p.productName,
         }))
       }
       catch (err) {
@@ -123,6 +124,7 @@ export default {
         const result = await Supplier.assignCourier(orderId, courier, this.details.address);
         console.log('assign courier:', result.data);
         alert('Assigned courier');
+        this.$router.go();
       }
       catch(e) {
         console.log(e.response.data);
