@@ -36,7 +36,8 @@ router.post("/viewpurchaseorder", async (req, res, next) => {
       employeeAddress,
       address
     );
-    return res.status(200).send(structParser.parsePurchaseOrder(result));
+    const po = await structParser.parsePurchaseOrder(result);
+    return res.status(200).send(po);
   } catch (error) {
     return res
       .status(500)
@@ -52,9 +53,9 @@ router.post("/viewallpurchaseorders", async (req, res, next) => {
       employeeAddress,
       address
     );
-    const purchaseOrders = result.map((po) =>
+    const purchaseOrders = await Promise.all(result.map((po) =>
       structParser.parsePurchaseOrder(po)
-    );
+    ));
     return res.status(200).send(purchaseOrders);
   } catch (error) {
     return res
