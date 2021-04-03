@@ -230,9 +230,11 @@ router.post("/viewallpurchaseorders", async (req, res, next) => {
       employeeAddress,
       address
     );
-    const purchaseOrders = await Promise.all(result.map((po) =>
-      structParser.parsePurchaseOrder(po)
-    ));
+    const purchaseOrders = await Promise.all(
+      result
+        .filter((po) => po[0] !== "0x0000000000000000000000000000000000000000")
+        .map((po) => structParser.parsePurchaseOrder(po))
+    );
     return res.status(200).send(purchaseOrders);
   } catch (error) {
     return res
@@ -253,7 +255,7 @@ router.post("/viewpurchaseorder", async (req, res, next) => {
       address
     );
     const po = await structParser.parsePurchaseOrder(result);
-    return res.status(200).send(po);
+    return res.status(200).send();
   } catch (error) {
     return res
       .status(500)
