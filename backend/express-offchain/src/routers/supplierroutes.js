@@ -36,7 +36,8 @@ router.post("/viewselfproduct", async (req, res, next) => {
       employeeAddress,
       address
     );
-    return res.status(200).send(structParser.parseProduct(result));
+    const product = await structParser.parseProduct(result);
+    return res.status(200).send(product);
   } catch (error) {
     return res
       .status(500)
@@ -49,8 +50,13 @@ router.post("/viewallselfproducts", async (req, res, next) => {
   try {
     const address = await getSupplierContractAddress(employeeAddress);
     const result = await supplier.viewAllSelfProducts(employeeAddress, address);
-    const products = result.map((product) =>
-      structParser.parseProduct(product)
+    const products = await Promise.all(
+      result
+        .filter(
+          (product) =>
+            product[0] !== "0x0000000000000000000000000000000000000000"
+        )
+        .map((product) => structParser.parseProduct(product))
     );
     return res.status(200).send(products);
   } catch (error) {
@@ -224,9 +230,9 @@ router.post("/viewallpurchaseorders", async (req, res, next) => {
       employeeAddress,
       address
     );
-    const purchaseOrders = result.map((po) =>
+    const purchaseOrders = await Promise.all(result.map((po) =>
       structParser.parsePurchaseOrder(po)
-    );
+    ));
     return res.status(200).send(purchaseOrders);
   } catch (error) {
     return res
@@ -246,16 +252,12 @@ router.post("/viewpurchaseorder", async (req, res, next) => {
       employeeAddress,
       address
     );
-    return res.status(200).send(structParser.parsePurchaseOrder(result));
+    const po = await structParser.parsePurchaseOrder(result);
+    return res.status(200).send(po);
   } catch (error) {
     return res
       .status(500)
-      .send(
-        errorParser(
-          error,
-          `Failed to Retrieve Order ${orderId}`
-        )
-      );
+      .send(errorParser(error, `Failed to Retrieve Order ${orderId}`));
   }
 });
 
@@ -266,20 +268,13 @@ router.get("/getcouriers", async (req, res, next) => {
         `
         select address, name
         from courier;
-        `,
+        `
       )
     ).rows;
     return res.status(200).send(couriers);
   } catch (error) {
-    return res
-      .status(500)
-      .send(
-        errorParser(
-          error,
-          `Failed to Get Couriers`
-        )
-      );
+    return res.status(500).send(errorParser(error, `Failed to Get Couriers`));
   }
-})
+});
 
 module.exports = router;

@@ -202,6 +202,7 @@ contract Market {
          address(0),
 
          _productId,
+         products[_productId].productName,
          orderId,
          quantity,
          price,
