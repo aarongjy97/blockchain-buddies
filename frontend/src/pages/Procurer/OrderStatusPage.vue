@@ -7,12 +7,13 @@
         <order-status-box
           v-bind:po_OrderId="po.po_id"
           v-bind:product_id="po.product_id"
-          v-bind:supplier_id="po.supplier"
+          v-bind:supplier_name="po.supplier_name"
           v-bind:product_price="po.price"
           v-bind:product_quantity="po.quantity"
           v-bind:po_status="po.status"
           v-bind:po_date="po.date"
           v-bind:employeeType="employeeType"
+          v-bind:product_name="po.product_name"
         ></order-status-box>
       </div>
     </div>
@@ -44,14 +45,16 @@ export default {
         const result = await Procurer.viewAllPurchaseOrders(
           this.$store.state.details.address
         );
+        console.log(result.data);
         this.purchaseOrders = result.data.map((po) => ({
           po_id: po.orderId,
           price: po.price,
           quantity: po.quantity,
           date: po.dateCreated,
           status: po.status,
-          supplier: po.supplier,
+          supplier_name: po.supplierName,
           product_id: po.productId,
+          product_name: po.productName,
         }));
         console.log("purchaseOrders:", this.purchaseOrders);
       } catch (err) {

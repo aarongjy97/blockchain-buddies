@@ -10,19 +10,16 @@
         <div class="col-wrapper order-supplier-product-price">
           <div class="col-wrapper order-supplier-product">
             <div class="table-col order-supplier">
-              {{ "returned address idky need fix" }}
+              {{ supplier_name }}
             </div>
-            <div class="table-col order-product">{{ product_id }}</div>
+            <div class="table-col order-product">{{ product_name }}</div>
           </div>
           <div class="table-col order-price">{{ product_price }}</div>
         </div>
 
         <div class="col-wrapper order-status-signed-action">
           <div class="table-col order-status">{{ po_status }}</div>
-          <div
-            v-if="isFinance && isOrdered"
-            class="table-col order-status"
-          >
+          <div v-if="isFinance && isOrdered" class="table-col order-status">
             <button class="approve" @click="approvePurchaseOrder">
               Approve
             </button>
@@ -30,8 +27,13 @@
               Reject
             </button>
           </div>
-          <div v-else-if="!isInternalApproved" class="table-col order-status">
-            -
+          <div
+            v-else-if="!isFinance && isDelivering"
+            class="table-col order-status"
+          >
+            <button class="approve" @click="rejectPurchaseOrder">
+              Received
+            </button>
           </div>
           <div v-else class="table-col order-status">
             -
@@ -48,19 +50,21 @@ import Procurer from "../../api/Procurer";
 export default {
   props: {
     product_id: String,
-    supplier_id: String,
+    supplier_name: String,
     product_price: String,
     product_quantity: String,
     po_date: String,
     po_status: String,
     po_OrderId: String,
     employeeType: String,
+    product_name: String,
   },
   data() {
     return {
       isFinance: this.employeeType == "finance",
       isInternalApproved: this.po_status == "Internal Approved",
-      isOrdered: this.po_status == "Ordered"
+      isOrdered: this.po_status == "Ordered",
+      isDelivering: this.po_status == "Delivering",
     };
   },
   methods: {
@@ -70,6 +74,8 @@ export default {
           this.po_OrderId,
           this.$store.state.details.address
         );
+        alert("Order approved");
+        this.$router.go(0);
       } catch (err) {
         console.log(err);
       }
@@ -80,7 +86,7 @@ export default {
           this.po_OrderId,
           this.$store.state.details.address
         );
-        alert('Approved');
+        alert("Order rejected");
         this.$router.go();
       } catch (err) {
         console.log(err);
@@ -88,14 +94,16 @@ export default {
     },
     async receivedOrder() {
       try {
-        await Procurer.deliveredByCourier(this.product_id, this.$store.state.details.address);
-        alert('Order received');
+        await Procurer.deliveredByCourier(
+          this.product_id,
+          this.$store.state.details.address
+        );
+        alert("Order received");
         this.$router.go();
-      }
-      catch(e) {
+      } catch (e) {
         console.log(e);
       }
-    }
+    },
   },
 };
 </script>
@@ -227,6 +235,18 @@ export default {
 button {
   margin-left: 10px;
   width: 100px;
+}
+
+.approve:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+.reject:active {
+  background-color: red;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
 }
 
 .approve {
