@@ -5,16 +5,9 @@
   <br>
 
   <h2>Products</h2>
-  <!-- <ul v-if='products.length'>
-    <li v-for="product in products" :key="product.name">
-      Name: {{ product.name }}
-      Price: {{ product.price }}
-      Qty: {{ product.quantity }}
-      Sold: {{ product.numSold }}
-    </li>
-  </ul> -->
+
   <b-container v-if='products.length'>
-    <b-card-group deck v-for="product in products" :key="product.name">
+    <b-card-group deck v-for="product in products" :key="product.id">
       <b-card
         :title='product.name'
         img-src="https://picsum.photos/600/300/?image=25"
@@ -23,12 +16,27 @@
         tag="article"
         style="max-width: 20rem;"
         class="mb-2"
+        v-if='product.listed'
       >
         <b-card-text>
           Price: {{ product.price }}
           Qty: {{ product.quantity }}
           Sold: {{ product.numSold }}
         </b-card-text>
+
+        <b-button v-b-modal="product.id">Edit</b-button>
+        <b-modal :id=product.id title="Edit Product Details" @show='resetModal' @hidden='resetModal' @ok='submitModal(product.id)'>
+          <form>
+            <b-form-group label="Price">
+              <b-form-input v-model="newPrice"></b-form-input>
+            </b-form-group>
+            <b-form-group label="Quantity">
+              <b-form-input v-model="newQuantity"></b-form-input>
+            </b-form-group>
+          </form>
+        </b-modal>
+
+        <b-button v-on:click='unlist(product.id)'>Unlist</b-button>
       </b-card>
     </b-card-group>
   </b-container>
@@ -45,13 +53,17 @@ export default {
   name: "SupplierMain",
   data() {
     return {
-      products: []
+      details: {},
+      products: [],
+      newPrice: null,
+      newQuantity: null,
     };
   },
   methods: {
     async viewAll() {
       try{
         const details = this.$store.state.details;
+        this.details = details;
         console.log('details:', details);
 
         const result = await Supplier.viewAllSelfProducts(details.address);
@@ -63,12 +75,33 @@ export default {
           quantity: p.quantityAvailable,
           numSold: p.numSold,
           id: p.productId,
+          listed: p.listed
         }))
       }
       catch (err) {
         console.log(err)
       }
-    }
+    },
+    resetModal() {
+      this.newPrice = null;
+      this.newQuantity = null;
+    },
+    async submitModal(productId) { // TODO: cannot update 2 fields at once time
+      if (this.newPrice) {
+        const result = await Supplier.updateProductPrice(productId, this.newPrice, this.details.address);
+        console.log(result.data);
+      }
+      if (this.newQuantity) {
+        const result = await Supplier.updateProductQuantity(productId, this.newQuantity, this.details.address);
+        console.log(result.data);
+      }
+      this.$router.go();
+    },
+    async unlist(productId) {
+      const result = await Supplier.unlistProduct(productId, this.details.address);
+      console.log(result.data);
+      this.$router.go();
+    },
   },
   components: {
     Navbar,

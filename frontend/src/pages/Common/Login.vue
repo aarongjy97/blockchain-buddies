@@ -108,6 +108,7 @@ export default {
   width: 100%;
   margin: 0 auto;
   background: #f2f2f2;
+  margin-top: -70px
 }
 .container {
   width: 100%;
@@ -156,10 +157,6 @@ export default {
   top: 0;
   left: 0;
   background: rgba(0, 0, 0, 0.3);
-}
-
-.intro {
-  padding-top: 50px;
 }
 
 .login-section {

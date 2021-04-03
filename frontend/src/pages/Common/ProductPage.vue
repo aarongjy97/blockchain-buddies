@@ -1,5 +1,6 @@
 <template>
   <main class="container">
+    <Navbar></Navbar>
     <!-- Left Column / Headphones Image -->
     <div class="left-column">
       <img src="../../assets/dell_computer.jpeg" alt="" />
@@ -30,19 +31,33 @@
 </template>
 
 <script>
+import Navbar from "./AccountNavbar.vue";
 import Procurer from "../../api/Procurer"
 export default {
+  data() {
+    return {
+      qty: '',
+    };
+  },
+  components: {
+    Navbar,
+  },
   methods: {
     async createPurchaseOrder() {
-      const details = this.$store.state.details;
-      console.log('productId', this.$route.params.product_id);
-      console.log('quantity:', this.qty);
-      console.log('price:', this.$route.params.product_price);
-      console.log('details:', details.address);
-      const result = await Procurer.createPurchaseOrder(this.$route.params.product_id, this.qty, this.$route.params.product_price*this.qty, details.address)
-      console.log(result.data)
-      alert("Purchase Order Created")
-      this.$router.back();
+      try {
+        const details = this.$store.state.details;
+        console.log('productId', this.$route.params.product_id);
+        console.log('quantity:', this.qty);
+        console.log('price:', this.$route.params.product_price);
+        console.log('details:', details.address);
+        const result = await Procurer.createPurchaseOrder(this.$route.params.product_id, this.qty, this.$route.params.product_price*this.qty, details.address)
+        console.log(result.data)
+        alert("Purchase Order Created")
+        this.$router.back();
+      }
+      catch(e) {
+        alert(e.response.data.reason);
+      }
     }
   }
 };

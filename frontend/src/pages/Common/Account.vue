@@ -2,20 +2,40 @@
 <div>
     <Navbar></Navbar>
     <!-- {{ details }} -->
-    {{ details.name }}
-    {{ details.company }}
-    {{ details.email }}
-    {{ details.role }}
+    <b-jumbotron>
+      <template #header>{{ details.name }}</template>
+
+      <template #lead>
+        <b-row>
+          <b-col>Company: {{ details.company }}</b-col>
+          <b-col>Email: {{ details.email }}</b-col>
+          <b-col>Role: {{ details.role }}</b-col>
+          <b-col v-if='details.employeetype'>Employee type: {{ details.employeetype }}</b-col>
+        </b-row>
+      </template>
+
+      <hr class="my-4">
+
+      <p>
+        <b-button v-b-modal.balance>Check account balance</b-button>
+        <b-modal id="balance" ok-only>
+          <p class="my-4">Account balance: {{ balance }}</p>
+        </b-modal>
+
+        <!-- <b-button variant="success" href="#">Do Something</b-button>  -->
+      </p>
+    </b-jumbotron>
 </div>
 </template>
 
 <script>
-import Navbar from "../Supplier/Navbar.vue";
+import Navbar from "./AccountNavbar.vue";
 export default {
   name: "Account",
   data() {
     return {
       details: {},
+      balance: 100,
     };
   },
   methods: {

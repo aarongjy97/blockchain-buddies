@@ -28,7 +28,7 @@
         ></b-form-input>
       </b-form-group>
 
-      <b-form-group id="input-group-3" label="Price ($):" label-for="input-3">
+      <b-form-group id="input-group-3" label="Price:" label-for="input-3">
         <b-form-input
           id="input-3"
           v-model.number="form.price"

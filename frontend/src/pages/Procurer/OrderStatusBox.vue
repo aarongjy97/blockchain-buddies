@@ -34,13 +34,9 @@
             Not Applicable
           </div>
           <div v-else class="table-col order-status">
-            Not Applicable
+            -
           </div>
         </div>
-        <!-- 
-        <div class="col-wrapper order-actions">
-          <div class="table-col order-actions">hello</div>
-        </div> -->
       </div>
     </div>
   </div>
@@ -83,10 +79,22 @@ export default {
           this.po_OrderId,
           this.$store.state.details.address
         );
+        alert('Approved');
+        this.$router.go();
       } catch (err) {
         console.log(err);
       }
     },
+    async receivedOrder() {
+      try {
+        await Procurer.deliveredByCourier(this.product_id, this.$store.state.details.address);
+        alert('Order received');
+        this.$router.go();
+      }
+      catch(e) {
+        console.log(e);
+      }
+    }
   },
 };
 </script>
