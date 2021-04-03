@@ -77,7 +77,7 @@ export default {
           orderId: p.orderId,
           quantity: p.quantity,
           price: p.price,
-          dateCreated: new Date(p.dateCreated*1000).toLocaleString(),
+          dateCreated: p.dateCreated.substring(0,10),
           procurerName: p.procurerName,
           status: p.status,
           courierName: p.courierName,
