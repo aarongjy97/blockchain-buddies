@@ -17,11 +17,10 @@
         >
           {{ product_name }}
         </router-link>
-        <!-- <a href="product">
-          <h5>{{ product_price }}</h5>
-        </a> -->
         <ul class="product_price list-unstyled">
-          <li class="old_price">{{ product_price }} Tokens</li>
+          <li class="old_price">Supplier: {{ supplier_name }}</li>
+          <li class="old_price">Price: {{ product_price }} Tokens</li>
+          <li class="old_price">Quantity: {{ quantity }}</li>
         </ul>
       </div>
     </div>
@@ -34,6 +33,8 @@ export default {
     product_id: String,
     product_name: String,
     product_price: String,
+    supplier_name: String,
+    quantity: String,
   },
   data() {
     return {};
@@ -43,11 +44,19 @@ export default {
 
 <style>
 body {
-  margin-top: 20px;
   background-color: #f4f7f6;
 }
 
 .product_item .product_details .product_price {
-  margin: 0;
+  margin: 5px;
+}
+
+.body {
+  margin: 20px;
+}
+
+.product_item {
+  width: 300px;
+  margin-top: 10px;
 }
 </style>

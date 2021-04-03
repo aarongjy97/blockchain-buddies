@@ -8,8 +8,8 @@
 
       <div class="col-wrapper order-supplier-product-price">
         <div class="col-wrapper order-supplier-product">
-          <div class="table-col order-supplier">Supplier #</div>
-          <div class="table-col order-product">Product #</div>
+          <div class="table-col order-supplier">Supplier</div>
+          <div class="table-col order-product">Product</div>
         </div>
         <div class="table-col order-price">Price</div>
       </div>

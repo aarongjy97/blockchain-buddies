@@ -1,13 +1,15 @@
 <template>
-  <div>
+  <div class="body">
     <Navbar></Navbar>
-    <div v-if="products.length">
+    <div class="row" v-if="products.length">
       <div v-for="p in products" :key="p.product_id">
-        <div class="box col-lg-3 col-md-4" v-if='p.listed'>
+        <div class="col-lg-4" v-if="p.listed">
           <product-box
             v-bind:product_id="p.product_id"
             v-bind:product_name="p.product_name"
             v-bind:product_price="p.product_price"
+            v-bind:supplier_name="p.supplierName"
+            v-bind:quantity="p.quantity"
           ></product-box>
         </div>
       </div>
@@ -35,6 +37,7 @@ export default {
     async viewAllProducts() {
       try {
         const result = await Market.viewAllProducts();
+        console.log(result.data);
         this.products = result.data.map((p) => ({
           product_name: p.productName,
           product_price: p.price,
@@ -42,6 +45,7 @@ export default {
           product_id: p.productId,
           listed: p.listed,
           supplierName: p.supplierName,
+          quantity: p.quantityAvailable,
         }));
         console.log("product:", this.products);
       } catch (e) {
@@ -54,4 +58,8 @@ export default {
   },
 };
 </script>
-<style></style>
+<style>
+.body {
+  margin: 20px 20px 20px 20px;
+}
+</style>
