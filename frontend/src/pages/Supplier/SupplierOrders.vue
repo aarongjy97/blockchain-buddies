@@ -20,8 +20,10 @@
           <b-list-group-item>Price: {{ product.price }}</b-list-group-item>
           <b-list-group-item>Qty: {{ product.quantity }}</b-list-group-item>
           <b-list-group-item>Date Created: {{ product.dateCreated }}</b-list-group-item>
-          <b-list-group-item>Procurer: {{ product.procurer }}</b-list-group-item>
-          <b-list-group-item>Status: {{ product.status }}</b-list-group-item>
+          <b-list-group-item>Procurer: {{ product.procurerName }}</b-list-group-item>
+          <b-list-group-item v-if='product.courierName'>Courier: {{ product.courierName }}</b-list-group-item>
+          <b-list-group-item v-else>Courier: -</b-list-group-item>
+          <b-list-group-item>Status: {{ product.status }}</b-list-group-item>          
         </b-list-group>
 
         <div v-if='product.status=="Internal Approved"'>
@@ -53,7 +55,7 @@ export default {
     return {
       details: {},
       products: [],
-      couriers: [{text: '-- Select One --', value: null, disabled: true}, 'NinjaVan', 'DHL'], //how to fetch list of couriers
+      couriers: [{text: '-- Select One --', value: null, disabled: true}], //how to fetch list of couriers
       courier: null, 
     };
   },
@@ -76,8 +78,9 @@ export default {
           quantity: p.quantity,
           price: p.price,
           dateCreated: p.dateCreated,
-          procurer: p.procurer,
+          procurerName: p.procurerName,
           status: p.status,
+          courierName: p.courierName,
         }))
       }
       catch (err) {
@@ -107,12 +110,19 @@ export default {
         alert(e.response.data.reason);
       }
     },
+    async fetchCouriers() {
+      const result = await Supplier.getCouriers();
+      
+      const couriers = [];
+      result.data.forEach(x => couriers.push({'text': x['name'], 'value': x['address']}));
+      console.log('couriers', couriers);
+      this.couriers = this.couriers.concat(couriers);
+    },
     async assignCourier(orderId, courier) {
       try {
-        console.log(orderId, courier);
         const result = await Supplier.assignCourier(orderId, courier, this.details.address);
         console.log('assign courier:', result.data);
-        alert('Assigned courier to ', courier);
+        alert('Assigned courier');
       }
       catch(e) {
         console.log(e.response.data);
@@ -121,7 +131,8 @@ export default {
     }
   },
   mounted() {
-    this.viewAll()
+    this.viewAll();
+    this.fetchCouriers();
   },
 };
 </script>
