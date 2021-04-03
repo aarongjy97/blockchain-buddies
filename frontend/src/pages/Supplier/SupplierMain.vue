@@ -34,9 +34,41 @@
               <b-form-input v-model="newQuantity"></b-form-input>
             </b-form-group>
           </form>
+          <p>*Edit only detail at a time</p>
         </b-modal>
 
         <b-button v-on:click='unlist(product.id)'>Unlist</b-button>
+      </b-card>
+
+      <b-card
+        :title='product.name'
+        img-src="https://picsum.photos/600/300/?image=25"
+        img-alt="Image"
+        img-top
+        tag="article"
+        style="max-width: 20rem;"
+        class="mb-2"
+        v-if='!product.listed'
+      >
+        <b-card-text>
+          Price: {{ product.price }}
+          Qty: {{ product.quantity }}
+          Sold: {{ product.numSold }}
+        </b-card-text>
+
+        <b-button v-b-modal="product.id">Edit</b-button>
+        <b-modal :id=product.id title="Edit Product Details" @show='resetModal' @hidden='resetModal' @ok='submitModal(product.id)'>
+          <form>
+            <b-form-group label="Price">
+              <b-form-input v-model="newPrice"></b-form-input>
+            </b-form-group>
+            <b-form-group label="Quantity">
+              <b-form-input v-model="newQuantity"></b-form-input>
+            </b-form-group>
+          </form>
+        </b-modal>
+
+        <b-button v-on:click='relist(product.id)'>Relist</b-button>
       </b-card>
     </b-card-group>
   </b-container>
@@ -90,18 +122,24 @@ export default {
       if (this.newPrice) {
         const result = await Supplier.updateProductPrice(productId, this.newPrice, this.details.address);
         console.log(result.data);
+        this.$router.go();
       }
       if (this.newQuantity) {
         const result = await Supplier.updateProductQuantity(productId, this.newQuantity, this.details.address);
         console.log(result.data);
+        this.$router.go();
       }
-      this.$router.go();
     },
     async unlist(productId) {
       const result = await Supplier.unlistProduct(productId, this.details.address);
       console.log(result.data);
       this.$router.go();
     },
+    async relist(productId) {
+      const result = await Supplier.relistProduct(productId, this.details.address);
+      console.log(result.data);
+      this.$router.go();
+    }
   },
   components: {
     Navbar,
