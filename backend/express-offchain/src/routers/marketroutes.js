@@ -19,7 +19,7 @@ async function getMarketAddress() {
     ).rows[0];
 
     if (address == undefined) {
-      throw new Error("Invalid Employee Address");
+      throw new Error("Market Address Not Found");
     }
 
     return address.address;
@@ -31,7 +31,8 @@ router.get("/viewproduct", async (req, res, next) => {
   try {
     const address = await getMarketAddress();
     const product = await market.viewProduct(productId, address);
-    return res.status(200).send(structParser.parseProduct(product));
+    const p = await structParser.parseProduct(product);
+    return res.status(200).send(p);
   } catch (error) {
     return res
       .status(500)
@@ -43,7 +44,9 @@ router.get("/viewallproducts", async (req, res, next) => {
   try {
     const address = await getMarketAddress();
     const result = await market.viewAllProducts(address);
-    const products = result.map((p) => structParser.parseProduct(p));
+    const products = await Promise.all(
+      result.map((p) => structParser.parseProduct(p))
+    );
     return res.status(200).send(products);
   } catch (error) {
     return res
@@ -57,7 +60,14 @@ router.get("/viewsupplierproducts", async (req, res, next) => {
   try {
     const address = await getMarketAddress();
     const result = await market.viewSupplierProducts(supplier, address);
-    const products = result.map((p) => structParser.parseProduct(p));
+    const products = await Promise.all(
+      result
+        .filter(
+          (product) =>
+            product[0] !== "0x0000000000000000000000000000000000000000"
+        )
+        .map((p) => structParser.parseProduct(p))
+    );
     return res.status(200).send(products);
   } catch (error) {
     return res

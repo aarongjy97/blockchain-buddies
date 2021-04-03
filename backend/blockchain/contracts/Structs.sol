@@ -50,6 +50,7 @@ library Structs {
 
       /* Order Details */ 
       uint productId;
+      string productName;
       uint orderId;
       uint quantity;
       uint price;  
