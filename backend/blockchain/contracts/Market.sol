@@ -260,6 +260,8 @@ contract Market {
       erc20.transferFrom(orders[_orderId].procurer, orders[_orderId].supplier, orders[_orderId].price);
       orders[_orderId].status = Structs.OrderStatus.Delivered;
 
+      products[orders[_orderId].productId].numSold += orders[_orderId].quantity;
+
       emit OrderDelivered(_orderId, msg.sender);
    }
 
