@@ -259,4 +259,27 @@ router.post("/viewpurchaseorder", async (req, res, next) => {
   }
 });
 
+router.get("/getcouriers", async (req, res, next) => {
+  try {
+    const couriers = (
+      await query(
+        `
+        select address, name
+        from courier;
+        `,
+      )
+    ).rows;
+    return res.status(200).send(couriers);
+  } catch (error) {
+    return res
+      .status(500)
+      .send(
+        errorParser(
+          error,
+          `Failed to Get Couriers`
+        )
+      );
+  }
+})
+
 module.exports = router;
