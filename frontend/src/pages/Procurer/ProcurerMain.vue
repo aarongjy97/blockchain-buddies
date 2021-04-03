@@ -2,8 +2,8 @@
   <div>
     <Navbar></Navbar>
     <div v-if="products.length">
-      <div v-for="p in products" :key="p.product_name">
-        <div class="box col-lg-3 col-md-4">
+      <div v-for="p in products" :key="p.product_id">
+        <div class="box col-lg-3 col-md-4" v-if='p.listed'>
           <product-box
             v-bind:product_id="p.product_id"
             v-bind:product_name="p.product_name"
@@ -40,6 +40,8 @@ export default {
           product_price: p.price,
           supplier: p.supplier,
           product_id: p.productId,
+          listed: p.listed,
+          supplierName: p.supplierName,
         }));
         console.log("product:", this.products);
       } catch (e) {

@@ -21,7 +21,7 @@
           <h5>{{ product_price }}</h5>
         </a> -->
         <ul class="product_price list-unstyled">
-          <li class="old_price">${{ product_price }}</li>
+          <li class="old_price">{{ product_price }} Tokens</li>
         </ul>
       </div>
     </div>
