@@ -50,6 +50,16 @@ contract Procurer {
         _;
     }
 
+    /* ==================== General Functions ==================== */
+
+    function getTokenBalance() isEmployee returns (uint256) {
+        return erc20.balanceOf(address(this));
+    }
+
+    function getMarketAllowance() isEmployee returns (uint256) {
+        return erc20.allowance(address(this), address(market));
+    }
+
     /* ==================== Order Functions ==================== */
 
     /**

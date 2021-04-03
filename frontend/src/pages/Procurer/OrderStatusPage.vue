@@ -50,7 +50,7 @@ export default {
           po_id: po.orderId,
           price: po.price,
           quantity: po.quantity,
-          date: po.dateCreated,
+          date: po.dateCreated.substring(0,10),
           status: po.status,
           supplier_name: po.supplierName,
           product_id: po.productId,

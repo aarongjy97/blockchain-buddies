@@ -9,7 +9,7 @@ import "./Structs.sol";
 
 contract Market {
 
-   ERC20 erc20;
+   MarketERC20 erc20;
    address _owner;
 
    uint orderId;
@@ -48,7 +48,7 @@ contract Market {
 
    /* ==================== Constructor ==================== */
 
-   constructor(ERC20 erc20Address) public {
+   constructor(MarketERC20 erc20Address) public {
       erc20 = erc20Address;
       _owner = msg.sender;
       orderId = 1;
@@ -257,9 +257,10 @@ contract Market {
       require(orders[_orderId].status == Structs.OrderStatus.Delivering, "Current status of order is not delivering");
 
       // transfer funds to supplier upon confirmation of delivery by procurer (items are in good condition)
-      erc20.transferFrom(orders[_orderId].procurer, orders[_orderId].supplier, orders[_orderId].price * orders[_orderId].quantity);
+      erc20.transferFrom(orders[_orderId].procurer, orders[_orderId].supplier, orders[_orderId].price);
       orders[_orderId].status = Structs.OrderStatus.Delivered;
-      orders[_orderId].procurerFinanceEmployee = tx.origin;
+
+      products[orders[_orderId].productId].numSold += orders[_orderId].quantity;
 
       emit OrderDelivered(_orderId, msg.sender);
    }
@@ -290,8 +291,6 @@ contract Market {
       require(orders[_orderId].supplier == msg.sender, "Only valid supplier can approve this purchase order");
       require(orders[_orderId].status == Structs.OrderStatus.InternalApproved, "Current status of order is not internal approved");
 
-      // assuming that funds from procurer are transfered to marketplace upon approval from supplier 
-      require(erc20.transferFrom(orders[_orderId].procurer, address(this), orders[_orderId].price * orders[_orderId].quantity), "Insufficient funds in procurer's account");
       orders[_orderId].status = Structs.OrderStatus.SupplierApproved;
       orders[_orderId].supplierEmployee = tx.origin;
    

@@ -57,7 +57,7 @@ export default {
         console.log('orders:', result.data);
 
         this.orders = result.data.map(o => ({
-          dateCreated: o.dateCreated,
+          dateCreated: o.dateCreated.substring(0,10),
           orderId: o.orderId,
           price: o.price,
           procurerName: o.procurerName,

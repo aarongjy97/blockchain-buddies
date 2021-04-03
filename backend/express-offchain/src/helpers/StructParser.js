@@ -78,7 +78,7 @@ async function parsePurchaseOrder(purchaseOrder) {
     orderId: purchaseOrder[9],
     quantity: purchaseOrder[10],
     price: purchaseOrder[11],
-    dateCreated: purchaseOrder[12],
+    dateCreated: new Date(parseInt(purchaseOrder[12]) * 1000),
     status: orderStatus[parseInt(purchaseOrder[13])],
   };
 
@@ -101,7 +101,7 @@ async function parsePurchaseOrder(purchaseOrder) {
     ).rows[0].name
 
     /* Adds Procurer Finance Employee Name, if exists */
-    if (addressChecker(po.procurerFinanceEmployeeName)) {
+    if (addressChecker(po.procurerFinanceEmployee)) {
       po.procurerFinanceEmployeeName = (
         await query(
           `select name from procureremployee where address=$1`,

@@ -40,7 +40,14 @@ contract Courier {
         _;
     }
 
+    /* ==================== General Functions ==================== */
+
+    function getTokenBalance() employeeOnly returns (uint256) {
+        return erc20.balanceOf(address(this));
+    }
+
     /* ==================== Admin Functions ==================== */
+    
     function addEmployee(address _employee, string memory name) public ownerOnly {
         require(_employee != address(0), "Invalid employee address");
         Employee memory _newEmployee = Employee(name, EmployeeType.Employee);
