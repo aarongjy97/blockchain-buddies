@@ -88,6 +88,10 @@ async function viewPurchaseOrder(orderid, employeeAddress) {
   });
 }
 
+async function getCouriers() {
+  return await axios.get(`${endpoint}/getcouriers`);
+}
+
 module.exports = {
   viewSelfProduct: viewSelfProduct,
   viewAllSelfProducts: viewAllSelfProducts,
@@ -101,4 +105,5 @@ module.exports = {
   assignCourier: assignCourier,
   viewAllPurchaseOrders: viewAllPurchaseOrders,
   viewPurchaseOrder: viewPurchaseOrder,
+  getCouriers: getCouriers
 };
