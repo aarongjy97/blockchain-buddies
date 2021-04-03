@@ -20,7 +20,7 @@
         <div class="col-wrapper order-status-signed-action">
           <div class="table-col order-status">{{ po_status }}</div>
           <div
-            v-if="isFinance && !isInternalApproved"
+            v-if="isFinance && isOrdered"
             class="table-col order-status"
           >
             <button class="approve" @click="approvePurchaseOrder">
@@ -31,7 +31,7 @@
             </button>
           </div>
           <div v-else-if="!isInternalApproved" class="table-col order-status">
-            Not Applicable
+            -
           </div>
           <div v-else class="table-col order-status">
             -
@@ -58,8 +58,9 @@ export default {
   },
   data() {
     return {
-      isFinance: this.employeeType == "finance" ? true : false,
-      isInternalApproved: this.po_status == "Internal Approved" ? true : false,
+      isFinance: this.employeeType == "finance",
+      isInternalApproved: this.po_status == "Internal Approved",
+      isOrdered: this.po_status == "Ordered"
     };
   },
   methods: {
