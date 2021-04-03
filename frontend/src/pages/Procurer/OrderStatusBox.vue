@@ -31,7 +31,7 @@
             v-else-if="!isFinance && isDelivering"
             class="table-col order-status"
           >
-            <button class="approve" @click="rejectPurchaseOrder">
+            <button class="approve" @click="receivedOrder">
               Received
             </button>
           </div>

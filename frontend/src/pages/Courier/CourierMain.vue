@@ -14,16 +14,18 @@
         img-top
         style="max-width: 20rem;"
         class="mb-2"
+        v-if='order.orderId!=0'
       >
         <b-list-group class='mb-2'>
-          <b-list-group-item>Pric e: {{ order.price }}</b-list-group-item>
+          <b-list-group-item>Product: {{ order.productName }}</b-list-group-item>
+          <b-list-group-item>Price: {{ order.price }}</b-list-group-item>
           <b-list-group-item>Qty: {{ order.quantity }}</b-list-group-item>
           <b-list-group-item>Date Created: {{ order.dateCreated }}</b-list-group-item>
-          <b-list-group-item>Procurer: {{ order.procurer }}</b-list-group-item>
-          <b-list-group-item>Supplier: {{ order.supplier }}</b-list-group-item>
+          <b-list-group-item>Procurer: {{ order.procurerName }}</b-list-group-item>
+          <b-list-group-item>Supplier: {{ order.supplierName }}</b-list-group-item>
           <b-list-group-item>Status: {{ order.status }}</b-list-group-item>
         </b-list-group>
-        <b-button v-if='order.status=="Delivering"' v-on:click='received(order.orderId)'>Received from supplier</b-button> 
+        <b-button v-if='order.status=="Supplier Approved"' v-on:click='received(order.orderId)'>Received from supplier</b-button> 
       </b-card> 
     </b-card-group>
   </b-container>
@@ -58,11 +60,12 @@ export default {
           dateCreated: o.dateCreated,
           orderId: o.orderId,
           price: o.price,
-          procurer: o.procurer,
+          procurerName: o.procurerName,
           productId: o.productId,
+          productName: o.productName,
           quantity: o.quantity,
           status: o.status,
-          supplier: o.supplier,
+          supplierName: o.supplierName,
         }))
       }
       catch (err) {
@@ -73,7 +76,8 @@ export default {
       try {
         const result = await Courier.receivedByCourier(orderId, this.details.address);
         console.log('received: ', result.data);
-        alert('Received');
+        alert('Received from supplier and is delivering');
+        this.$router.go();
       }
       catch(e) {
         console.log(e.response.data);

@@ -254,7 +254,7 @@ contract Market {
    function deliveredByCourier(uint _orderId) public procurerOnly {
       require(orders[_orderId].status != Structs.OrderStatus.notCreated, "Order does not exist");
       require(orders[_orderId].procurer == msg.sender, "Only valid procurer can approve this purchase order");
-      require(orders[_orderId].status == Structs.OrderStatus.Ordered, "Current status of order is not ordered");
+      require(orders[_orderId].status == Structs.OrderStatus.Delivering, "Current status of order is not delivering");
 
       // transfer funds to supplier upon confirmation of delivery by procurer (items are in good condition)
       erc20.transferFrom(orders[_orderId].procurer, orders[_orderId].supplier, orders[_orderId].price * orders[_orderId].quantity);
