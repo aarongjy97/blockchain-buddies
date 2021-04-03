@@ -78,7 +78,7 @@ async function parsePurchaseOrder(purchaseOrder) {
     orderId: purchaseOrder[9],
     quantity: purchaseOrder[10],
     price: purchaseOrder[11],
-    dateCreated: purchaseOrder[12],
+    dateCreated: new Date(parseInt(purchaseOrder[12]) * 1000),
     status: orderStatus[parseInt(purchaseOrder[13])],
   };
 
