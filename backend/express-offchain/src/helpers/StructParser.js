@@ -101,7 +101,7 @@ async function parsePurchaseOrder(purchaseOrder) {
     ).rows[0].name
 
     /* Adds Procurer Finance Employee Name, if exists */
-    if (addressChecker(po.procurerFinanceEmployeeName)) {
+    if (addressChecker(po.procurerFinanceEmployee)) {
       po.procurerFinanceEmployeeName = (
         await query(
           `select name from procureremployee where address=$1`,
