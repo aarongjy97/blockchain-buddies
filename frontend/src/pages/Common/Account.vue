@@ -29,6 +29,7 @@
 </template>
 
 <script>
+// import Courier from '../../api/Courier';
 import Navbar from "./AccountNavbar.vue";
 export default {
   name: "Account",
@@ -48,13 +49,24 @@ export default {
       catch (err) {
         console.log(err)
       }
-    }
+    },
+    // async getTokenBalance() {
+    //   try{
+    //     const result = await Courier.getTokenBalance(this.details.address);
+    //     console.log(result.data);
+    //     this.balance = result.data;
+    //   }
+    //   catch (err) {
+    //     console.log(err)
+    //   }
+    // },
   },
   components: {
     Navbar,
   },
   mounted() {
-    this.viewAll()
+    this.viewAll();
+    // this.getTokenBalance();
   },
 };
 </script>

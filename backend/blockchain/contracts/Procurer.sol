@@ -52,11 +52,11 @@ contract Procurer {
 
     /* ==================== General Functions ==================== */
 
-    function getTokenBalance() isEmployee returns (uint256) {
+    function getTokenBalance() public isEmployee returns (uint256) {
         return erc20.balanceOf(address(this));
     }
 
-    function getMarketAllowance() isEmployee returns (uint256) {
+    function getMarketAllowance() public isEmployee returns (uint256) {
         return erc20.allowance(address(this), address(market));
     }
 

@@ -42,7 +42,7 @@ contract Courier {
 
     /* ==================== General Functions ==================== */
 
-    function getTokenBalance() employeeOnly returns (uint256) {
+    function getTokenBalance() public employeeOnly returns (uint256) {
         return erc20.balanceOf(address(this));
     }
 
