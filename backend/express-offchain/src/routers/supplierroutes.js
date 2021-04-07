@@ -293,4 +293,24 @@ router.get("/gettokenbalance", async (req, res, next) => {
   }
 });
 
+router.get("/statistics", async (req, res, next) => {
+  const { employeeAddress } = req.query;
+  console.log(employeeAddress);
+  try {
+    const address = await getSupplierContractAddress(employeeAddress);
+    const result = await supplier.supplierStatistics(employeeAddress, address);
+    const statistics = {
+      totalEarned: result[0].toString(),
+      productsSold: result[1].toString(),
+      avgRating: result[2].toString()
+    }
+    return res.status(200).send(statistics);
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .send(errorParser(error, `Failed to Retrieve Statistics`));
+  }
+})
+
 module.exports = router;

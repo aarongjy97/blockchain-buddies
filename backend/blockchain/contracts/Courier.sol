@@ -46,6 +46,14 @@ contract Courier {
         return erc20.balanceOf(address(this));
     }
 
+    /**
+     * @notice Retrieves the statistics of a courier
+     * @return Total amount of tokens earned and total number of orders delivered
+     */
+    function courierStatistics() public view employeeOnly returns (uint, uint) {
+        return market.courierStatistics();
+    }
+
     /* ==================== Admin Functions ==================== */
     
     function addEmployee(address _employee, string memory name) public ownerOnly {

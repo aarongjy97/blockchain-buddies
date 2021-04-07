@@ -126,6 +126,13 @@ async function getTokenBalance(employeeAddress, contractAddress) {
   });
 }
 
+async function supplierStatistics(employeeAddress, contractAddress) {
+  const supplierContract = await supplierContractInterface.at(contractAddress);
+  return await supplierContract.supplierStatistics.call({
+    from: employeeAddress,
+  });
+}
+
 module.exports = {
   viewSelfProduct: viewSelfProduct,
   viewAllSelfProducts: viewAllSelfProducts,
@@ -140,4 +147,5 @@ module.exports = {
   supplierViewAllPurchaseOrders: supplierViewAllPurchaseOrders,
   viewPurchaseOrder: viewPurchaseOrder,
   getTokenBalance: getTokenBalance,
+  supplierStatistics: supplierStatistics
 };

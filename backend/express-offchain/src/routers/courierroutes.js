@@ -101,4 +101,21 @@ router.get("/gettokenbalance", async (req, res, next) => {
   }
 });
 
+router.get("/statistics", async (req, res, next) => {
+  const { employeeAddress } = req.query;
+  try {
+    const address = await getCourierContractAddress(employeeAddress);
+    const result = await courier.courierStatistics(employeeAddress, address);
+    const statistics = {
+      totalEarned: result[0].toString(),
+      ordersDelivered: result[1].toString()
+    }
+    return res.status(200).send(statistics);
+  } catch (error) {
+    return res
+      .status(500)
+      .send(errorParser(error, `Failed to Retrieve Statistics`));
+  }
+})
+
 module.exports = router;

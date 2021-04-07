@@ -182,4 +182,22 @@ router.put("/addrating", async (req, res, next) => {
   }
 })
 
+router.get("/statistics", async (req, res, next) => {
+  const { employeeAddress } = req.query;
+  try {
+    const address = await getProcurerContractAddress(employeeAddress);
+    const result = await procurer.procurerStatistics(employeeAddress, address);
+    const statistics = {
+      totalSpent: result[0].toString(),
+      productsBought: result[1].toString(),
+      successfulOrdersMade: result[2].toString()
+    }
+    return res.status(200).send(statistics);
+  } catch (error) {
+    return res
+      .status(500)
+      .send(errorParser(error, `Failed to Retrieve Statistics`));
+  }
+})
+
 module.exports = router;

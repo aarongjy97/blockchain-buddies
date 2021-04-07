@@ -77,6 +77,13 @@ async function addRating(employeeAddress, contractAddress, rating, orderId) {
   });
 }
 
+async function procurerStatistics(employeeAddress, contractAddress) {
+  const procurerContract = await procurerContractInterface.at(contractAddress);
+  return await procurerContract.procurerStatistics.call({
+    from: employeeAddress
+  })
+}
+
 module.exports = {
   createPurchaseOrder: createPurchaseOrder,
   approvePurchaseOrder: approvePurchaseOrder,
@@ -86,5 +93,6 @@ module.exports = {
   deliveredByCourier: deliveredByCourier,
   getTokenBalance: getTokenBalance,
   getMarketAllowance: getMarketAllowance,
-  addRating, addRating
+  addRating: addRating,
+  procurerStatistics: procurerStatistics
 };

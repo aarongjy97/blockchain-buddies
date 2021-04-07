@@ -100,6 +100,14 @@ async function getTokenBalance(employeeAddress) {
   });
 }
 
+async function supplierStatistics(employeeAddress) {
+  return await axios.get(`${endpoint}/statistics`, {
+    params: {
+      employeeAddress: employeeAddress
+    }
+  })
+}
+
 module.exports = {
   viewSelfProduct: viewSelfProduct,
   viewAllSelfProducts: viewAllSelfProducts,
@@ -114,5 +122,6 @@ module.exports = {
   viewAllPurchaseOrders: viewAllPurchaseOrders,
   viewPurchaseOrder: viewPurchaseOrder,
   getCouriers: getCouriers,
-  getTokenBalance: getTokenBalance
+  getTokenBalance: getTokenBalance,
+  supplierStatistics: supplierStatistics
 };

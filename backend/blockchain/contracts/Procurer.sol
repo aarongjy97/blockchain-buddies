@@ -60,6 +60,14 @@ contract Procurer {
         return erc20.allowance(address(this), address(market));
     }
 
+    /**
+     * @notice Retrieves the statistics of a procurer
+     * @return Total amount of tokens spent, Total amount of products bought, and total amount of successful orders
+     */
+    function procurerStatistics() public view isEmployee returns (uint, uint, uint) {
+        return market.procurerStatistics();
+    }
+
     /* ==================== Order Functions ==================== */
 
     /**
@@ -128,7 +136,7 @@ contract Procurer {
      * If the transfer goes through, the status will be eventually changes to Closed.
      * @dev Calls Market contract
      */
-    function deliveredByCourier(uint orderId) isLogisticsEmployee isLogisticsEmployee public {
+    function deliveredByCourier(uint orderId) isLogisticsEmployee public {
         market.deliveredByCourier(orderId);
     }
 
@@ -139,7 +147,6 @@ contract Procurer {
     function addRating(uint rating, uint _orderId) isLogisticsEmployee public {
         market.addRating(rating, _orderId);
     }
-
 
     /* ==================== Admin Functions ==================== */
 

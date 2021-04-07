@@ -46,6 +46,14 @@ contract Supplier {
       return erc20.balanceOf(address(this));
    }
 
+   /**
+    * @notice Retrieves the statistics of a supplier
+    * @return Total amount of tokens earned, total amount of products sold, and average rating across products.
+    */
+   function supplierStatistics() public view employeeOnly returns (uint, uint, uint) {
+      return market.supplierStatistics();
+   }
+
    /* ==================== Admin Functions ==================== */
 
    function addEmployee(address _employee, string memory name) public ownerOnly {

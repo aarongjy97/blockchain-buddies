@@ -71,6 +71,14 @@ async function addRating(employeeAddress, orderId, rating) {
   })
 }
 
+async function procurerStatistics(employeeAddress) {
+  return await axios.get(`${endpoint}/statistics`, {
+    params: {
+      employeeAddress: employeeAddress
+    }
+  })
+}
+
 module.exports = {
   createPurchaseOrder: createPurchaseOrder,
   approvePurchaseOrder: approvePurchaseOrder,
@@ -80,5 +88,6 @@ module.exports = {
   deliveredByCourier: deliveredByCourier,
   getTokenBalance: getTokenBalance,
   getMarketAllowance: getMarketAllowance,
-  addRating: addRating
+  addRating: addRating,
+  procurerStatistics: procurerStatistics
 };

@@ -33,9 +33,17 @@ async function getTokenBalance(employeeAddress, contractAddress) {
   });
 }
 
+async function courierStatistics(employeeAddress, contractAddress) {
+  const courierContract = await courierContractInterface.at(contractAddress);
+  return await courierContract.courierStatistics.call({
+    from: employeeAddress
+  })
+}
+
 module.exports = {
   viewPurchaseOrder: viewPurchaseOrder,
   courierViewAllPurchaseOrders: courierViewAllPurchaseOrders,
   receivedByCourier: receivedByCourier,
-  getTokenBalance: getTokenBalance
+  getTokenBalance: getTokenBalance,
+  courierStatistics: courierStatistics
 };

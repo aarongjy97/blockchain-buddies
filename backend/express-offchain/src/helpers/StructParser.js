@@ -44,6 +44,7 @@ const orderStatus = [
   "Supplier Approved",
   "Internal Rejected",
   "Supplier Rejected",
+  "Courier Assigned",
   "Delivering",
   "Delivered",
 ];
