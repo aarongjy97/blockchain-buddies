@@ -143,4 +143,30 @@ router.put("/deliveredbycourier", async (req, res, next) => {
   }
 });
 
+router.get("/gettokenbalance", async (req, res, next) => {
+  const { employeeAddress } = req.query;
+  try {
+    const address = await getProcurerContractAddress(employeeAddress);
+    const result = await procurer.getTokenBalance(employeeAddress, address);
+    return res.status(200).send(result.toString());
+  } catch (error) {
+    return res
+      .status(500)
+      .send(errorParser(error, `Failed to Retrieve Token Balance`));
+  }
+});
+
+router.get("/getmarketallowance", async (req, res, next) => {
+  const { employeeAddress } = req.query;
+  try {
+    const address = await getProcurerContractAddress(employeeAddress);
+    const result = await procurer.getMarketAllowance(employeeAddress, address);
+    return res.status(200).send(result.toString());
+  } catch (error) {
+    return res
+      .status(500)
+      .send(errorParser(error, `Failed to Retrieve Market Allowance`));
+  }
+});
+
 module.exports = router;

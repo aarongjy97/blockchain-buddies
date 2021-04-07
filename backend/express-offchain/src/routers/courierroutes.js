@@ -88,4 +88,17 @@ router.put("/receivedbycourier", async (req, res, next) => {
   }
 });
 
+router.get("/gettokenbalance", async (req, res, next) => {
+  const { employeeAddress } = req.query;
+  try {
+    const address = await getCourierContractAddress(employeeAddress);
+    const result = await courier.getTokenBalance(employeeAddress, address);
+    return res.status(200).send(result.toString());
+  } catch (error) {
+    return res
+      .status(500)
+      .send(errorParser(error, `Failed to Retrieve Token Balance`));
+  }
+});
+
 module.exports = router;

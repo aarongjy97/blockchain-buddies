@@ -7,14 +7,14 @@ courierContractInterface.setProvider(provider);
 
 async function viewPurchaseOrder(orderId, employeeAddress, contractAddress) {
   const courierContract = await courierContractInterface.at(contractAddress);
-  return await courierContract.viewPurchaseOrder(orderId, {
+  return await courierContract.viewPurchaseOrder.call(orderId, {
     from: employeeAddress,
   });
 }
 
 async function courierViewAllPurchaseOrders(employeeAddress, contractAddress) {
   const courierContract = await courierContractInterface.at(contractAddress);
-  return await courierContract.courierViewAllPurchaseOrders({
+  return await courierContract.courierViewAllPurchaseOrders.call({
     from: employeeAddress,
   });
 }
@@ -26,8 +26,16 @@ async function receivedByCourier(orderId, employeeAddress, contractAddress) {
   });
 }
 
+async function getTokenBalance(employeeAddress, contractAddress) {
+  const courierContract = await courierContractInterface.at(contractAddress);
+  return await courierContract.getTokenBalance.call({
+    from: employeeAddress,
+  });
+}
+
 module.exports = {
   viewPurchaseOrder: viewPurchaseOrder,
   courierViewAllPurchaseOrders: courierViewAllPurchaseOrders,
   receivedByCourier: receivedByCourier,
+  getTokenBalance: getTokenBalance
 };

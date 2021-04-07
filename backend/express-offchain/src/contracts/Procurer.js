@@ -37,14 +37,14 @@ async function rejectPurchaseOrder(orderId, employeeAddress, contractAddress) {
 
 async function viewPurchaseOrder(orderId, employeeAddress, contractAddress) {
   const procurerContract = await procurerContractInterface.at(contractAddress);
-  return await procurerContract.viewPurchaseOrder(orderId, {
+  return await procurerContract.viewPurchaseOrder.call(orderId, {
     from: employeeAddress,
   });
 }
 
 async function viewAllPurchaseOrders(employeeAddress, contractAddress) {
   const procurerContract = await procurerContractInterface.at(contractAddress);
-  return await procurerContract.viewAllPurchaseOrders({
+  return await procurerContract.viewAllPurchaseOrders.call({
     from: employeeAddress,
   });
 }
@@ -56,6 +56,20 @@ async function deliveredByCourier(orderId, employeeAddress, contractAddress) {
   });
 }
 
+async function getTokenBalance(employeeAddress, contractAddress) {
+  const procurerContract = await procurerContractInterface.at(contractAddress);
+  return await procurerContract.getTokenBalance.call({
+    from: employeeAddress,
+  });
+}
+
+async function getMarketAllowance(employeeAddress, contractAddress) {
+  const procurerContract = await procurerContractInterface.at(contractAddress);
+  return await procurerContract.getMarketAllowance.call({
+    from: employeeAddress,
+  });
+}
+
 module.exports = {
   createPurchaseOrder: createPurchaseOrder,
   approvePurchaseOrder: approvePurchaseOrder,
@@ -63,4 +77,6 @@ module.exports = {
   viewPurchaseOrder: viewPurchaseOrder,
   viewAllPurchaseOrders: viewAllPurchaseOrders,
   deliveredByCourier: deliveredByCourier,
+  getTokenBalance: getTokenBalance,
+  getMarketAllowance: getMarketAllowance,
 };

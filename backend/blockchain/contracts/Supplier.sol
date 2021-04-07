@@ -42,7 +42,7 @@ contract Supplier {
 
    /* ==================== General Functions ==================== */
 
-   function getTokenBalance() public employeeOnly returns (uint256) {
+   function getTokenBalance() public view employeeOnly returns (uint256) {
       return erc20.balanceOf(address(this));
    }
 

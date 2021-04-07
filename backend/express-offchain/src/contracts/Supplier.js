@@ -7,14 +7,16 @@ supplierContractInterface.setProvider(provider);
 
 async function viewSelfProduct(productid, employeeAddress, contractAddress) {
   const supplierContract = await supplierContractInterface.at(contractAddress);
-  return await supplierContract.viewSelfProduct(productid, {
+  return await supplierContract.viewSelfProduct.call(productid, {
     from: employeeAddress,
   });
 }
 
 async function viewAllSelfProducts(employeeAddress, contractAddress) {
   const supplierContract = await supplierContractInterface.at(contractAddress);
-  return await supplierContract.viewAllSelfProducts({ from: employeeAddress });
+  return await supplierContract.viewAllSelfProducts.call({
+    from: employeeAddress,
+  });
 }
 
 async function listProduct(
@@ -104,14 +106,21 @@ async function assignCourier(
 
 async function supplierViewAllPurchaseOrders(employeeAddress, contractAddress) {
   const supplierContract = await supplierContractInterface.at(contractAddress);
-  return await supplierContract.supplierViewAllPurchaseOrders({
+  return await supplierContract.supplierViewAllPurchaseOrders.call({
     from: employeeAddress,
   });
 }
 
 async function viewPurchaseOrder(orderId, employeeAddress, contractAddress) {
   const supplierContract = await supplierContractInterface.at(contractAddress);
-  return await supplierContract.viewPurchaseOrder(orderId, {
+  return await supplierContract.viewPurchaseOrder.call(orderId, {
+    from: employeeAddress,
+  });
+}
+
+async function getTokenBalance(employeeAddress, contractAddress) {
+  const supplierContract = await supplierContractInterface.at(contractAddress);
+  return await supplierContract.getTokenBalance.call({
     from: employeeAddress,
   });
 }
@@ -129,4 +138,5 @@ module.exports = {
   assignCourier: assignCourier,
   supplierViewAllPurchaseOrders: supplierViewAllPurchaseOrders,
   viewPurchaseOrder: viewPurchaseOrder,
+  getTokenBalance: getTokenBalance,
 };
