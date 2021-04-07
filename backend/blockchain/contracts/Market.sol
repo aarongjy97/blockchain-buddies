@@ -15,6 +15,8 @@ contract Market {
    uint orderId;
    uint productId;
 
+   uint courierFee = 50;
+
    /* Stakeholders */
    mapping(address => Procurer) procurers;
    mapping(address => Supplier) suppliers;
@@ -188,7 +190,7 @@ contract Market {
       require(_productId > 0, "Invalid Product ID");
       require(quantity > 0, "Invalid Quantity");
       require(products[_productId].supplier != address(0), "Product does not exist");
-      require(products[_productId].price * quantity == price, "Invalid Price");
+      require(courierFee + (products[_productId].price * quantity) == price, "Invalid Price");
 
       Structs.PurchaseOrder memory po = Structs.PurchaseOrder(
          msg.sender,
@@ -258,7 +260,8 @@ contract Market {
       require(orders[_orderId].status == Structs.OrderStatus.Delivering, "Current status of order is not delivering");
 
       // transfer funds to supplier upon confirmation of delivery by procurer (items are in good condition)
-      erc20.transferFrom(orders[_orderId].procurer, orders[_orderId].supplier, orders[_orderId].price);
+      erc20.transferFrom(orders[_orderId].procurer, orders[_orderId].supplier, (orders[_orderId].price - courierFee));
+      erc20.transferFrom(orders[_orderId].procurer, orders[_orderId].courier, courierFee);
       orders[_orderId].status = Structs.OrderStatus.Delivered;
 
       products[orders[_orderId].productId].numSold += orders[_orderId].quantity;
@@ -288,6 +291,7 @@ contract Market {
       require(orders[_orderId].status != Structs.OrderStatus.notCreated, "Order does not exist");
       require(orders[_orderId].procurer == msg.sender, "Only valid Procurer can rate product");
       require(orders[_orderId].status == Structs.OrderStatus.Delivered, "Order not delivered, Unable to give rating");
+      require(rating > 0 && rating <= 5, "Invalid Rating");
 
       /* Update rating for Order */
       orders[_orderId].rating = rating;
@@ -308,6 +312,33 @@ contract Market {
 
       uint newRating = sum / sumOrders;
       products[_productId].rating = newRating;
+   }
+
+   /**
+    * @notice Retrieves the statistics of a procurer
+    * @return Total amount of tokens spent, Total amount of products bought, and total amount of successful orders
+    */
+   function procurerStatistics() public view procurerOnly returns (uint, uint, uint) {
+      uint _totalSpent = 0;
+      uint _productsBought = 0;
+      uint _successfulOrdersMade = 0;
+
+      for (uint i = 0; i < orderId; i++) {
+         if (msg.sender == orders[i].procurer) {
+            if (orders[i].status == Structs.OrderStatus.Delivered) {
+               _totalSpent += orders[i].price;
+               _productsBought += orders[i].quantity;
+            }
+
+            if (orders[i].status == Structs.OrderStatus.SupplierApproved 
+                  || orders[i].status == Structs.OrderStatus.Delivering 
+                  || orders[i].status == Structs.OrderStatus.Delivered) {
+               _successfulOrdersMade++;
+            }
+         }
+      }
+
+      return (_totalSpent, _productsBought, _successfulOrdersMade);
    }
 
    /* ==================== Supplier Functions ==================== */
@@ -468,6 +499,7 @@ contract Market {
       require(address(couriers[courier]) == courier, "Courier does not exist");
       
       orders[_orderId].courier = courier;
+      orders[_orderId].status = Structs.OrderStatus.CourierAssigned;
 
       emit OrderCourierAssigned(_orderId, msg.sender, tx.origin, courier);
    }
@@ -487,6 +519,40 @@ contract Market {
       return _poa;
    }
 
+   /**
+    * @notice Retrieves the statistics of a supplier
+    * @return Total amount of tokens earned, total amount of products sold, and average rating across products.
+    */
+   function supplierStatistics() public view supplierOnly returns (uint, uint, uint) {
+      uint _totalEarned = 0;
+      uint _productsSold = 0;
+
+      uint _totalRating = 0;
+      uint _productsRated = 0;
+
+      for (uint i = 0; i < orderId; i++) {
+         if (orders[i].status == Structs.OrderStatus.Delivered && orders[i].supplier == msg.sender) {
+            _totalEarned += (orders[i].price - courierFee);
+            _productsSold += orders[i].quantity;
+         }
+      }
+
+      for (uint j = 0; j < productId; j++) {
+         if (products[j].supplier == msg.sender && products[j].rating > 0) {
+            _totalRating += products[j].rating;
+            _productsRated++;
+         }
+      }
+
+      uint avgRating = 0;
+
+      if (_productsRated > 0) {
+         avgRating = _totalRating / _productsSold;
+      }
+
+      return (_totalEarned, _productsSold, avgRating);
+   }
+
    /* ==================== Courier Functions ==================== */
 
    /**
@@ -496,7 +562,7 @@ contract Market {
    function receivedByCourier(uint _orderId) public courierOnly {
       require(orders[_orderId].status != Structs.OrderStatus.notCreated, "Order does not exist");
       require(orders[_orderId].courier == msg.sender, "Only valid courier can access this purchase order");
-      require(orders[_orderId].status == Structs.OrderStatus.SupplierApproved, "Current status of order is not supplier approved");
+      require(orders[_orderId].status == Structs.OrderStatus.CourierAssigned, "Current status of order is not Courier Assigned");
 
       orders[_orderId].courierEmployee = tx.origin;
       orders[_orderId].status = Structs.OrderStatus.Delivering;
@@ -517,5 +583,23 @@ contract Market {
          }
       } 
       return _poa;
+   }
+
+   /**
+    * @notice Retrieves the statistics of a courier
+    * @return Total amount of tokens earned and total number of orders delivered
+    */
+   function courierStatistics() public view courierOnly returns (uint, uint) {
+      uint _totalEarned = 0;
+      uint _ordersDelivered = 0;
+
+      for (uint i = 0; i < orderId; i++) {
+         if (orders[i].status == Structs.OrderStatus.Delivered && orders[i].courier == msg.sender) {
+            _totalEarned += courierFee;
+            _ordersDelivered++;
+         }
+      }
+
+      return (_totalEarned, _ordersDelivered);
    }
 }
