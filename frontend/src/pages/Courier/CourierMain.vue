@@ -25,7 +25,7 @@
           <b-list-group-item>Supplier: {{ order.supplierName }}</b-list-group-item>
           <b-list-group-item>Status: {{ order.status }}</b-list-group-item>
         </b-list-group>
-        <b-button v-if='order.status=="Supplier Approved"' v-on:click='received(order.orderId)'>Received from supplier</b-button> 
+        <b-button v-if='order.status=="Courier Assigned"' v-on:click='received(order.orderId)'>Received from supplier</b-button> 
       </b-card> 
     </b-card-group>
   </b-container>
