@@ -58,7 +58,7 @@ library Structs {
       uint price;  
       uint dateCreated; 
       OrderStatus status;
-    
+      uint rating;
     }
 
 }

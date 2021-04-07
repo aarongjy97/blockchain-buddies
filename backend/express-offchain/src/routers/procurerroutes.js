@@ -169,4 +169,17 @@ router.get("/getmarketallowance", async (req, res, next) => {
   }
 });
 
+router.put("/addrating", async (req, res, next) => {
+  const { employeeAddress, orderId, rating } = req.body;
+  try {
+    const address = await getProcurerContractAddress(employeeAddress);
+    const result = await procurer.addRating(employeeAddress, address, rating, orderId);
+    return res.status(202).send(`Rating for Order ID ${orderId} Added`);
+  } catch (error) {
+    return res
+      .status(500)
+      .send(errorParser(error, `Failed to Add Rating`));
+  }
+})
+
 module.exports = router;

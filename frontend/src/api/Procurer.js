@@ -63,6 +63,14 @@ async function getMarketAllowance(employeeAddress) {
   });
 }
 
+async function addRating(employeeAddress, orderId, rating) {
+  return await axios.put(`${endpoint}/addrating`, {
+    employeeAddress,
+    orderId,
+    rating
+  })
+}
+
 module.exports = {
   createPurchaseOrder: createPurchaseOrder,
   approvePurchaseOrder: approvePurchaseOrder,
@@ -71,5 +79,6 @@ module.exports = {
   viewAllPurchaseOrders: viewAllPurchaseOrders,
   deliveredByCourier: deliveredByCourier,
   getTokenBalance: getTokenBalance,
-  getMarketAllowance: getMarketAllowance
+  getMarketAllowance: getMarketAllowance,
+  addRating: addRating
 };

@@ -207,7 +207,8 @@ contract Market {
          quantity,
          price,
          now,
-         Structs.OrderStatus.Ordered
+         Structs.OrderStatus.Ordered,
+         0
       );
 
       orders[orderId] = po;
@@ -278,6 +279,35 @@ contract Market {
          }
       } 
       return _poa;
+   }
+
+   /**
+    * @notice Adds rating for product after order has been delivered.
+    */
+   function addRating(uint rating, uint _orderId) public procurerOnly {
+      require(orders[_orderId].status != Structs.OrderStatus.notCreated, "Order does not exist");
+      require(orders[_orderId].procurer == msg.sender, "Only valid Procurer can rate product");
+      require(orders[_orderId].status == Structs.OrderStatus.Delivered, "Order not delivered, Unable to give rating");
+
+      /* Update rating for Order */
+      orders[_orderId].rating = rating;
+
+      /* Update Product rating */
+      uint _productId = orders[_orderId].productId;
+
+      uint sum = 0;
+      uint sumOrders = 0;
+      for (uint i = 1; i < orderId; i++) {
+         if (orders[i].status == Structs.OrderStatus.Delivered && orders[i].productId == _productId) {
+            if (orders[i].rating > 0) {
+               sum += orders[i].rating;
+               sumOrders++;
+            }
+         }
+      }
+
+      uint newRating = sum / sumOrders;
+      products[_productId].rating = newRating;
    }
 
    /* ==================== Supplier Functions ==================== */

@@ -132,6 +132,15 @@ contract Procurer {
         market.deliveredByCourier(orderId);
     }
 
+    /**
+     * @notice Adds rating to an order, which updates the product's rating.
+     * @dev Calls Market contract
+     */
+    function addRating(uint rating, uint _orderId) isLogisticsEmployee public {
+        market.addRating(rating, _orderId);
+    }
+
+
     /* ==================== Admin Functions ==================== */
 
     /**
