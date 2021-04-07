@@ -92,6 +92,14 @@ async function getCouriers() {
   return await axios.get(`${endpoint}/getcouriers`);
 }
 
+async function getTokenBalance(employeeAddress) {
+  return await axios.get(`${endpoint}/gettokenbalance`, {
+    params: {
+      employeeAddress: employeeAddress,
+    },
+  });
+}
+
 module.exports = {
   viewSelfProduct: viewSelfProduct,
   viewAllSelfProducts: viewAllSelfProducts,
@@ -105,5 +113,6 @@ module.exports = {
   assignCourier: assignCourier,
   viewAllPurchaseOrders: viewAllPurchaseOrders,
   viewPurchaseOrder: viewPurchaseOrder,
-  getCouriers: getCouriers
+  getCouriers: getCouriers,
+  getTokenBalance: getTokenBalance
 };

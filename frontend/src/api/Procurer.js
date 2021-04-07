@@ -49,6 +49,20 @@ async function deliveredByCourier(orderId, employeeAddress) {
   });
 }
 
+async function getTokenBalance(employeeAddress) {
+  return await axios.get(`${endpoint}/gettokenbalance`, {
+    params: {
+      employeeAddress: employeeAddress,
+    },
+  });
+}
+
+async function getMarketAllowance(employeeAddress) {
+  return await axios.get(`${endpoint}/getmarketallowance`, {
+    params: { employeeAddress: employeeAddress },
+  });
+}
+
 module.exports = {
   createPurchaseOrder: createPurchaseOrder,
   approvePurchaseOrder: approvePurchaseOrder,
@@ -56,4 +70,6 @@ module.exports = {
   viewPurchaseOrder: viewPurchaseOrder,
   viewAllPurchaseOrders: viewAllPurchaseOrders,
   deliveredByCourier: deliveredByCourier,
+  getTokenBalance: getTokenBalance,
+  getMarketAllowance: getMarketAllowance
 };

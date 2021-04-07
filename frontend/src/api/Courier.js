@@ -21,8 +21,17 @@ async function receivedByCourier(orderId, employeeAddress) {
   });
 }
 
+async function getTokenBalance(employeeAddress) {
+  return await axios.get(`${endpoint}/gettokenbalance`, {
+    params: {
+      employeeAddress: employeeAddress,
+    },
+  });
+}
+
 module.exports = {
   viewAllPurchaseOrders: viewAllPurchaseOrders,
   viewPurchaseOrder: viewPurchaseOrder,
-  receivedByCourier: receivedByCourier
+  receivedByCourier: receivedByCourier,
+  getTokenBalance: getTokenBalance
 }
