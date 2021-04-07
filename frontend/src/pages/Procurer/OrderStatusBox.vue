@@ -20,10 +20,10 @@
         <div class="col-wrapper order-status-signed-action">
           <div class="table-col order-status">{{ po_status }}</div>
           <div v-if="isFinance && isOrdered" class="table-col order-status">
-            <button class="approve" @click="approvePurchaseOrder">
+            <button class="approve" @click="approvePurchaseOrder(po_OrderId)">
               Approve
             </button>
-            <button class="reject" @click="rejectPurchaseOrder">
+            <button class="reject" @click="rejectPurchaseOrder(po_OrderId)">
               Reject
             </button>
           </div>
@@ -31,7 +31,7 @@
             v-else-if="!isFinance && isDelivering"
             class="table-col order-status"
           >
-            <button class="approve" @click="receivedOrder">
+            <button class="approve" @click="receivedOrder(po_OrderId)">
               Received
             </button>
           </div>
@@ -68,10 +68,10 @@ export default {
     };
   },
   methods: {
-    async approvePurchaseOrder() {
+    async approvePurchaseOrder(orderId) {
       try {
         await Procurer.approvePurchaseOrder(
-          this.po_OrderId,
+          orderId,
           this.$store.state.details.address
         );
         alert("Order approved");
@@ -80,10 +80,10 @@ export default {
         console.log(err);
       }
     },
-    async rejectPurchaseOrder() {
+    async rejectPurchaseOrder(orderId) {
       try {
         await Procurer.rejectPurchaseOrder(
-          this.po_OrderId,
+          orderId,
           this.$store.state.details.address
         );
         alert("Order rejected");
@@ -92,10 +92,10 @@ export default {
         console.log(err);
       }
     },
-    async receivedOrder() {
+    async receivedOrder(orderId) {
       try {
         await Procurer.deliveredByCourier(
-          this.product_id,
+          orderId,
           this.$store.state.details.address
         );
         alert("Order received");
