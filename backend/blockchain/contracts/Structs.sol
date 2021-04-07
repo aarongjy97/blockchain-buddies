@@ -20,6 +20,7 @@ library Structs {
       SupplierApproved, 
       InternalRejected, 
       SupplierRejected, 
+      CourierAssigned,
       Delivering, 
       Delivered
     }
