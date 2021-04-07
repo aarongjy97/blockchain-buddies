@@ -58,7 +58,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/api/market/viewsupplierproducts?supplier=123",
+							"raw": "{{base_url}}/api/market/viewsupplierproducts?supplier=0x78fE373Fd794cebE2B42470c0ea30182005B5315",
 							"host": [
 								"{{base_url}}"
 							],
@@ -70,7 +70,7 @@
 							"query": [
 								{
 									"key": "supplier",
-									"value": "123"
+									"value": "0x78fE373Fd794cebE2B42470c0ea30182005B5315"
 								}
 							]
 						}
@@ -213,10 +213,25 @@
 				{
 					"name": "View Self Product",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "employeeAddress",
+									"value": "{{supplieremployeeaddress}}",
+									"type": "text"
+								},
+								{
+									"key": "productId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
-							"raw": "{{base_url}}/api/supplier/viewselfproduct?employeeAddress={{supplieremployeeaddress}}&productId=3",
+							"raw": "{{base_url}}/api/supplier/viewselfproduct",
 							"host": [
 								"{{base_url}}"
 							],
@@ -224,16 +239,6 @@
 								"api",
 								"supplier",
 								"viewselfproduct"
-							],
-							"query": [
-								{
-									"key": "employeeAddress",
-									"value": "{{supplieremployeeaddress}}"
-								},
-								{
-									"key": "productId",
-									"value": "3"
-								}
 							]
 						}
 					},
@@ -242,23 +247,27 @@
 				{
 					"name": "View All Self Products",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "employeeAddress",
+									"value": "{{supplieremployeeaddress}}",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
-							"raw": "{{base_url}}/api/supplier/viewallselfproduct?employeeAddress={{supplieremployeeaddress}}",
+							"raw": "{{base_url}}/api/supplier/viewallselfproducts",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"api",
 								"supplier",
-								"viewallselfproduct"
-							],
-							"query": [
-								{
-									"key": "employeeAddress",
-									"value": "{{supplieremployeeaddress}}"
-								}
+								"viewallselfproducts"
 							]
 						}
 					},
@@ -316,7 +325,7 @@
 				{
 					"name": "Unlist Product",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "urlencoded",
@@ -350,7 +359,7 @@
 				{
 					"name": "Relist Product",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "urlencoded",
@@ -384,7 +393,7 @@
 				{
 					"name": "Update Product Price",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "urlencoded",
@@ -423,7 +432,7 @@
 				{
 					"name": "Update Product Quantity",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "urlencoded",
@@ -462,7 +471,7 @@
 				{
 					"name": "Supplier Approve Purchase Order",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "urlencoded",
@@ -496,7 +505,7 @@
 				{
 					"name": "Supplier Reject Purchase Order",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "urlencoded",
@@ -530,7 +539,7 @@
 				{
 					"name": "Assign Courier",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "urlencoded",
@@ -547,7 +556,7 @@
 								},
 								{
 									"key": "courier",
-									"value": "courier",
+									"value": "{{courier}}",
 									"type": "text"
 								}
 							]
@@ -628,6 +637,50 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get Couriers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/supplier/getcouriers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"supplier",
+								"getcouriers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Token Balance",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/supplier/gettokenbalance?employeeAddress={{supplieremployeeaddress}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"supplier",
+								"gettokenbalance"
+							],
+							"query": [
+								{
+									"key": "employeeAddress",
+									"value": "{{supplieremployeeaddress}}"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -649,17 +702,17 @@
 								},
 								{
 									"key": "productId",
-									"value": "3",
-									"type": "text"
-								},
-								{
-									"key": "quantity",
 									"value": "2",
 									"type": "text"
 								},
 								{
+									"key": "quantity",
+									"value": "1",
+									"type": "text"
+								},
+								{
 									"key": "price",
-									"value": "80",
+									"value": "50",
 									"type": "text"
 								}
 							]
@@ -681,7 +734,7 @@
 				{
 					"name": "Approve Purchase Order",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "urlencoded",
@@ -715,7 +768,7 @@
 				{
 					"name": "Reject Purchase Order",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "urlencoded",
@@ -790,7 +843,7 @@
 							"urlencoded": [
 								{
 									"key": "employeeAddress",
-									"value": "{{financeemployeeaddress}}",
+									"value": "{{logisticsemployeeaddress}}",
 									"type": "text"
 								}
 							]
@@ -812,7 +865,7 @@
 				{
 					"name": "Delivered By Courier",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "urlencoded",
@@ -838,6 +891,56 @@
 								"api",
 								"procurer",
 								"deliveredbycourier"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Token Balance",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/procurer/gettokenbalance?employeeAddress={{financeemployeeaddress}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"procurer",
+								"gettokenbalance"
+							],
+							"query": [
+								{
+									"key": "employeeAddress",
+									"value": "{{financeemployeeaddress}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Market Allowance",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/procurer/getmarketallowance?employeeAddress={{financeemployeeaddress}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"procurer",
+								"getmarketallowance"
+							],
+							"query": [
+								{
+									"key": "employeeAddress",
+									"value": "{{financeemployeeaddress}}"
+								}
 							]
 						}
 					},
@@ -914,7 +1017,7 @@
 				{
 					"name": "Received By Courier",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "urlencoded",
@@ -940,6 +1043,31 @@
 								"api",
 								"courier",
 								"receivedbycourier"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Token Balance",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/courier/gettokenbalance?employeeAddress={{courieremployeeaddress}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"courier",
+								"gettokenbalance"
+							],
+							"query": [
+								{
+									"key": "employeeAddress",
+									"value": "{{courieremployeeaddress}}"
+								}
 							]
 						}
 					},
@@ -975,19 +1103,23 @@
 		},
 		{
 			"key": "supplieremployeeaddress",
-			"value": "0x28FFFbD7Dc20c934410155339438885b6A8624C2"
+			"value": ""
 		},
 		{
 			"key": "logisticsemployeeaddress",
-			"value": "0xE52015956864FC6B75f70E2d8FAF9151993F9Cd7"
+			"value": ""
 		},
 		{
 			"key": "financeemployeeaddress",
-			"value": "0x99c34d1E490D84e5da8Db0d7509002A5545e1508"
+			"value": ""
 		},
 		{
 			"key": "courieremployeeaddress",
-			"value": "0x942b3784A89e39e8D78A425CCA6A8AA4Fd9c273F"
+			"value": ""
+		},
+		{
+			"key": "courier",
+			"value": ""
 		}
 	]
 }

@@ -67,7 +67,7 @@ router.post("/viewallselfproducts", async (req, res, next) => {
 });
 
 router.post("/listproduct", async (req, res, next) => {
-  const { employeeAddress, quantity, name, price } = req.body;
+  const { employeeAddress, quantity, name, price, description } = req.body;
 
   try {
     const address = await getSupplierContractAddress(employeeAddress);
@@ -75,6 +75,7 @@ router.post("/listproduct", async (req, res, next) => {
       quantity,
       price,
       name,
+      description,
       employeeAddress,
       address
     );

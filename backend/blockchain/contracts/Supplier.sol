@@ -81,8 +81,8 @@ contract Supplier {
     * @dev Calls Market Contract
     * @return Product ID
     */
-   function listProduct(uint quantityAvailable, uint price, string memory name) public employeeOnly returns (uint) {
-      return market.listProduct(quantityAvailable, price, name);
+   function listProduct(uint quantityAvailable, uint price, string memory name, string memory description) public employeeOnly returns (uint) {
+      return market.listProduct(quantityAvailable, price, name, description);
    }
 
    /**

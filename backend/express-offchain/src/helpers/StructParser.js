@@ -13,6 +13,8 @@ async function parseProduct(product) {
     numSold: product[4],
     productName: product[5],
     listed: product[6],
+    description: product[7],
+    rating: parseFloat(product[8])
   };
 
   try {

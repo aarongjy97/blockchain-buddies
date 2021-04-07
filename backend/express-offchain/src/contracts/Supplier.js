@@ -23,11 +23,12 @@ async function listProduct(
   quantity,
   price,
   name,
+  description,
   employeeAddress,
   contractAddress
 ) {
   const supplierContract = await supplierContractInterface.at(contractAddress);
-  return await supplierContract.listProduct(quantity, price, name, {
+  return await supplierContract.listProduct(quantity, price, name, description, {
     from: employeeAddress,
   });
 }

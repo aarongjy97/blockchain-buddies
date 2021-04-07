@@ -320,7 +320,7 @@ contract Market {
     * @dev Called by a Supplier contract
     * @return Product ID
     */
-   function listProduct(uint quantityAvailable, uint price, string memory name) public supplierOnly returns (uint) {      
+   function listProduct(uint quantityAvailable, uint price, string memory name, string memory description) public supplierOnly returns (uint) {      
       Structs.Product memory _p = Structs.Product(
          msg.sender,
          productId,
@@ -328,7 +328,9 @@ contract Market {
          price,
          0,
          name,
-         true
+         true,
+         description,
+         0
       );
 
       products[productId] = _p;
@@ -387,6 +389,16 @@ contract Market {
       products[_productId].quantityAvailable = newQuantity;
 
       emit ProductQuantityUpdate(msg.sender, tx.origin, _productId, newQuantity);
+   }
+
+   /**
+    * @notice Supplier updates description of a product on the marketplace
+    * @dev Called by a Supplier contract
+    */
+   function updateProductDescription(uint _productId, string memory description) public supplierOnly {
+      require(products[_productId].supplier != address(0), "Product does not exist");
+      require(products[_productId].supplier == msg.sender, "Unauthorised supplier");
+      products[_productId].description = description;
    }
 
    /**

@@ -32,6 +32,8 @@ library Structs {
       uint numSold;
       string productName;
       bool listed;
+      string description;
+      uint rating;
     }
 
     struct PurchaseOrder {
