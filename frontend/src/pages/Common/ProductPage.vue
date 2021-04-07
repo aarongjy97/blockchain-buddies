@@ -44,13 +44,14 @@ export default {
   },
   methods: {
     async createPurchaseOrder() {
+      const courierFee = 50;
       try {
         const details = this.$store.state.details;
         console.log('productId', this.$route.params.product_id);
         console.log('quantity:', this.qty);
         console.log('price:', this.$route.params.product_price);
         console.log('details:', details.address);
-        const result = await Procurer.createPurchaseOrder(this.$route.params.product_id, this.qty, this.$route.params.product_price*this.qty, details.address)
+        const result = await Procurer.createPurchaseOrder(this.$route.params.product_id, this.qty, this.$route.params.product_price * this.qty + courierFee, details.address)
         console.log(result.data)
         alert("Purchase Order Created")
         this.$router.back();
