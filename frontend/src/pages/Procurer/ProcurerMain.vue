@@ -1,6 +1,6 @@
 <template>
-  <!-- <div class="body">
-    <Navbar></Navbar>
+  <div class="body">
+    <!-- <Navbar></Navbar>
     <div class="row" v-if="products.length">
       <div v-for="p in products" :key="p.product_id">
         <div class="col-lg-4" v-if="p.listed">
@@ -17,13 +17,18 @@
       </div>
     </div>
   </div>
-<div> -->
-  <Navbar></Navbar>
-  <h1>Procurer Product Page</h1>
-  <br>
-    <b-container v-if='products.length' fluid>
-      <b-row align-h='center'>
-        <b-card-group deck v-for="product in listedProducts" :key="product.productId" class="col-md-6 col-lg-4 col-xl-3">
+<div>  -->
+    <Navbar></Navbar>
+    <h1>Procurer Product Page</h1>
+    <br />
+    <b-container v-if="products.length" fluid>
+      <b-row align-h="center">
+        <b-card-group
+          deck
+          v-for="product in listedProducts"
+          :key="product.productId"
+          class="col-md-6 col-lg-4 col-xl-3"
+        >
           <b-card
             img-src="https://picsum.photos/600/300/?image=25"
             img-alt="Image"
@@ -32,23 +37,33 @@
           >
             <b-card-title>{{ product.productName }}</b-card-title>
             <template #footer>
-              <b-row class='mt-n4'>
-                <b-col class='text-left' cols='auto'>Price: <span class='price'>{{ product.price }}</span> Tokens</b-col>
-                <b-col class='text-right'>Rating: <span class='rating'>{{ product.rating }}</span>/5 </b-col>
-
+              <b-row class="mt-n4">
+                <b-col class="text-left" cols="auto"
+                  >Price:
+                  <span class="price">{{ product.price }}</span> Tokens</b-col
+                >
+                <b-col class="text-right"
+                  >Rating: <span class="rating">{{ product.rating }}</span
+                  >/5
+                </b-col>
               </b-row>
               <b-row>
-                <b-col class='text-left'>Qty: {{ product.quantity }}</b-col>
-                <b-col class='text-right' cols='auto'>Supplier: {{ product.supplierName }}</b-col>
+                <b-col class="text-left">Qty: {{ product.quantity }}</b-col>
+                <b-col class="text-right" cols="auto"
+                  >Supplier: {{ product.supplierName }}</b-col
+                >
               </b-row>
-              <router-link :to="{name: 'procurer-product', params: product}" class='stretched-link'></router-link>
+              <router-link
+                :to="{ name: 'procurer-product', params: product }"
+                class="stretched-link"
+              ></router-link>
             </template>
           </b-card>
         </b-card-group>
       </b-row>
     </b-container>
     <div v-else>There are no products listed.</div>
-</div>
+  </div>
 </template>
 
 <script>
@@ -79,17 +94,13 @@ export default {
           productId: p.productId,
           productName: p.productName,
           quantity: p.quantityAvailable,
-<<<<<<< HEAD
           rating: p.rating,
           product_description: p.description,
-=======
-          rating: p.rating,          
           supplierName: p.supplierName,
->>>>>>> 0a4552b1f3fcd98f6c5c270de52bc7b3be3ac216
         }));
         console.log("product:", this.products);
 
-        this.products.forEach(x => {
+        this.products.forEach((x) => {
           if (x.listed) {
             this.listedProducts.push(x);
           }
@@ -119,7 +130,7 @@ export default {
 }
 
 .unlistedcard {
-  background-color: #D3D3D3;
+  background-color: #d3d3d3;
 }
 
 .card-footer {
@@ -127,7 +138,7 @@ export default {
   border-top: 0px;
 }
 
-.card:hover{
+.card:hover {
   box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);
 }
 </style>

@@ -9,7 +9,6 @@
       <div class="product-description">
         <h1>{{ this.product.productName }}</h1>
         <p>
-<<<<<<< HEAD:frontend/src/pages/Common/ProductPage.vue
           {{ this.$route.params.product_desc }}
         </p> 
         <span> {{this.$route.params.product_price}} Tokens </span>
@@ -30,21 +29,6 @@
       <h1> Purchase Order Info </h1>
       <div>
         <span>Total Price: {{this.$route.params.product_price}} Tokens x </span> 
-=======
-          {{ this.product.description }}
-        </p>
-      </div>
-      <!-- Product Pricing -->
-      <div class="product-price">
-        <b-form-input
-          id="quantity"
-          v-model="qty"
-          placeholder="Enter Quantity"
-        ></b-form-input>
-        <Br></br>
-        <span>{{ this.product.price }} Tokens</span>
-        <button v-on:click="createPurchaseOrder" class="cart-btn">Add to cart</button>
->>>>>>> 0a4552b1f3fcd98f6c5c270de52bc7b3be3ac216:frontend/src/pages/Procurer/ProcurerProduct.vue
       </div>
       <span>Comission: 10 Tokens </span> 
     </div>
@@ -85,18 +69,9 @@ export default {
         alert(e.response.data.reason);
       }
     },
-<<<<<<< HEAD:frontend/src/pages/Common/ProductPage.vue
-    // async addRating() {
-    //   try {
-    //     const details = ;
-    //     const result = await Procurer.addRating(this.$store.state.details.address, 3)
-    //   }
-    // }
-=======
   },
   mounted() {
     this.loadPage();
->>>>>>> 0a4552b1f3fcd98f6c5c270de52bc7b3be3ac216:frontend/src/pages/Procurer/ProcurerProduct.vue
   }
 };
 
