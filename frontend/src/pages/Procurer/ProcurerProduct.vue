@@ -10,9 +10,9 @@
     <div class="right-column">
       <!-- Product Description -->
       <div class="product-description">
-        <h1>{{ this.$route.params.product_name }}</h1>
+        <h1>{{ this.product.productName }}</h1>
         <p>
-          {{ this.$route.params.product_desc }}
+          {{ this.product.description }}
         </p>
       </div>
       <!-- Product Pricing -->
@@ -23,7 +23,7 @@
           placeholder="Enter Quantity"
         ></b-form-input>
         <Br></br>
-        <span>${{ this.$route.params.product_price }}</span>
+        <span>{{ this.product.price }} Tokens</span>
         <button v-on:click="createPurchaseOrder" class="cart-btn">Add to cart</button>
       </div>
     </div>
@@ -31,11 +31,14 @@
 </template>
 
 <script>
-import Navbar from "./AccountNavbar.vue";
-import Procurer from "../../api/Procurer"
+import Navbar from "./Navbar.vue";
+import Market from "../../api/Market"
+import Procurer from "../../api/Procurer";
 export default {
   data() {
     return {
+      details: {},
+      product: {},
       qty: '',
     };
   },
@@ -43,15 +46,16 @@ export default {
     Navbar,
   },
   methods: {
+    async loadPage() {
+      this.details = this.$store.state.details;
+      const result = await Market.viewProduct(this.$route.params.productId);
+      this.product = result.data;
+      console.log(this.product);
+    },
     async createPurchaseOrder() {
       const courierFee = 50;
       try {
-        const details = this.$store.state.details;
-        console.log('productId', this.$route.params.product_id);
-        console.log('quantity:', this.qty);
-        console.log('price:', this.$route.params.product_price);
-        console.log('details:', details.address);
-        const result = await Procurer.createPurchaseOrder(this.$route.params.product_id, this.qty, this.$route.params.product_price * this.qty + courierFee, details.address)
+        const result = await Procurer.createPurchaseOrder(this.product.productId, this.qty, this.product.price * this.qty + courierFee, this.details.address)
         console.log(result.data)
         alert("Purchase Order Created")
         this.$router.back();
@@ -59,13 +63,16 @@ export default {
       catch(e) {
         alert(e.response.data.reason);
       }
-    }
+    },
+  },
+  mounted() {
+    this.loadPage();
   }
 };
 
 </script>
 
-<style>
+<style scoped>
 /* Basic Styling */
 html,
 body {
