@@ -30,7 +30,8 @@ export default new Router({
     },
     { path: "/courier-main", name: "courier-main", component: CourierMain },
     {
-      path: "/product/:product_id/:product_name/:product_price",
+      path:
+        "/product/:product_id/:product_name/:product_price/:rating/:product_desc",
       name: "product",
       component: ProductPage,
     },

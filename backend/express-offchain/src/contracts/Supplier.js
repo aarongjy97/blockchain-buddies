@@ -28,9 +28,15 @@ async function listProduct(
   contractAddress
 ) {
   const supplierContract = await supplierContractInterface.at(contractAddress);
-  return await supplierContract.listProduct(quantity, price, name, description, {
-    from: employeeAddress,
-  });
+  return await supplierContract.listProduct(
+    quantity,
+    price,
+    name,
+    description,
+    {
+      from: employeeAddress,
+    }
+  );
 }
 
 async function unlistProduct(productId, employeeAddress, contractAddress) {
@@ -78,9 +84,13 @@ async function updateProductDescription(
   contractAddress
 ) {
   const supplierContract = await supplierContractInterface.at(contractAddress);
-  return await supplierContract.updateProductDescription(productId, description, {
-    from: employeeAddress,
-  });
+  return await supplierContract.updateProductDescription(
+    productId,
+    description,
+    {
+      from: employeeAddress,
+    }
+  );
 }
 
 async function supplierApprovePurchaseOrder(
@@ -160,5 +170,5 @@ module.exports = {
   supplierViewAllPurchaseOrders: supplierViewAllPurchaseOrders,
   viewPurchaseOrder: viewPurchaseOrder,
   getTokenBalance: getTokenBalance,
-  supplierStatistics: supplierStatistics
+  supplierStatistics: supplierStatistics,
 };

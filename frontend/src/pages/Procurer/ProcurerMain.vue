@@ -10,6 +10,8 @@
             v-bind:product_price="p.product_price"
             v-bind:supplier_name="p.supplierName"
             v-bind:quantity="p.quantity"
+            v-bind:rating="p.rating"
+            v-bind:product_desc="p.product_description"
           ></product-box>
         </div>
       </div>
@@ -46,6 +48,8 @@ export default {
           listed: p.listed,
           supplierName: p.supplierName,
           quantity: p.quantityAvailable,
+          rating: p.rating,
+          product_description: p.description,
         }));
         console.log("product:", this.products);
       } catch (e) {
