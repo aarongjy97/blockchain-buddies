@@ -82,6 +82,7 @@ export default {
 
       const result = await Supplier.listProduct(this.form.name, this.form.price, this.form.quantity, this.form.description, details.address); 
       console.log(result.data);
+      alert('Product listed');
     },
     onReset(event) {
       event.preventDefault()
