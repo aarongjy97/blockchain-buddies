@@ -4,78 +4,65 @@
   <h1>Supplier Product Page</h1>
   <br>
 
-  <h2>Listed Products</h2>
+  <b-tabs content-class="mt-3" align="center">
+    <b-tab title="Listed Products" active>
+      <b-container v-if='products.length' fluid>
+        <b-row align-h='center'>
+          <b-card-group deck v-for="product in listedProducts" :key="product.productId" class="col-md-6 col-lg-4 col-xl-3">
+            <b-card
+              img-src="https://picsum.photos/600/300/?image=25"
+              img-alt="Image"
+              img-top
+              class="mb-4"
+            >
+              <b-card-title>{{ product.productName }}</b-card-title>
+              <template #footer>
+                <b-row class='mt-n4'>
+                  <b-col class='text-left' cols='8'>Price: <span class='price'>{{ product.price }}</span> Tokens</b-col>
+                  <b-col class='text-right'>Sold: {{ product.numSold }}</b-col>
+                </b-row>
+                <b-row>
+                  <b-col class='text-left'>Qty: {{ product.quantity }}</b-col>
+                  <b-col class='text-right'>Rating: <span class='rating'>{{ product.rating }}</span>/5 </b-col>
+                </b-row>
+                <router-link :to="{name: 'supplier-product', params: product}" class='stretched-link'></router-link>
+              </template>
+            </b-card>
+          </b-card-group>
+        </b-row>
+      </b-container>
+      <div v-else>There are no products listed.</div>
+    </b-tab>
 
-  <b-container v-if='products.length' fluid>
-    <b-row align-h='center'>
-      <b-card-group deck v-for="product in listedProducts" :key="product.productId" class="col-md-6 col-lg-4 col-xl-3">
-        <b-card
-          img-src="https://picsum.photos/600/300/?image=25"
-          img-alt="Image"
-          img-top
-          class="mb-4"
-        >
-          <!-- <template #header>
-            <h5 class="mb-0">{{product.productName}}</h5>
-          </template>
-          <b-card-text>
-            <b-row>
-              <b-col class='text-left'>Price: <span class='price'>{{ product.price }}</span></b-col>
-              <b-col class='text-right'>Sold: {{ product.numSold }}</b-col>
-            </b-row>
-            <b-row>
-              <b-col class='text-left'>Qty: {{ product.quantity }}</b-col>
-              <b-col class='text-right'>Rating: <span class='rating'>{{ product.rating }}</span>/5 </b-col>
-            </b-row>
-            <router-link :to="{name: 'supplier-product', params: product}" class='stretched-link'></router-link>
-          </b-card-text> -->
-          <b-card-title>{{ product.productName }}</b-card-title>
-          <template #footer>
-             <b-row class='mt-n4'>
-              <b-col class='text-left' cols='8'>Price: <span class='price'>{{ product.price }}</span> Tokens</b-col>
-              <b-col class='text-right'>Sold: {{ product.numSold }}</b-col>
-            </b-row>
-            <b-row>
-              <b-col class='text-left'>Qty: {{ product.quantity }}</b-col>
-              <b-col class='text-right'>Rating: <span class='rating'>{{ product.rating }}</span>/5 </b-col>
-            </b-row>
-            <router-link :to="{name: 'supplier-product', params: product}" class='stretched-link'></router-link>
-          </template>
-        </b-card>
-      </b-card-group>
-    </b-row>
-
-    <br>
-    <h2>Unlisted Products</h2>
-    <b-row align-h='center' v-if='notListedProducts.length'>
-      <b-card-group deck v-for="product in notListedProducts" :key="product.productId" class="col-md-6 col-lg-4 col-xl-3">
-        <b-card
-          img-src="https://picsum.photos/600/300/?image=25"
-          img-alt="Image"
-          img-top
-          class="mb-4"
-        >
-          <b-card-title>{{ product.productName }}</b-card-title>
-          <template #footer>
-             <b-row class='mt-n4'>
-              <b-col class='text-left'>Price: <span class='price'>{{ product.price }}</span></b-col>
-              <b-col class='text-right'>Sold: {{ product.numSold }}</b-col>
-            </b-row>
-            <b-row>
-              <b-col class='text-left'>Qty: {{ product.quantity }}</b-col>
-              <b-col class='text-right'>Rating: <span class='rating'>{{ product.rating }}</span>/5 </b-col>
-            </b-row>
-            <router-link :to="{name: 'supplier-product', params: product}" class='stretched-link'></router-link>
-          </template>
-        </b-card>
-      </b-card-group>
-    </b-row>
-    <div v-else>There are no unlisted products.</div>
-    <br>
-  </b-container>
-  
-  <div v-else>There are no products listed.</div>
-
+    <b-tab title="Unlisted Products">
+      <b-container v-if='unlistedProducts.length' fluid>
+        <b-row align-h='center'>
+          <b-card-group deck v-for="product in unlistedProducts" :key="product.productId" class="col-md-6 col-lg-4 col-xl-3">
+            <b-card
+              img-src="https://picsum.photos/600/300/?image=25"
+              img-alt="Image"
+              img-top
+              class="mb-4 unlistedcard"
+            >
+              <b-card-title>{{ product.productName }}</b-card-title>
+              <template #footer>
+                <b-row class='mt-n4'>
+                  <b-col class='text-left' cols='8'>Price: <span class='price'>{{ product.price }}</span> Tokens</b-col>
+                  <b-col class='text-right'>Sold: {{ product.numSold }}</b-col>
+                </b-row>
+                <b-row>
+                  <b-col class='text-left'>Qty: {{ product.quantity }}</b-col>
+                  <b-col class='text-right'>Rating: <span class='rating'>{{ product.rating }}</span>/5 </b-col>
+                </b-row>
+                <router-link :to="{name: 'supplier-product', params: product}" class='stretched-link'></router-link>
+              </template>
+            </b-card>
+          </b-card-group>
+        </b-row>
+      </b-container>
+      <div v-else>There are no products unlisted.</div>
+    </b-tab>
+  </b-tabs>
 </div>
 </template>
 
@@ -89,7 +76,7 @@ export default {
       details: {},
       products: [],
       listedProducts: [],
-      notListedProducts: [],
+      unlistedProducts: [],
     };
   },
   methods: {
@@ -118,10 +105,10 @@ export default {
             this.listedProducts.push(x);
           }
           else if (!x.listed) {
-            this.notListedProducts.push(x);
+            this.unlistedProducts.push(x);
           }
         });
-        console.log('notListed',this.notListedProducts);
+        console.log('notListed',this.unlistedProducts);
       }
       catch (err) {
         console.log(err)
@@ -148,7 +135,11 @@ export default {
 }
 
 .card {
-  max-width: 20rem
+  max-width: 20rem;
+}
+
+.unlistedcard {
+  background-color: #D3D3D3;
 }
 
 .card-footer {
@@ -157,7 +148,8 @@ export default {
 }
 
 .card:hover{
-  transform: scale(1);
-  box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+  /* transform: scale(1); */
+  /* box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06); */
+  box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);
 }
 </style>

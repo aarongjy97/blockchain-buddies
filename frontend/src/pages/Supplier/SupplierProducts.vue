@@ -8,9 +8,9 @@
       </b-col>
 
       <b-col class='rightside'>
-        <b-row align-h='center' class='p-3'><h3>{{ product.productName }}</h3></b-row>
+        <b-row align-h='center' class='p-3'><h3 class='productName'>{{ product.productName }}</h3></b-row>
 
-        <b-row >{{ product.description }}</b-row>
+        <b-row>{{ product.description }}</b-row>
 
         <b-row class='p-3'>
           <b-col>Rating: {{ product.rating }}/5</b-col>
@@ -117,6 +117,10 @@ export default {
 </script>
 
 <style>
+.productName {
+  font-weight: 700;
+}
+
 #sold {
   font-size: .875rem;
   color: #767676;
@@ -124,7 +128,7 @@ export default {
 
 #price {
   font-size: 1.875rem;
-  font-weight: 500;
+  font-weight: 700;
   color: #d0011b;
 }
 </style>
