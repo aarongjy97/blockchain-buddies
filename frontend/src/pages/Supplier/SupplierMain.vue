@@ -1,12 +1,63 @@
 <template>
 <div>
   <Navbar></Navbar>
-  <h1>Supplier Product Page</h1>
+  <h1 style="text-align: center">Products</h1>
   <br>
 
   <b-tabs content-class="mt-3" align="center">
-    <b-tab title="Listed Products" active>
+
+    <b-tab title="All Products" active>
       <b-container v-if='products.length' fluid>
+        <b-row align-h='center'>
+          <b-card-group deck v-for="product in products" :key="product.productId" class="col-md-6 col-lg-4 col-xl-3">
+            <b-card
+              img-src="https://picsum.photos/600/300/?image=25"
+              img-alt="Image"
+              img-top
+              class="mb-4"
+              v-if='product.listed'
+            >
+              <b-card-title>{{ product.productName }}</b-card-title>
+              <template #footer>
+                <b-row class='mt-n4'>
+                  <b-col class='text-left'><span style="font-weight: bold">{{ product.quantity }}</span> Qty</b-col>
+                  <b-col class='text-right'><span class='price' style="font-weight: bold">{{ product.price }}</span> Tokens</b-col>
+                </b-row>
+                <b-row>
+                  <b-col class='text-left'><span style="font-weight: bold">{{ product.numSold }}</span> Sold</b-col>
+                  <b-col v-if='product.rating > 0' class='text-right'><span class='rating'>{{ product.rating }}</span>/5 </b-col>
+                </b-row>
+                <router-link :to="{name: 'supplier-product', params: product}" class='stretched-link'></router-link>
+              </template>
+            </b-card>
+            <b-card
+              img-src="https://picsum.photos/600/300/?image=25"
+              img-alt="Image"
+              img-top
+              class="mb-4 unlistedcard"
+              v-if='!product.listed'
+            >
+              <b-card-title>{{ product.productName }}</b-card-title>
+              <template #footer>
+                <b-row class='mt-n4'>
+                  <b-col class='text-left'><span style="font-weight: bold">{{ product.quantity }}</span> Qty</b-col>
+                  <b-col class='text-right'><span class='price' style="font-weight: bold">{{ product.price }}</span> Tokens</b-col>
+                </b-row>
+                <b-row>
+                  <b-col class='text-left'><span style="font-weight: bold">{{ product.numSold }}</span> Sold</b-col>
+                  <b-col v-if='product.rating > 0' class='text-right'><span class='rating'>{{ product.rating }}</span>/5 </b-col>
+                </b-row>
+                <router-link :to="{name: 'supplier-product', params: product}" class='stretched-link'></router-link>
+              </template>
+            </b-card>
+          </b-card-group>
+        </b-row>
+      </b-container>
+      <div v-else>No Products Listed</div>
+    </b-tab>
+
+    <b-tab title="Listed Products">
+      <b-container v-if='listedProducts.length' fluid>
         <b-row align-h='center'>
           <b-card-group deck v-for="product in listedProducts" :key="product.productId" class="col-md-6 col-lg-4 col-xl-3">
             <b-card
@@ -18,12 +69,12 @@
               <b-card-title>{{ product.productName }}</b-card-title>
               <template #footer>
                 <b-row class='mt-n4'>
-                  <b-col class='text-left' cols='8'>Price: <span class='price'>{{ product.price }}</span> Tokens</b-col>
-                  <b-col class='text-right'>Sold: {{ product.numSold }}</b-col>
+                  <b-col class='text-left'><span style="font-weight: bold">{{ product.quantity }}</span> Qty</b-col>
+                  <b-col class='text-right'><span class='price' style="font-weight: bold">{{ product.price }}</span> Tokens</b-col>
                 </b-row>
                 <b-row>
-                  <b-col class='text-left'>Qty: {{ product.quantity }}</b-col>
-                  <b-col class='text-right'>Rating: <span class='rating'>{{ product.rating }}</span>/5 </b-col>
+                  <b-col class='text-left'><span style="font-weight: bold">{{ product.numSold }}</span> Sold</b-col>
+                  <b-col v-if='product.rating > 0' class='text-right'><span class='rating'>{{ product.rating }}</span>/5 </b-col>
                 </b-row>
                 <router-link :to="{name: 'supplier-product', params: product}" class='stretched-link'></router-link>
               </template>
@@ -31,7 +82,7 @@
           </b-card-group>
         </b-row>
       </b-container>
-      <div v-else>There are no products listed.</div>
+      <div v-else>No Products Listed</div>
     </b-tab>
 
     <b-tab title="Unlisted Products">
@@ -47,12 +98,12 @@
               <b-card-title>{{ product.productName }}</b-card-title>
               <template #footer>
                 <b-row class='mt-n4'>
-                  <b-col class='text-left' cols='8'>Price: <span class='price'>{{ product.price }}</span> Tokens</b-col>
-                  <b-col class='text-right'>Sold: {{ product.numSold }}</b-col>
+                  <b-col class='text-left'><span style="font-weight: bold">{{ product.quantity }}</span> Qty</b-col>
+                  <b-col class='text-right'><span class='price' style="font-weight: bold">{{ product.price }}</span> Tokens</b-col>
                 </b-row>
                 <b-row>
-                  <b-col class='text-left'>Qty: {{ product.quantity }}</b-col>
-                  <b-col class='text-right'>Rating: <span class='rating'>{{ product.rating }}</span>/5 </b-col>
+                  <b-col class='text-left'><span style="font-weight: bold">{{ product.numSold }}</span> Sold</b-col>
+                  <b-col v-if='product.rating > 0' class='text-right'><span class='rating'>{{ product.rating }}</span>/5 </b-col>
                 </b-row>
                 <router-link :to="{name: 'supplier-product', params: product}" class='stretched-link'></router-link>
               </template>
@@ -60,7 +111,7 @@
           </b-card-group>
         </b-row>
       </b-container>
-      <div v-else>There are no products unlisted.</div>
+      <div v-else>No Products Unlisted</div>
     </b-tab>
   </b-tabs>
 </div>
@@ -124,10 +175,26 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .price {
   /* font-size: 1.05rem; */
   color: #ee4d2d;
+}
+
+.tabs .nav-tabs {
+  border-bottom: unset !important;
+}
+
+.nav-tabs .nav-link {
+  border: unset;
+  border-bottom-right-radius: .25rem;
+  border-bottom-left-radius: .25rem;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #007bff;
+  border-color: unset !important;
+  color: white;
 }
 
 .rating {
@@ -139,7 +206,7 @@ export default {
 }
 
 .unlistedcard {
-  background-color: #D3D3D3;
+  background-color: gainsboro;
 }
 
 .card-footer {

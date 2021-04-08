@@ -15,15 +15,14 @@
             <b-card-title>{{ product.productName }}</b-card-title>
             <template #footer>
               <b-row class='mt-n4'>
-                <b-col class='text-left' cols='auto'>Price: <span class='price'>{{ product.price }}</span> Tokens</b-col>
-                <b-col class='text-right'>Rating: <span class='rating'>{{ product.rating }}</span>/5 </b-col>
-
+                <b-col class='text-left'><span style="font-weight: bold">{{ product.quantity }}</span> Qty</b-col>
+                <b-col class='text-right'><span class='price' style="font-weight: bold">{{ product.price }}</span> Tokens</b-col>
               </b-row>
               <b-row>
-                <b-col class='text-left'>Qty: {{ product.quantity }}</b-col>
-                <b-col class='text-right' cols='auto'>Supplier: {{ product.supplierName }}</b-col>
+                <b-col class='text-left'><span style="font-weight: bold">{{ product.numSold }}</span> Sold</b-col>
+                <b-col v-if='product.rating > 0' class='text-right'><span class='rating'>{{ product.rating }}</span>/5 </b-col>
               </b-row>
-              <router-link :to="{name: 'procurer-product', params: product}" class='stretched-link'></router-link>
+              <router-link :to="{name: 'supplier-product', params: product}" class='stretched-link'></router-link>
             </template>
           </b-card>
         </b-card-group>
