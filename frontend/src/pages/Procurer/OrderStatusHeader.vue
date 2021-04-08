@@ -26,7 +26,7 @@
 export default {};
 </script>
 
-<style>
+<style scoped>
 .table-wrapper {
   font-family: "Theinhardt", sans-serif;
   font-size: 0.875rem;

@@ -124,7 +124,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .price {
   /* font-size: 1.05rem; */
   color: #ee4d2d;
