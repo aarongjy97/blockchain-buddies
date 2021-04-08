@@ -71,6 +71,18 @@ async function updateProductQuantity(
   });
 }
 
+async function updateProductDescription(
+  productId,
+  description,
+  employeeAddress,
+  contractAddress
+) {
+  const supplierContract = await supplierContractInterface.at(contractAddress);
+  return await supplierContract.updateProductDescription(productId, description, {
+    from: employeeAddress,
+  });
+}
+
 async function supplierApprovePurchaseOrder(
   orderId,
   employeeAddress,
@@ -141,6 +153,7 @@ module.exports = {
   relistProduct: relistProduct,
   updateProductPrice: updateProductPrice,
   updateProductQuantity: updateProductQuantity,
+  updateProductDescription: updateProductDescription,
   supplierApprovePurchaseOrder: supplierApprovePurchaseOrder,
   supplierRejectPurchaseOrder: supplierRejectPurchaseOrder,
   assignCourier: assignCourier,

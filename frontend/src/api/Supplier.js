@@ -14,11 +14,12 @@ async function viewAllSelfProducts(employeeAddress) {
   });
 }
 
-async function listProduct(name, price, quantity, employeeAddress) {
+async function listProduct(name, price, quantity, description, employeeAddress) {
   return await axios.post(`${endpoint}/listproduct`, {
     quantity,
     price,
     name,
+    description,
     employeeAddress,
   });
 }
@@ -49,6 +50,14 @@ async function updateProductQuantity(productId, newQuantity, employeeAddress) {
   return await axios.put(`${endpoint}/updateproductquantity`, {
     productId,
     newQuantity,
+    employeeAddress,
+  });
+}
+
+async function updateProductDescription(productId, description, employeeAddress) {
+  return await axios.put(`${endpoint}/updateproductdescription`, {
+    productId,
+    description,
     employeeAddress,
   });
 }
@@ -116,6 +125,7 @@ module.exports = {
   relistProduct: relistProduct,
   updateProductPrice: updateProductPrice,
   updateProductQuantity: updateProductQuantity,
+  updateProductDescription: updateProductDescription,
   approvePurchaseOrder: approvePurchaseOrder,
   rejectPurchaseOrder: rejectPurchaseOrder,
   assignCourier: assignCourier,
