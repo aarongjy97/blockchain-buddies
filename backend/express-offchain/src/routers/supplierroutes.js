@@ -166,6 +166,28 @@ router.put("/updateproductquantity", async (req, res, next) => {
   }
 });
 
+router.put("/updateproductdescription", async (req, res, next) => {
+  const { productId, description, employeeAddress } = req.body;
+  try {
+    const address = await getSupplierContractAddress(employeeAddress);
+    const result = await supplier.updateProductDescription(
+      productId,
+      description,
+      employeeAddress,
+      address
+    );
+    return res
+      .status(202)
+      .send(`Product ID ${productId} Description Updated to ${description}`);
+  } catch (error) {
+    return res
+      .status(500)
+      .send(
+        errorParser(error, `Updating Description of Product ${productId} failed`)
+      );
+  }
+});
+
 router.put("/approvepurchaseorder", async (req, res, next) => {
   const { orderId, employeeAddress } = req.body;
   try {

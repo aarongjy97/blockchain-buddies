@@ -126,6 +126,14 @@ contract Supplier {
       market.updateProductQuantity(_productId, newQuantity);
    }
 
+   /**
+    * @notice Supplier updates the description of a product on the marketplace
+    * @dev Calls Market Contract
+    */
+   function updateProductDescription(uint _productId, string memory description) public employeeOnly {
+      market.updateProductDescription(_productId, description);
+   }
+
    /* ==================== Order Functions ==================== */
 
    /**

@@ -33,6 +33,9 @@
             <b-form-group label="Quantity">
               <b-form-input v-model="newQuantity"></b-form-input>
             </b-form-group>
+            <b-form-group label="Description">
+              <b-form-input v-model="description"></b-form-input>
+            </b-form-group>
           </form>
           <p>*Edit only detail at a time</p>
         </b-modal>
@@ -89,6 +92,7 @@ export default {
       products: [],
       newPrice: null,
       newQuantity: null,
+      description: null,
     };
   },
   methods: {
@@ -126,6 +130,11 @@ export default {
       }
       if (this.newQuantity) {
         const result = await Supplier.updateProductQuantity(productId, this.newQuantity, this.details.address);
+        console.log(result.data);
+        this.$router.go();
+      }
+      if (this.description) {
+        const result = await Supplier.updateProductDescription(productId, this.description, this.details.address);
         console.log(result.data);
         this.$router.go();
       }
