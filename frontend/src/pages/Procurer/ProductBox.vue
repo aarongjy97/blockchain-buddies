@@ -12,6 +12,8 @@
               product_id: product_id,
               product_name: product_name,
               product_price: product_price,
+              product_rating: rating,
+              product_desc: product_desc,
             },
           }"
         >
@@ -33,8 +35,10 @@ export default {
     product_id: String,
     product_name: String,
     product_price: String,
+    product_desc: String,
     supplier_name: String,
     quantity: String,
+    rating: Number,
   },
   data() {
     return {};

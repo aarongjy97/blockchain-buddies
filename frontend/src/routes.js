@@ -19,8 +19,15 @@ export default new Router({
     { path: "/account", name: "account", component: Account },
     { path: "/procurer-main", name: "procurer-main", component: ProcurerMain },
     {
-      path: "/procurer-product/:productId-:productName",
-      name: "procurer-product",
+      path: "/supplier-orders",
+      name: "supplier-orders",
+      component: SupplierOrders,
+    },
+    { path: "/courier-main", name: "courier-main", component: CourierMain },
+    {
+      path:
+        "/product/:product_id/:product_name/:product_price/:rating/:product_desc",
+      name: "product",
       component: ProcurerProduct,
     },
     {
@@ -29,9 +36,21 @@ export default new Router({
       component: OrderStatusPage,
     },
     { path: "/supplier-main", name: "supplier-main", component: SupplierMain },
-    { path: "/supplier-product/:productId-:productName", name: "supplier-product", component: SupplierProduct },
-    { path: "/supplier-listing", name: "supplier-listing", component: SupplierListing },
-    { path: "/supplier-orders", name: "supplier-orders", component: SupplierOrders },
+    {
+      path: "/supplier-product/:productId-:productName",
+      name: "supplier-product",
+      component: SupplierProduct,
+    },
+    {
+      path: "/supplier-listing",
+      name: "supplier-listing",
+      component: SupplierListing,
+    },
+    {
+      path: "/supplier-orders",
+      name: "supplier-orders",
+      component: SupplierOrders,
+    },
     { path: "/courier-main", name: "courier-main", component: CourierMain },
   ],
   mode: "history",
