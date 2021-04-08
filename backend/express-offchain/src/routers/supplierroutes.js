@@ -81,7 +81,6 @@ router.post("/listproduct", async (req, res, next) => {
     );
     return res.status(202).send("Product Listed");
   } catch (error) {
-    console.log(error);
     return res
       .status(500)
       .send(errorParser(error, "Listing of Product Failed"));
@@ -295,7 +294,6 @@ router.get("/gettokenbalance", async (req, res, next) => {
 
 router.get("/statistics", async (req, res, next) => {
   const { employeeAddress } = req.query;
-  console.log(employeeAddress);
   try {
     const address = await getSupplierContractAddress(employeeAddress);
     const result = await supplier.supplierStatistics(employeeAddress, address);
@@ -306,7 +304,6 @@ router.get("/statistics", async (req, res, next) => {
     }
     return res.status(200).send(statistics);
   } catch (error) {
-    console.log(error);
     return res
       .status(500)
       .send(errorParser(error, `Failed to Retrieve Statistics`));
