@@ -29,9 +29,9 @@
 </template>
 
 <script>
-// import Courier from '../../api/Courier';
-// import Procurer from '../../api/Procurer';
-// import Supplier from '../../api/Supplier';
+import Courier from '../../api/Courier';
+import Procurer from '../../api/Procurer';
+import Supplier from '../../api/Supplier';
 import Navbar from "./AccountNavbar.vue";
 export default {
   name: "Account",
@@ -52,46 +52,46 @@ export default {
         console.log(err)
       }
     },
-    // async getTokenBalance() {
-    //   if (this.details.role == 'courier') {
-    //     try {
-    //       const result = await Courier.getTokenBalance(this.details.address);
-    //       console.log(result.data);
-    //       this.balance = result.data;
-    //     }
-    //     catch (err) {
-    //       console.log(err)
-    //     }
-    //   }
-    //   else if (this.details.role == 'procurer') {
-    //     try {
-    //       const result = await Procurer.getTokenBalance(this.details.address);
-    //       console.log(result.data);
-    //       this.balance = result.data;
-    //     }
-    //     catch (err) {
-    //       console.log(err)
-    //     }
-    //   }
-    //   else if (this.details.role == 'supplier') {
-    //     try {
-    //       const result = await Supplier.getTokenBalance(this.details.address);
-    //       console.log(result.data);
-    //       this.balance = result.data;
-    //     }
-    //     catch (err) {
-    //       console.log(err)
-    //     }
-    //   }
+    async getTokenBalance() {
+      if (this.details.role == 'courier') {
+        try {
+          const result = await Courier.getTokenBalance(this.details.address);
+          console.log(result.data);
+          this.balance = result.data;
+        }
+        catch (err) {
+          console.log(err)
+        }
+      }
+      else if (this.details.role == 'procurer') {
+        try {
+          const result = await Procurer.getTokenBalance(this.details.address);
+          console.log(result.data);
+          this.balance = result.data;
+        }
+        catch (err) {
+          console.log(err)
+        }
+      }
+      else if (this.details.role == 'supplier') {
+        try {
+          const result = await Supplier.getTokenBalance(this.details.address);
+          console.log(result.data);
+          this.balance = result.data;
+        }
+        catch (err) {
+          console.log(err)
+        }
+      }
       
-    // },
+    },
   },
   components: {
     Navbar,
   },
   mounted() {
     this.viewAll();
-    // this.getTokenBalance();
+    this.getTokenBalance();
   },
 };
 </script>
