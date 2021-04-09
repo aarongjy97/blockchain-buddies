@@ -1,60 +1,134 @@
 <template>
-<div>
+  <div>
     <Navbar></Navbar>
     <!-- {{ details }} -->
-    <b-jumbotron>
-      <template #header>{{ details.name }}</template>
-
-      <template #lead>
+    <!-- Need to align text -->
+    <b-jumbotron header="Account Details" header-level="4" class="pb-4">
+      <hr class="my-4" />
+      <b-card-group deck>
+      <b-card v-for="(item, key) in info"
+        v-bind:key="key"
+        :header="key"
+        bg-variant="light"
+        border-variant="info"
+      >
+        <b-card-text>
+          {{ item }}
+        </b-card-text>
+      </b-card>
+    </b-card-group>
+    </b-jumbotron>
+    
+    <b-contianer class="Information">
+        <b-row align-h="start">
+          <b-col>Name: {{ details.name }}</b-col>
+        </b-row>
         <b-row>
           <b-col>Company: {{ details.company }}</b-col>
-          <b-col>Email: {{ details.email }}</b-col>
-          <b-col>Role: {{ details.role }}</b-col>
-          <b-col v-if='details.employeetype'>Employee type: {{ details.employeetype }}</b-col>
         </b-row>
-      </template>
+        <b-row>
+          <b-col>Role: {{ details.role }}</b-col>
+        </b-row>
+        <b-row>
+          <b-col v-if="details.employeetype">Employee type: {{ details.employeetype }}</b-col>
+        </b-row>
+      </b-contianer>
 
-      <hr class="my-4">
-
-      <p>
-        <b-button v-b-modal.balance>Check account balance</b-button>
-        <b-modal id="balance" ok-only>
-          <p class="my-4">Account balance: {{ balance }}</p>
-        </b-modal>
-
-        <!-- <b-button variant="success" href="#">Do Something</b-button>  -->
-      </p>
-    </b-jumbotron>
-</div>
+  </div>
 </template>
 
 <script>
+<<<<<<< Updated upstream
+=======
+import Courier from "../../api/Courier";
+import Procurer from "../../api/Procurer";
+import Supplier from "../../api/Supplier";
+>>>>>>> Stashed changes
 import Navbar from "./AccountNavbar.vue";
 export default {
   name: "Account",
   data() {
     return {
       details: {},
-      balance: 100,
+      info: {},
+      test: {
+        key1: 'fake1',
+        key2: 'fake2'
+      }
     };
   },
   methods: {
     async viewAll() {
-      try{
+      try {
         const details = this.$store.state.details;
-        console.log('details:', details);
+        console.log("details:", details);
         this.details = details;
+        console.log(this.info)
+
+        if (this.details.role == "courier") {
+          const result = await Courier.courierStatistics(this.details.address);
+          const balance = await Courier.getTokenBalance(this.details.address);
+          console.log("Stats:", result.data);
+          console.log("Balance", balance.data);
+
+          this.info = result.data;
+
+          this.info["Total Earned"] = this.info["totalEarned"];
+          delete this.info["totalEarned"];
+          this.info["Orders Delivered"] = this.info["ordersDelivered"];
+          delete this.info["ordersDelivered"];
+          this.info['Balance'] = balance.data;
+
+        } else if (this.details.role == "supplier") {
+          const result = await Supplier.supplierStatistics(details.address);
+          const balance = await Supplier.getTokenBalance(this.details.address);
+          console.log("Stats", result.data);
+
+          this.info = result.data;
+
+          this.info["Total Earned"] = this.info["totalEarned"];
+          delete this.info["totalEarned"];
+          this.info["Products Sold"] = this.info["productsSold"];
+          delete this.info["productsSold"];
+          this.info["Average Rating"] = this.info["avgRating"];
+          delete this.info["avgRating"];
+          this.info['Balance'] = balance.data;
+
+        } else if (this.details.role == "procurer") {
+          const result = await Procurer.procurerStatistics(details.address);
+          const balance = await Procurer.getTokenBalance(this.details.address);
+          console.log("Stats", result.data);
+
+          this.info = result.data;
+
+          this.info["Total Spent"] = this.info["totalSpent"];
+          delete this.info["totalSpent"];
+          this.info["Products Bought"] = this.info["productsBought"];
+          delete this.info["productsBought"];
+          this.info["Orders Accepted"] = this.info["successfulOrdersMade"];
+          delete this.info["successfulOrdersMade"];
+          this.info['Balance'] = balance.data;
+        }
+
+        console.log("Stats:", this.info);
+      } catch (err) {
+        console.log(err);
       }
-      catch (err) {
-        console.log(err)
-      }
+<<<<<<< Updated upstream
     }
+=======
+    },
+>>>>>>> Stashed changes
   },
   components: {
     Navbar,
   },
   mounted() {
+<<<<<<< Updated upstream
     this.viewAll()
+=======
+    this.viewAll();
+>>>>>>> Stashed changes
   },
 };
 </script>
