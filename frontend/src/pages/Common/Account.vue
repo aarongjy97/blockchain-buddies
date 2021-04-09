@@ -38,12 +38,9 @@
 </template>
 
 <script>
-<<<<<<< Updated upstream
-=======
 import Courier from "../../api/Courier";
 import Procurer from "../../api/Procurer";
 import Supplier from "../../api/Supplier";
->>>>>>> Stashed changes
 import Navbar from "./AccountNavbar.vue";
 export default {
   name: "Account",
@@ -114,21 +111,13 @@ export default {
       } catch (err) {
         console.log(err);
       }
-<<<<<<< Updated upstream
-    }
-=======
     },
->>>>>>> Stashed changes
   },
   components: {
     Navbar,
   },
   mounted() {
-<<<<<<< Updated upstream
-    this.viewAll()
-=======
     this.viewAll();
->>>>>>> Stashed changes
   },
 };
 </script>
