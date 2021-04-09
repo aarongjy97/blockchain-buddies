@@ -45,7 +45,12 @@ router.get("/viewallproducts", async (req, res, next) => {
     const address = await getMarketAddress();
     const result = await market.viewAllProducts(address);
     const products = await Promise.all(
-      result.map((p) => structParser.parseProduct(p))
+      result
+        .filter(
+          (product) =>
+            product[0] !== "0x0000000000000000000000000000000000000000"
+        )
+        .map((p) => structParser.parseProduct(p))
     );
     return res.status(200).send(products);
   } catch (error) {
