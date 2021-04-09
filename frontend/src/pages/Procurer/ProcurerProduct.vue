@@ -4,16 +4,40 @@
 
     <div class="left-column">
       <div class="product_image">
-      <img src="https://picsum.photos/600/300/?image=25" alt="" />
+        <img src="https://picsum.photos/600/300/?image=25" alt="" />
       </div>
       <div class="product-description">
         <h4>{{ this.product.productName }}</h4>
-        <p>
+      <div class="rating-header" stlye="">
+          <StarRating 
+            v-bind:rating=4.5
+            v-bind:read-only="true"
+            v-bind:increment="0.5"
+            v-bind:show-rating="false"
+            v-bind:star-size="8"
+            v-bind:padding="1"
+            v-bind:border-width="5" 
+            active-color="gold" 
+            border-color="gold"
+            inactive-color="#FFF">
+        </StarRating>
+        <span style="border-left: solid 1px darkgrey; margin-left: 10px; padding-left:10px"> 0 Ratings </span>
+        <span style="border-left: solid 1px darkgrey; margin-left: 10px; padding-left:10px"> 0 Sold </span>
+      </div>
+        <p style="margin-top: 15px;">
           {{ this.$route.params.product_description }}
         </p> 
-        <span> {{this.$route.params.price}} Tokens </span>
+      <div style="margin-bottom: 15px">
+        <span style="color: grey">Supplier:  </span> 
+        <span> {{this.product.supplierName}} </span>
+      </div>
+      <div style="margin-bottom: 15px">
+        <span style="color: grey">Courier:  </span> 
+        <span> Ninja </span>
       </div>
     </div>
+    </div>
+
     <div class="right-column">
       <h4> Purchase Order Info </h4>
       <div style="margin-bottom: 15px">
@@ -31,7 +55,7 @@
       <Hr></hr>
       <div style="margin-bottom: 40px">
           <span style="color: grey">Input Quantity:  </span> 
-          <b-form-input style="margin-bottom: 10px; float:right; width: 100px;"
+          <b-form-input style="margin-bottom: 10px; float:right; width: 110px;"
             type="number"
             id="quantity"
             v-model="qty"
@@ -47,6 +71,7 @@
 import Navbar from "./Navbar.vue";
 import Market from "../../api/Market"
 import Procurer from "../../api/Procurer";
+import StarRating from 'vue-star-rating'
 export default {
   data() {
     return {
@@ -57,6 +82,7 @@ export default {
   },
   components: {
     Navbar,
+    StarRating,
   },
   methods: {
     async loadPage() {
@@ -122,11 +148,10 @@ export default {
 
 .product-description {
   margin: 0px 0px 0px 20px;
-  text-align: left;
 }
 
 .product-description h4{
-  margin: 0px 0px 20px 0px;
+  margin: 0px 0px 10px 0px;
 }
 
 .cart-btn {
@@ -143,8 +168,8 @@ export default {
   background-color: #64af3d;
 }
 
-#quantity {
- width: 50%;
+.rating-header{
+  display: flex;
 }
 
 </style>
