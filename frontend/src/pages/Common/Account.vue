@@ -1,8 +1,6 @@
 <template>
   <div>
     <Navbar></Navbar>
-    <!-- {{ details }} -->
-    <!-- Need to align text -->
     <b-jumbotron
       header="Account Details"
       header-level="4"
@@ -24,7 +22,7 @@
         </b-card>
       </b-card-group>
 
-      <b-contianer class="Information">
+      <b-container class="Information">
         <b-row>
           <b-col>Name: {{ details.name }}</b-col>
         </b-row>
@@ -39,7 +37,7 @@
             Employee type: {{ details.employeetype }}</b-col
           >
         </b-row>
-      </b-contianer>
+      </b-container>
     </b-jumbotron>
   </div>
 </template>
@@ -55,10 +53,6 @@ export default {
     return {
       details: {},
       info: {},
-      test: {
-        key1: "fake1",
-        key2: "fake2",
-      },
     };
   },
   methods: {
@@ -67,7 +61,7 @@ export default {
         const details = this.$store.state.details;
         console.log("details:", details);
         this.details = details;
-        console.log(this.info);
+        // console.log(this.info);
 
         if (this.details.role == "courier") {
           const result = await Courier.courierStatistics(this.details.address);

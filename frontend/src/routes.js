@@ -19,15 +19,9 @@ export default new Router({
     { path: "/account", name: "account", component: Account },
     { path: "/procurer-main", name: "procurer-main", component: ProcurerMain },
     {
-      path: "/supplier-orders",
-      name: "supplier-orders",
-      component: SupplierOrders,
-    },
-    { path: "/courier-main", name: "courier-main", component: CourierMain },
-    {
       path:
-        "/product/:product_id/:product_name/:product_price/:rating/:product_desc",
-      name: "product",
+        "/procurer-product/:productId-:productName",
+      name: "procurer-product",
       component: ProcurerProduct,
     },
     {
