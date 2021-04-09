@@ -1,38 +1,46 @@
 <template>
-  <main class="container">
+  <div class="container">
     <Navbar></Navbar>
 
     <div class="left-column">
-      <div class= "product_image">
-      <img src="../../assets/dell_computer.jpeg" alt="" />
+      <div class="product_image">
+      <img src="https://picsum.photos/600/300/?image=25" alt="" />
       </div>
       <div class="product-description">
-        <h1>{{ this.product.productName }}</h1>
+        <h4>{{ this.product.productName }}</h4>
         <p>
-          {{ this.$route.params.product_desc }}
+          {{ this.$route.params.product_description }}
         </p> 
-        <span> {{this.$route.params.product_price}} Tokens </span>
-        <div class="product-price">
-          <b-form-input
+        <span> {{this.$route.params.price}} Tokens </span>
+      </div>
+    </div>
+    <div class="right-column">
+      <h4> Purchase Order Info </h4>
+      <div style="margin-bottom: 15px">
+        <span style="color: grey">Commission Fee: </span> 
+        <span style="float: right"> 5 Tokens </span>
+      </div>
+      <div style="margin-bottom: 15px">
+        <span style="color: grey">Courier Fee:  </span> 
+        <span style="float:right"> 2 Tokens </span>
+      </div>
+      <div style="margin-bottom: 30px;">
+        <span style="color: grey; padding-top: 10px;">Total Payment:  </span> 
+        <span style="float:right; font-size: 25px; color: #7dc855"> {{qty*this.$route.params.price + 7}} Tokens </span>
+      </div>
+      <Hr></hr>
+      <div style="margin-bottom: 40px">
+          <span style="color: grey">Input Quantity:  </span> 
+          <b-form-input style="margin-bottom: 10px; float:right; width: 100px;"
+            type="number"
             id="quantity"
             v-model="qty"
-            placeholder="Enter Quantity"
+            value="1"
           ></b-form-input>
-          <Br></br>
-          <span>${{ this.$route.params.product_price }}</span>
-          <button v-on:click="createPurchaseOrder" class="cart-btn">Add to cart</button>
         </div>
-      </div>
+      <button style="float:right" v-on:click="createPurchaseOrder" class="cart-btn">Create Order</button>
     </div>
-
-    <div class="right-column">
-      <h1> Purchase Order Info </h1>
-      <div>
-        <span>Total Price: {{this.$route.params.product_price}} Tokens x </span> 
-      </div>
-      <span>Comission: 10 Tokens </span> 
-    </div>
-  </main>
+  </div>
 </template>
 
 <script>
@@ -44,7 +52,7 @@ export default {
     return {
       details: {},
       product: {},
-      qty: '',
+      qty: '1',
     };
   },
   components: {
@@ -79,114 +87,64 @@ export default {
 
 <style scoped>
 /* Basic Styling */
-html,
-body {
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  font-family: "Roboto", sans-serif;
-}
-
 .container {
-  max-width: 1200px;
   margin: 0 auto;
   padding: 15px;
   display: flex;
-  border: solid black;
+  box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);
 }
 
 /* Columns */
 .left-column {
-  width: 70%;
+  width: 75%;
   position: relative;
-  border: solid black;
   display: flex;
+  border-right: solid 2px lightgrey;
 }
 
 .right-column {
-  width: 30%;
-  margin: 0px 0px 0px 15px;
-  padding-top: 5px;
-  border: solid black;
+  width: 25%;
+  margin: 0px 0px 0px 20px;
 }
 
-.right-column h1 {
-  font-weight: 300;
-  font-size: 30px;
-  color: #43484d;
-  letter-spacing: -2px;
+.right-column h4 {
   text-align: center;
-  text-decoration: underline;
+  margin-bottom: 20px;
 }
 
-/* Left Column */
-.left-column img {
-  /* width: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 1;
-  transition: all 0.3s ease; */
+.product_image {
+  margin: auto;
 }
 
-/* Product Description */
+.product_image img {
+  width: 300px;
+}
+
 .product-description {
-  border-bottom: 1px solid #e1e8ee;
-  margin: 20px 0px 0px 20px;
+  margin: 0px 0px 0px 20px;
   text-align: left;
 }
 
-.product-description span {
-  color: red;
-  font-size: 40px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  text-decoration: none;
-  font-weight: 800px;
-}
-
-.product-description h1 {
-  font-weight: 300;
-  font-size: 52px;
-  color: #43484d;
-  letter-spacing: -2px;
-}
-.product-description p {
-  font-size: 16px;
-  font-weight: 300;
-  color: #86939e;
-  line-height: 24px;
-}
-
-/* Product Price */
-.product-price {
-  align-items: center;
-}
-
-.product-price span {
-  font-size: 26px;
-  font-weight: 300;
-  color: #43474d;
-  margin-right: 20px;
+.product-description h4{
+  margin: 0px 0px 20px 0px;
 }
 
 .cart-btn {
   display: inline-block;
   background-color: #7dc855;
-  border-radius: 6px;
-  font-size: 16px;
+  font-size: 20px;
   color: #ffffff;
-  text-decoration: none;
-  padding: 12px 30px;
+  padding: 10px 20px;
   transition: all 0.5s;
+  border: none;
 }
+
 .cart-btn:hover {
   background-color: #64af3d;
 }
 
 #quantity {
  width: 50%;
-
 }
 
 </style>

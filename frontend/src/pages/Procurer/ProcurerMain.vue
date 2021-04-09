@@ -1,23 +1,5 @@
 <template>
   <div class="body">
-    <!-- <Navbar></Navbar>
-    <div class="row" v-if="products.length">
-      <div v-for="p in products" :key="p.product_id">
-        <div class="col-lg-4" v-if="p.listed">
-          <product-box
-            v-bind:product_id="p.product_id"
-            v-bind:product_name="p.product_name"
-            v-bind:product_price="p.product_price"
-            v-bind:supplier_name="p.supplierName"
-            v-bind:quantity="p.quantity"
-            v-bind:rating="p.rating"
-            v-bind:product_desc="p.product_description"
-          ></product-box>
-        </div>
-      </div>
-    </div>
-  </div>
-<div>  -->
     <Navbar></Navbar>
     <h1>Procurer Product Page</h1>
     <br />
@@ -37,14 +19,28 @@
           >
             <b-card-title>{{ product.productName }}</b-card-title>
             <template #footer>
-              <b-row class='mt-n4'>
-                  <b-col class='text-left'><span style="font-weight: bold">{{ product.quantity }}</span> Qty</b-col>
-                  <b-col class='text-right'><span class='price' style="font-weight: bold">{{ product.price }}</span> Tokens</b-col>
-                </b-row>
-                <b-row>
-                  <b-col class='text-left'><span style="font-weight: bold">{{ product.numSold }}</span> Sold</b-col>
-                  <b-col v-if='product.rating > 0' class='text-right'><span class='rating'>{{ product.rating }}</span>/5 </b-col>
-                </b-row>
+              <b-row class="mt-n4">
+                <b-col class="text-left"
+                  ><span style="font-weight: bold">{{ product.quantity }}</span>
+                  Qty</b-col
+                >
+                <b-col class="text-right"
+                  ><span class="price" style="font-weight: bold">{{
+                    product.price
+                  }}</span>
+                  Tokens</b-col
+                >
+              </b-row>
+              <b-row>
+                <b-col class="text-left"
+                  ><span style="font-weight: bold">{{ product.numSold }}</span>
+                  Sold</b-col
+                >
+                <b-col v-if="product.rating > 0" class="text-right"
+                  ><span class="rating">{{ product.rating }}</span
+                  >/5
+                </b-col>
+              </b-row>
               <router-link
                 :to="{ name: 'product', params: product }"
                 class="stretched-link"
