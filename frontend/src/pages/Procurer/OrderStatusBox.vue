@@ -1,5 +1,86 @@
 <template>
-  <div>
+  <div class="container">
+    <Navbar></Navbar>
+    <div class="order_details" style="">
+      <h5>Purchase Order {{ po_OrderId }}</h5>
+      <h5 style="margin-left:15px; margin-top: 4px;padding-left:15px; border-left: solid 1px darkgrey; font-size:15px; color: grey" > {{order_msg}} </h5>
+      <h5 style="margin-left: auto; color:red"> {{po_status}} </h5>
+    </div>
+    <Hr></hr>
+    <div style="display: flex;">
+      <div class="product_description" style="display: flex; margin-top: 10px; width: 75%">
+        <div class="product_image">
+          <img src="https://picsum.photos/600/300/?image=25" alt="" />
+        </div>
+        <div class="product_details" style="margin-left: 15px;">
+          <h5 style="margin-bottom: 15px"> {{ product_name }} </h5>
+          <div style="margin-bottom: 15px;">
+            <span style="color: grey">Date Created:  </span> 
+            <span> {{po_date}} </span>
+          </div>
+          <div style="margin-bottom: 15px;">
+            <span style="color: grey">Supplier:  </span> 
+            <span> {{supplier_name}} </span>
+          </div>
+          <div style="margin-bottom: 15px">
+            <span style="color: grey">Courier:  </span> 
+            <span> Ninja </span>
+          </div>
+        </div>
+      </div>
+      <div class="subtotal" style="width: 25%; display:inline-block; align-self: flex-end; margin-bottom: 5px;">
+        <div style="float: right">
+          <span style="color: grey">Order Total:  </span> 
+          <span style="font-size: 30px"> {{product_price * product_quantity + 7}} Tokens</span>
+        </div>
+      </div>
+    </div>
+  <div v-if="isFinance && isOrdered" class="table-col order-status" style="float: right; border: ">
+    <button class="approve" @click="approvePurchaseOrder(po_OrderId)">
+      Approve
+    </button>
+    <button class="reject" @click="rejectPurchaseOrder(po_OrderId)">
+      Reject
+    </button>
+  </div>
+  <div
+    v-else-if="!isFinance && isDelivering"
+    class="table-col order-status"
+  >
+    <button class="approve" @click="receivedOrder(po_OrderId)">
+      Received
+    </button>
+  </div>
+
+    <!-- <div class="right-column">
+      <h4> Purchase Order Info </h4>
+      <div style="margin-bottom: 15px">
+        <span style="color: grey">Commission Fee: </span> 
+        <span style="float: right"> 5 Tokens </span>
+      </div>
+      <div style="margin-bottom: 15px">
+        <span style="color: grey">Courier Fee:  </span> 
+        <span style="float:right"> 2 Tokens </span>
+      </div>
+      <div style="margin-bottom: 30px;">
+        <span style="color: grey; padding-top: 10px;">Total Payment:  </span> 
+        <span style="float:right; font-size: 25px; color: #7dc855"> Tokens </span>
+      </div>
+      <Hr></hr>
+      <div style="margin-bottom: 40px">
+          <span style="color: grey">Input Quantity:  </span> 
+          <b-form-input style="margin-bottom: 10px; float:right; width: 110px;"
+            type="number"
+            id="quantity"
+            v-model="qty"
+            value="1"
+          ></b-form-input>
+        </div>
+      <button style="float:right" v-on:click="createPurchaseOrder" class="cart-btn">Create Order</button>
+    </div>-->
+  </div> 
+</template>
+  <!-- <div>
     <div class="table-wrapper">
       <div class="table-row">
         <div class="col-wrapper order-date-number-po">
@@ -41,8 +122,8 @@
         </div>
       </div>
     </div>
-  </div>
-</template>
+  </div> 
+</template> -->
 
 <script>
 import Procurer from "../../api/Procurer";
@@ -66,6 +147,19 @@ export default {
       isOrdered: this.po_status == "Ordered",
       isDelivering: this.po_status == "Delivering",
     };
+  },
+  computed: {
+    order_msg: function() {
+      if (this.isOrdered) {
+        return "Awaiting approval from finance department";
+      }
+      else if (this.isInternalApproved) {
+        return "Awaiting approval from supplier";
+      }
+      else {
+        return "";
+      }
+    }
   },
   methods: {
     async approvePurchaseOrder(orderId) {
@@ -109,153 +203,70 @@ export default {
 </script>
 
 <style scoped>
-.table-wrapper {
-  font-family: "Theinhardt", sans-serif;
-  font-size: 0.875rem;
-  line-height: 1.4;
-  max-width: 80%;
+.container {
   margin: 0 auto;
+  padding: 15px;
+  box-shadow: 0 4px 6px 0 hsla(0, 0%, 0%, 0.2);
+  width: auto;
+  height: 300px;
 }
 
-.table-row {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  width: 100%;
-  padding: 1rem;
+.product_description {
 }
 
-.table-row:nth-of-type(2n + 1) {
-  background: #f1f1f1;
-}
-
-.table-header {
-  background-color: #33a889 !important;
-  color: white;
-}
-
-.col-wrapper {
-  display: flex;
-  /* flex: 1 0; */
-  flex-direction: row;
-}
-
-.table-col {
-  flex: 0 0;
-  vertical-align: top;
-}
-
-.order-date-number-po {
-  flex: 0.5 0;
-  width: 100+150+100px;
-  @media screen and (max-width: 1000px) {
-    flex-direction: column;
-  }
-}
-
-.order-date {
-  width: 100px;
-  flex: 0.5 1;
-}
-
-.order-number {
-  width: 150px;
-  flex: 0.5 1;
-  font-weight: 500;
-}
-
-.order-po {
-  width: 100px;
-  flex: 0.5 1;
-}
-
-.order-supplier-product-price {
-  flex: 1 0;
-  width: 400+100+100px;
-  @media screen and (max-width: 1200px) {
-    flex-direction: column;
-    width: 200px;
-    div {
-      flex-grow: 0;
-    }
-  }
-}
-
-.order-supplier {
-  width: 100px;
-  flex: 0.5 1;
-  padding-right: 0.5rem;
-}
-
-.order-product {
-  width: 100px;
-  flex: 0.5 1;
-}
-
-.order-price {
+.product_description img {
   width: 200px;
-  flex: 2 0;
 }
 
-.order-status-signed-action {
-  flex: 1 0;
-  width: 100px;
-  @media screen and (max-width: 1200px) {
-    flex-direction: column;
-    width: 200px;
-    div {
-      flex-grow: 0;
-    }
-  }
+.cart-btn {
+  display: inline-block;
+  background-color: #7dc855;
+  font-size: 20px;
+  color: #ffffff;
+  padding: 10px 20px;
+  transition: all 0.5s;
+  border: none;
 }
 
-.order-status {
-  width: 100px;
-  flex: 1 0;
-}
-.order-signed {
-  width: 100px;
-  flex: 1 0;
+.cart-btn:hover {
+  background-color: #64af3d;
 }
 
-.order-actions {
-  flex: 0 1;
-  width: 100+100px;
+.rating-header{
+  display: flex;
 }
 
-.order-sign {
-  width: 100px;
-  flex: 1 0;
-}
-.order-view {
-  width: 100px;
-  flex: 1 0;
-}
-
-button {
-  margin-left: 10px;
-  width: 100px;
-}
-
-.approve:active {
-  background-color: #3e8e41;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
-}
-
-.reject:active {
-  background-color: red;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
+.order_details {
+  display: flex;
 }
 
 .approve {
-  background: green;
-  color: #ffff;
+  display: inline-block;
+  background-color: #7dc855;
+  font-size: 20px;
+  color: #ffffff;
+  padding: 7px 20px;
+  transition: all 0.5s;
+  border: none;
+  width: 120px;
+}
+
+.approve:hover {
+  background-color: #64af3d;
 }
 
 .reject {
-  background: red;
-  color: #ffff;
+  display: inline-block;
+  background-color: red;
+  font-size: 20px;
+  color: #ffffff;
+  padding: 7px 20px;
+  transition: all 0.5s;
+  border: none;
+  width: 120px;
+}
+
+.reject:hover {
+  background-color: red;
 }
 </style>
