@@ -1,7 +1,6 @@
 <template>
   <div>
     <Navbar></Navbar>
-    <order-status-header></order-status-header>
     <div v-if="purchaseOrders.length">
       <div v-for="po in purchaseOrders" :key="po.po_id">
         <order-status-box
@@ -22,7 +21,6 @@
 
 <script>
 import OrderStatusBox from "./OrderStatusBox.vue";
-import OrderStatusHeader from "./OrderStatusHeader.vue";
 import Navbar from "./Navbar.vue";
 import Procurer from "../../api/Procurer";
 
@@ -37,7 +35,6 @@ export default {
   components: {
     Navbar,
     "order-status-box": OrderStatusBox,
-    "order-status-header": OrderStatusHeader,
   },
   methods: {
     async viewAllPurchaseOrders() {
@@ -50,7 +47,7 @@ export default {
           po_id: po.orderId,
           price: po.price,
           quantity: po.quantity,
-          date: po.dateCreated.substring(0,10),
+          date: po.dateCreated.substring(0, 10),
           status: po.status,
           supplier_name: po.supplierName,
           product_id: po.productId,
