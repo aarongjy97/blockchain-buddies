@@ -4,7 +4,7 @@ import Login from "./pages/Common/Login.vue";
 import Account from "./pages/Common/Account.vue";
 import ProcurerMain from "./pages/Procurer/ProcurerMain.vue";
 import ProcurerProduct from "./pages/Procurer/ProcurerProduct.vue";
-import OrderStatusPage from "./pages/Procurer/OrderStatusPage.vue";
+import ProcurerOrderStatusPage from "./pages/Procurer/ProcurerOrderStatusPage.vue";
 import SupplierMain from "./pages/Supplier/SupplierMain.vue";
 import SupplierProduct from "./pages/Supplier/SupplierProduct.vue";
 import SupplierListing from "./pages/Supplier/SupplierListing.vue";
@@ -28,7 +28,7 @@ export default new Router({
     {
       path: "/procurer-orders",
       name: "procurer-orders",
-      component: OrderStatusPage,
+      component: ProcurerOrderStatusPage,
     },
     { path: "/supplier-main", name: "supplier-main", component: SupplierMain },
     {
