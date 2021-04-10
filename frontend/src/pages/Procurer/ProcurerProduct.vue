@@ -25,7 +25,7 @@
         <span style="border-left: solid 1px darkgrey; margin-left: 10px; padding-left:10px"> 0 Sold </span>
       </div>
         <p style="margin-top: 15px;">
-          {{ this.$route.params.product_description }}
+          {{ this.product.description }}
         </p> 
       <div style="margin-bottom: 15px">
         <span style="color: grey">Supplier:  </span> 
@@ -50,7 +50,7 @@
       </div>
       <div style="margin-bottom: 30px;">
         <span style="color: grey; padding-top: 10px;">Total Payment:  </span> 
-        <span style="float:right; font-size: 25px; color: #7dc855"> {{qty*this.$route.params.price + 7}} Tokens </span>
+        <span style="float:right; font-size: 25px; color: #7dc855"> {{qty*this.product.price + 7}} Tokens </span>
       </div>
       <Hr></hr>
       <div style="margin-bottom: 40px">
