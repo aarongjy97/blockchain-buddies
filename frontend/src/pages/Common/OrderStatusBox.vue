@@ -201,6 +201,10 @@ export default {
 
     async SupplierApprovePurchaseOrderandAssignCourier(orderId) {
       try {
+        if (this.courier == null) {
+          alert("Please assign a courier");
+          return false;
+        }
         const result = await Supplier.approvePurchaseOrder(orderId, this.$store.state.details.address);
         console.log('approve PO:', result.data);
         alert('Approved');
