@@ -30,13 +30,6 @@
             <span style="color: grey;">Courier:  </span>
             <span style="margin-left: 5px"> {{courier_name}} </span>
           </div>
-          <!-- <div v-else-if="!isInternalApproved" style="margin-bottom: 15px; display:flex">
-            <span style="color: grey;">Courier:  </span>
-            <span style="margin-left: 5px"> {{courier_name}} </span>
-          </div> -->
-            <!-- <div v-else> 
-              <span> To be selected </span>
-            </div> -->
         </div>
       </div>
       <div class="subtotal" style="width: 30%; display:inline-block; align-self: flex-end; margin-bottom: 0px;">
@@ -46,7 +39,7 @@
         </div>
       </div>
     </div>
-    <div v-if="isProcurer && isFinance && isOrdered" class="table-col order-status" style="float: right; border: ">
+    <div v-if="isProcurer && isFinance && isOrdered" class="table-col order-status" style="float: right;">
       <button class="approve" @click="ProcurerApprovePurchaseOrder(po_OrderId)">
         Approve
       </button>
@@ -54,7 +47,7 @@
         Reject
       </button>
     </div>
-    <div v-else-if="isSupplier && isInternalApproved" class="table-col order-status" style="float: right; border: ">
+    <div v-else-if="isSupplier && isInternalApproved" class="table-col order-status" style="float: right; ">
       <button class="approve" @click="SupplierApprovePurchaseOrderandAssignCourier(po_OrderId)">
         Approve
       </button>
@@ -62,20 +55,30 @@
         Reject
       </button>
     </div>
-    <div
-      v-else-if="!isSupplier && !isCourier && !isFinance && isDelivering"
-      class="table-col order-status"
-    >
-      <button class="approve" @click="receivedOrder(po_OrderId)">
+    <div v-else-if="isCourier && isCourierAssigned" class="table-col order-status" style="float: right;">
+      <button class="approve" @click="CourierDelivering(po_OrderId)">
+        Delivering
+      </button>
+    </div>
+    <div v-else-if="isProcurer && !isFinance && isDelivering" class="table-col order-status" style="float: right;">
+      <button class="approve" @click="ProcurerReceivedOrder(po_OrderId)">
         Received
       </button>
     </div>
-    <div
-      v-else-if="!isSupplier && isDelivering"
-      class="table-col order-status"
-    >
-      <button class="approve" @click="receivedOrder(po_OrderId)">
-        Received
+    <div v-else-if="isProcurer && isDelivered" class="table-col order-status" style="float: right; display:flex">
+      <StarRating 
+        v-model="rating"
+        v-bind:increment="1"
+        v-bind:show-rating="false"
+        v-bind:star-size="14"
+        v-bind:padding="1"
+        v-bind:border-width="7" 
+        active-color="gold" 
+        border-color="gold"
+        inactive-color="#FFF">
+      </StarRating>
+      <button class="approve" @click="ProcurerAddRating(po_OrderId)" style="margin-left: 15px;">
+        Rate
       </button>
     </div>
   </div> 
@@ -84,8 +87,14 @@
 <script>
 import Procurer from "../../api/Procurer";
 import Supplier from "../../api/Supplier";
+import Courier from "../../api/Courier";
+import StarRating from 'vue-star-rating';
 
 export default {
+  components: {
+    StarRating,
+  },
+
   props: {
     product_id: String,
     supplier_name: String,
@@ -106,7 +115,7 @@ export default {
       isSupplierRejected: this.po_status == "Supplier Rejected",
       isCourierAssigned: this.po_status == "Courier Assigned",
       isDelivering: this.po_status == "Delivering",
-      isDelviered: this.po_status == "Delivered",
+      isDelivered: this.po_status == "Delivered",
       isSupplier: "",
       isProcurer: "",
       isCourier: "",
@@ -189,6 +198,7 @@ export default {
         console.log(e);
       }
     },
+
     async SupplierApprovePurchaseOrderandAssignCourier(orderId) {
       try {
         const result = await Supplier.approvePurchaseOrder(orderId, this.$store.state.details.address);
@@ -235,6 +245,32 @@ export default {
         const result = await Supplier.assignCourier(orderId, courier, this.$store.state.details.address);
         console.log('assign courier:', result.data);
         alert('Assigned courier');
+        this.$router.go();
+      }
+      catch(e) {
+        console.log(e.response.data);
+        alert(e.response.data.reason);
+      }
+    },
+
+    async CourierDelivering(orderId) {
+      try {
+        const result = await Courier.receivedByCourier(orderId, this.$store.state.details.address);
+        console.log('courier delivering:', result.data);
+        alert('Item packed and on delivery');
+        this.$router.go();
+      }
+      catch(e) {
+        console.log(e.response.data);
+        alert(e.response.data.reason);
+      }
+    },
+
+    async ProcurerAddRating(orderId) {
+      try {
+        const result = await Procurer.addRating(this.$store.state.details.address, orderId, this.rating);
+        console.log('add rating:', result.data);
+        alert('Rated! Thank you!');
         this.$router.go();
       }
       catch(e) {
@@ -297,7 +333,7 @@ export default {
   padding: 7px 20px;
   transition: all 0.5s;
   border: none;
-  width: 120px;
+  width: 125px;
 }
 
 .approve:hover {
@@ -312,7 +348,7 @@ export default {
   padding: 7px 20px;
   transition: all 0.5s;
   border: none;
-  width: 120px;
+  width: 125px;
 }
 
 .reject:hover {

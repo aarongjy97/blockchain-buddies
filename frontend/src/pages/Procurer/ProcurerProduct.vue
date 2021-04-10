@@ -8,9 +8,9 @@
       </div>
       <div class="product-description">
         <h4>{{ this.product.productName }}</h4>
-      <div class="rating-header" stlye="">
+      <div class="rating-header">
           <StarRating 
-            v-bind:rating=4.5
+            v-bind:rating=this.product.rating
             v-bind:read-only="true"
             v-bind:increment="0.5"
             v-bind:show-rating="false"

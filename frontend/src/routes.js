@@ -8,9 +8,10 @@ import ProcurerOrderStatusPage from "./pages/Procurer/ProcurerOrderStatusPage.vu
 import SupplierMain from "./pages/Supplier/SupplierMain.vue";
 import SupplierProduct from "./pages/Supplier/SupplierProduct.vue";
 import SupplierListing from "./pages/Supplier/SupplierListing.vue";
-import SupplierOrders from "./pages/Supplier/SupplierOrders.vue";
+import SupplierOrders from "./pages/Supplier/SupplierOrderStatusPage.vue";
 import SupplierOrderPage from "./pages/Supplier/SupplierOrderPage.vue";
 import CourierMain from "./pages/Courier/CourierMain.vue";
+import CourierOrderStatusPage from "./pages/Courier/CourierOrderStatusPage.vue";
 
 Vue.use(Router);
 
@@ -20,8 +21,7 @@ export default new Router({
     { path: "/account", name: "account", component: Account },
     { path: "/procurer-main", name: "procurer-main", component: ProcurerMain },
     {
-      path:
-        "/procurer-product/:productId-:productName",
+      path: "/procurer-product/:productId-:productName",
       name: "procurer-product",
       component: ProcurerProduct,
     },
@@ -52,6 +52,11 @@ export default new Router({
       component: SupplierOrderPage,
     },
     { path: "/courier-main", name: "courier-main", component: CourierMain },
+    {
+      path: "/courier-main",
+      name: "courier-main",
+      component: CourierOrderStatusPage,
+    },
   ],
   mode: "history",
 });
