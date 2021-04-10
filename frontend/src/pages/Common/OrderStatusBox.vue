@@ -65,7 +65,7 @@
         Received
       </button>
     </div>
-    <div v-else-if="isProcurer && isDelivered" class="table-col order-status" style="float: right; display:flex">
+    <div v-else-if="isProcurer && !isFinance && isDelivered" class="table-col order-status" style="float: right; display:flex">
       <StarRating 
         v-model="rating"
         v-bind:increment="1"
