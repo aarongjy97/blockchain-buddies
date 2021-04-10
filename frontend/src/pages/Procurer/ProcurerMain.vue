@@ -37,9 +37,19 @@
                   ><span style="font-weight: bold">{{ product.numSold }}</span>
                   Sold</b-col
                 >
-                <b-col v-if="product.rating > 0" class="text-right"
-                  ><span class="rating">{{ product.rating }}</span
-                  >/5
+                <b-col v-if="product.rating > 0" class="text-right ml-5 pl-5 pt-1">
+                  <StarRating 
+                    v-model="product.rating"
+                    v-bind:increment="1"
+                    v-bind:show-rating="false"
+                    v-bind:read-only="true"
+                    v-bind:star-size="4"
+                    v-bind:padding="1"
+                    v-bind:border-width="7" 
+                    active-color="gold" 
+                    border-color="gold"
+                    inactive-color="#FFF">
+                  </StarRating>
                 </b-col>
               </b-row>
               <router-link
@@ -58,6 +68,7 @@
 <script>
 import Navbar from "./Navbar.vue";
 import Market from "../../api/Market";
+import StarRating from 'vue-star-rating';
 
 export default {
   name: "ProcurerMain",
@@ -69,6 +80,7 @@ export default {
   },
   components: {
     Navbar,
+    StarRating,
   },
   methods: {
     async viewAllProducts() {

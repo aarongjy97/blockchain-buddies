@@ -20,7 +20,7 @@
             active-color="gold" 
             border-color="gold"
             inactive-color="#FFF">
-        </StarRating>
+          </StarRating>
         <span style="border-left: solid 1px darkgrey; margin-left: 10px; padding-left:10px"> 0 Ratings </span>
         <span style="border-left: solid 1px darkgrey; margin-left: 10px; padding-left:10px"> {{this.product.numSold}} Sold </span>
       </div>
@@ -66,7 +66,7 @@
             value="1"
           ></b-form-input>
         </div>
-      <button style="float:right" v-on:click="createPurchaseOrder" class="cart-btn">Create Order</button>
+      <b-button style="float:right" v-on:click="createPurchaseOrder" class="cart-btn">Create Order</b-button>
     </div>
   </div>
 </template>

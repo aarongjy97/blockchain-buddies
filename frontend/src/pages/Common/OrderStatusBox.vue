@@ -127,6 +127,7 @@ export default {
       isCourier: "",
       couriers: [{ value: null, text: 'Please select a courier', disabled: true, selected: true}],
       courier: null,
+      rating: 0,
     };
   },
   computed: {

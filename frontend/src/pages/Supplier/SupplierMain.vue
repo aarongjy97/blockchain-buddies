@@ -25,7 +25,20 @@
                 </b-row>
                 <b-row>
                   <b-col class='text-left'><span style="font-weight: bold">{{ product.numSold }}</span> Sold</b-col>
-                  <b-col v-if='product.rating > 0' class='text-right'><span class='rating'>{{ product.rating }}</span>/5 </b-col>
+                  <b-col v-if='product.rating > 0' class="text-right ml-5 pl-5 pt-1">
+                    <StarRating 
+                      v-model="product.rating"
+                      v-bind:increment="1"
+                      v-bind:show-rating="false"
+                      v-bind:read-only="true"
+                      v-bind:star-size="4"
+                      v-bind:padding="1"
+                      v-bind:border-width="7" 
+                      active-color="gold" 
+                      border-color="gold"
+                      inactive-color="#FFF">
+                    </StarRating>
+                  </b-col>
                 </b-row>
                 <router-link :to="{name: 'supplier-product', params: product}" class='stretched-link'></router-link>
               </template>
@@ -45,7 +58,20 @@
                 </b-row>
                 <b-row>
                   <b-col class='text-left'><span style="font-weight: bold">{{ product.numSold }}</span> Sold</b-col>
-                  <b-col v-if='product.rating > 0' class='text-right'><span class='rating'>{{ product.rating }}</span>/5 </b-col>
+                  <b-col v-if='product.rating > 0' class="text-right ml-5 pl-5 pt-1">
+                    <StarRating 
+                      v-model="product.rating"
+                      v-bind:increment="1"
+                      v-bind:show-rating="false"
+                      v-bind:read-only="true"
+                      v-bind:star-size="4"
+                      v-bind:padding="1"
+                      v-bind:border-width="7" 
+                      active-color="gold" 
+                      border-color="gold"
+                      inactive-color="#FFF">
+                    </StarRating>
+                  </b-col>
                 </b-row>
                 <router-link :to="{name: 'supplier-product', params: product}" class='stretched-link'></router-link>
               </template>
@@ -74,7 +100,20 @@
                 </b-row>
                 <b-row>
                   <b-col class='text-left'><span style="font-weight: bold">{{ product.numSold }}</span> Sold</b-col>
-                  <b-col v-if='product.rating > 0' class='text-right'><span class='rating'>{{ product.rating }}</span>/5 </b-col>
+                  <b-col v-if='product.rating > 0' class="text-right ml-5 pl-5 pt-1">
+                    <StarRating 
+                      v-model="product.rating"
+                      v-bind:increment="1"
+                      v-bind:show-rating="false"
+                      v-bind:read-only="true"
+                      v-bind:star-size="4"
+                      v-bind:padding="1"
+                      v-bind:border-width="7" 
+                      active-color="gold" 
+                      border-color="gold"
+                      inactive-color="#FFF">
+                    </StarRating>
+                  </b-col>
                 </b-row>
                 <router-link :to="{name: 'supplier-product', params: product}" class='stretched-link'></router-link>
               </template>
@@ -103,7 +142,20 @@
                 </b-row>
                 <b-row>
                   <b-col class='text-left'><span style="font-weight: bold">{{ product.numSold }}</span> Sold</b-col>
-                  <b-col v-if='product.rating > 0' class='text-right'><span class='rating'>{{ product.rating }}</span>/5 </b-col>
+                  <b-col v-if='product.rating > 0' class="text-right ml-5 pl-5 pt-1">
+                    <StarRating 
+                      v-model="product.rating"
+                      v-bind:increment="1"
+                      v-bind:show-rating="false"
+                      v-bind:read-only="true"
+                      v-bind:star-size="4"
+                      v-bind:padding="1"
+                      v-bind:border-width="7" 
+                      active-color="gold" 
+                      border-color="gold"
+                      inactive-color="#FFF">
+                    </StarRating>
+                  </b-col>
                 </b-row>
                 <router-link :to="{name: 'supplier-product', params: product}" class='stretched-link'></router-link>
               </template>
@@ -120,6 +172,8 @@
 <script>
 import Navbar from "./Navbar.vue";
 import Supplier from "../../api/Supplier";
+import StarRating from 'vue-star-rating';
+
 export default {
   name: "SupplierMain",
   data() {
@@ -168,6 +222,7 @@ export default {
   },
   components: {
     Navbar,
+    StarRating,
   },
   mounted() {
     this.viewAll();
