@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <Navbar></Navbar>
-    <div class="order_details" style="">
-      <h5>Purchase Order {{ po_OrderId }}</h5>
+    <div class="order_details">
+      <h5>Purchase Order {{ orderId }}</h5>
       <h5 style="margin-left:15px; margin-top: 4px;padding-left:15px; border-left: solid 1px darkgrey; font-size:15px; color: grey" > Details: {{order_msg}} </h5>
-      <h5 style="margin-left: auto; color:red"> {{po_status}} </h5>
+      <h5 style="margin-left: auto; color:red"> {{status}} </h5>
     </div>
     <Hr style="margin-top: 0px"></hr>
     <div style="display: flex;">
@@ -13,18 +13,18 @@
           <img src="https://picsum.photos/600/300/?image=25" alt="" />
         </div>
         <div class="product_details" style="margin-left: 15px;">
-          <h5 style="margin-bottom: 15px"> {{ product_name }} </h5>
+          <h5 style="margin-bottom: 15px"> {{ productName }} </h5>
           <div style="margin-bottom: 15px;">
             <span style="color: grey">Date Created:  </span> 
-            <span> {{po_date}} </span>
+            <span> {{dateCreated}} </span>
           </div>
           <div style="margin-bottom: 15px;">
             <span style="color: grey">Supplier:  </span> 
-            <span> {{supplier_name}} </span>
+            <span> {{supplierName}} </span>
           </div>
           <div style="margin-bottom: 15px;">
             <span style="color: grey">Procurer:  </span> 
-            <span> {{procurer_name}} </span>
+            <span> {{procurerName}} </span>
           </div>
           <div v-if="isSupplier && isInternalApproved" style="margin-bottom: 15px; display:flex">
             <span style="color: grey; margin-top: 4px;">Courier:  </span>
@@ -32,40 +32,40 @@
           </div>
           <div v-else-if="isSupplierApproved || isDelivering || isCourierAssigned || isDelivered" style="margin-bottom: 15px; display:flex">
             <span style="color: grey;">Courier:  </span>
-            <span style="margin-left: 5px"> {{courier_name}} </span>
+            <span style="margin-left: 5px"> {{courierName}} </span>
           </div>
         </div>
       </div>
       <div class="subtotal" style="width: 30%; display:inline-block; align-self: flex-end; margin-bottom: 0px;">
         <div style="float: right">
           <span style="color: grey">Order Total:  </span> 
-          <span style="font-size: 30px"> {{product_price * product_quantity + 7}} Tokens</span>
+          <span style="font-size: 30px"> {{price * quantity + 7}} Tokens</span>
         </div>
       </div>
     </div>
     <div v-if="isProcurer && isFinance && isOrdered" class="table-col order-status" style="float: right;">
-      <button class="approve" @click="ProcurerApprovePurchaseOrder(po_OrderId)">
+      <button class="approve" @click="ProcurerApprovePurchaseOrder(orderId)">
         Approve
       </button>
-      <button class="reject" @click="ProcurerRejectPurchaseOrder(po_OrderId)">
+      <button class="reject" @click="ProcurerRejectPurchaseOrder(orderId)">
         Reject
       </button>
     </div>
     <div v-else-if="isSupplier && isInternalApproved" class="table-col order-status" style="float: right; ">
-      <button class="approve" @click="SupplierApprovePurchaseOrderandAssignCourier(po_OrderId)">
+      <button class="approve" @click="SupplierApprovePurchaseOrderandAssignCourier(orderId)">
         Approve
       </button>
-      <button class="reject" @click="SupplierRejectPurchaseOrder(po_OrderId)">
+      <button class="reject" @click="SupplierRejectPurchaseOrder(orderId)">
         Reject
       </button>
     </div>
     <div v-else-if="isCourier && isCourierAssigned" class="table-col order-status" style="float: right;">
-      <button class="approve" @click="CourierDelivering(po_OrderId)">
+      <button class="approve" @click="CourierDelivering(orderId)">
         Delivering
       </button>
     </div>
     <div v-else-if="isProcurer && !isFinance && isDelivering" class="table-col order-status" style="float: right;">
-      <button class="approve" @click="ProcurerReceivedOrder(po_OrderId)">
+      <button class="approve" @click="ProcurerReceivedOrder(orderId)">
         Received
       </button>
     </div>
@@ -81,7 +81,7 @@
         border-color="gold"
         inactive-color="#FFF">
       </StarRating>
-      <button class="approve" @click="ProcurerAddRating(po_OrderId)" style="margin-left: 15px;">
+      <button class="approve" @click="ProcurerAddRating(orderId)" style="margin-left: 15px;">
         Rate
       </button>
     </div>
@@ -100,28 +100,28 @@ export default {
   },
 
   props: {
-    product_id: String,
-    supplier_name: String,
-    product_price: String,
-    product_quantity: String,
-    po_date: String,
-    po_status: String,
-    po_OrderId: String,
+    courierName: String,
+    dateCreated: String,
     employeeType: String,
-    product_name: String,
-    courier_name: String,
-    procurer_name: String,
+    orderId: String,
+    price: String,
+    procurerName: String,
+    productId: String,
+    productName: String,
+    quantity: String,
+    status: String,
+    supplierName: String,
   },
   data() {
     return {
       isFinance: this.employeeType == "finance",
-      isInternalApproved: this.po_status == "Internal Approved",
-      isOrdered: this.po_status == "Ordered",
-      isSupplierApproved: this.po_status == "Supplier Approved",
-      isSupplierRejected: this.po_status == "Supplier Rejected",
-      isCourierAssigned: this.po_status == "Courier Assigned",
-      isDelivering: this.po_status == "Delivering",
-      isDelivered: this.po_status == "Delivered",
+      isInternalApproved: this.status == "Internal Approved",
+      isOrdered: this.status == "Ordered",
+      isSupplierApproved: this.status == "Supplier Approved",
+      isSupplierRejected: this.status == "Supplier Rejected",
+      isCourierAssigned: this.status == "Courier Assigned",
+      isDelivering: this.status == "Delivering",
+      isDelivered: this.status == "Delivered",
       isSupplier: "",
       isProcurer: "",
       isCourier: "",
@@ -137,22 +137,22 @@ export default {
       else if (this.isInternalApproved) {
         return "Awaiting approval from supplier";
       }
-      else if (this.po_status == "isInternalRejected") {
+      else if (this.status == "isInternalRejected") {
         return "Order rejected, contact finance department"
       }
-      else if (this.po_status == "Supplier Approved") {
+      else if (this.status == "Supplier Approved") {
         return "Awaiting approval from courier";
       }
-      else if (this.po_status == "Supplier Rejected") {
+      else if (this.status == "Supplier Rejected") {
         return "Order rejected, contact supplier"
       }
-      else if (this.po_status == "Courier Assigned") {
+      else if (this.status == "Courier Assigned") {
         return "Item packed and ready to be delivered"
       }
-      else if (this.po_status == "Delivering") {
+      else if (this.status == "Delivering") {
         return "Item is out for delivery"
       }
-      else if (this.po_status == "Delivered") {
+      else if (this.status == "Delivered") {
         return "Item has been delivered"
       }
       else {
@@ -166,7 +166,7 @@ export default {
       this.isSupplier = role == "supplier" ? true : false;
       this.isProcurer = role == "procurer" ? true : false;
       this.isCourier = role == "courier" ? true: false;
-      console.log(this.isProcurer);
+      // console.log(this.isProcurer);
     },
 
     async ProcurerApprovePurchaseOrder(orderId) {
@@ -245,10 +245,10 @@ export default {
     },
     async SupplierFetchCouriers() {
       const result = await Supplier.getCouriers();
-      console.log(this.$store.state.details.role);
+      // console.log(this.$store.state.details.role);
       const couriers = [];
       result.data.forEach(x => couriers.push({'text': x['name'], 'value': x['address']}));
-      console.log('couriers', couriers);
+      // console.log('couriers', couriers);
       this.couriers = this.couriers.concat(couriers);
     },
 
