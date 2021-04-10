@@ -22,7 +22,7 @@
             inactive-color="#FFF">
         </StarRating>
         <span style="border-left: solid 1px darkgrey; margin-left: 10px; padding-left:10px"> 0 Ratings </span>
-        <span style="border-left: solid 1px darkgrey; margin-left: 10px; padding-left:10px"> 0 Sold </span>
+        <span style="border-left: solid 1px darkgrey; margin-left: 10px; padding-left:10px"> {{this.product.numSold}} Sold </span>
       </div>
         <p style="margin-top: 15px;">
           {{ this.product.description }}
@@ -31,10 +31,10 @@
         <span style="color: grey">Supplier:  </span> 
         <span> {{this.product.supplierName}} </span>
       </div>
-      <div style="margin-bottom: 15px">
+      <!-- <div style="margin-bottom: 15px">
         <span style="color: grey">Courier:  </span> 
         <span> Ninja </span>
-      </div>
+      </div> -->
     </div>
     </div>
 
