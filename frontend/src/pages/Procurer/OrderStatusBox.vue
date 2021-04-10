@@ -8,7 +8,7 @@
     </div>
     <Hr></hr>
     <div style="display: flex;">
-      <div class="product_description" style="display: flex; margin-top: 10px; width: 75%">
+      <div class="product_description" style="display: flex; margin-top: 10px; width: 70%">
         <div class="product_image">
           <img src="https://picsum.photos/600/300/?image=25" alt="" />
         </div>
@@ -28,7 +28,7 @@
           </div>
         </div>
       </div>
-      <div class="subtotal" style="width: 25%; display:inline-block; align-self: flex-end; margin-bottom: 5px;">
+      <div class="subtotal" style="width: 30%; display:inline-block; align-self: flex-end; margin-bottom: 5px;">
         <div style="float: right">
           <span style="color: grey">Order Total:  </span> 
           <span style="font-size: 30px"> {{product_price * product_quantity + 7}} Tokens</span>
