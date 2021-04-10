@@ -236,6 +236,7 @@ export default {
         const result = await Supplier.rejectPurchaseOrder(orderId, this.$store.state.details.address);
         console.log('reject PO:', result.data);
         alert('Rejected');
+        this.$router.go(0);
       }
       catch(e) {
         console.log(e.response.data);
@@ -256,7 +257,7 @@ export default {
         const result = await Supplier.assignCourier(orderId, courier, this.$store.state.details.address);
         console.log('assign courier:', result.data);
         alert('Assigned courier');
-        this.$router.go();
+        this.$router.go(0);
       }
       catch(e) {
         console.log(e.response.data);
@@ -269,7 +270,7 @@ export default {
         const result = await Courier.receivedByCourier(orderId, this.$store.state.details.address);
         console.log('courier delivering:', result.data);
         alert('Item packed and on delivery');
-        this.$router.go();
+        this.$router.go(0);
       }
       catch(e) {
         console.log(e.response.data);
