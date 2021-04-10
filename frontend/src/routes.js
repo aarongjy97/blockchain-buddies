@@ -10,7 +10,7 @@ import SupplierProduct from "./pages/Supplier/SupplierProduct.vue";
 import SupplierListing from "./pages/Supplier/SupplierListing.vue";
 import SupplierOrders from "./pages/Supplier/SupplierOrderStatusPage.vue";
 import SupplierOrderPage from "./pages/Supplier/SupplierOrderPage.vue";
-import CourierMain from "./pages/Courier/CourierMain.vue";
+// import CourierMain from "./pages/Courier/CourierMain.vue";
 import CourierOrderStatusPage from "./pages/Courier/CourierOrderStatusPage.vue";
 
 Vue.use(Router);
@@ -51,7 +51,7 @@ export default new Router({
       name: "supplier-order-page",
       component: SupplierOrderPage,
     },
-    { path: "/courier-main", name: "courier-main", component: CourierMain },
+    // { path: "/courier-main", name: "courier-main", component: CourierMain },
     {
       path: "/courier-main",
       name: "courier-main",

@@ -48,6 +48,10 @@
         <span style="color: grey">Courier Fee:  </span> 
         <span style="float:right"> 2 Tokens </span>
       </div>
+      <div style="margin-bottom: 15px">
+        <span style="color: grey">Item Price:  </span> 
+        <span style="float:right"> {{qty*this.product.price}} Tokens </span>
+      </div>
       <div style="margin-bottom: 30px;">
         <span style="color: grey; padding-top: 10px;">Total Payment:  </span> 
         <span style="float:right; font-size: 25px; color: #7dc855"> {{qty*this.product.price + 7}} Tokens </span>

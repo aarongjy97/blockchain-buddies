@@ -43,33 +43,33 @@
         </div>
       </div>
     </div>
-    <div v-if="isProcurer && isFinance && isOrdered" class="table-col order-status" style="float: right;">
-      <button class="approve" @click="ProcurerApprovePurchaseOrder(orderId)">
+    <div v-if="isProcurer && isFinance && isOrdered" style="float: right;">
+      <b-button class="approve" @click="ProcurerApprovePurchaseOrder(orderId)">
         Approve
-      </button>
-      <button class="reject" @click="ProcurerRejectPurchaseOrder(orderId)">
+      </b-button>
+      <b-button class="reject" @click="ProcurerRejectPurchaseOrder(orderId)">
         Reject
-      </button>
+      </b-button>
     </div>
-    <div v-else-if="isSupplier && isInternalApproved" class="table-col order-status" style="float: right; ">
-      <button class="approve" @click="SupplierApprovePurchaseOrderandAssignCourier(orderId)">
+    <div v-else-if="isSupplier && isInternalApproved" style="float: right; ">
+      <b-button class="approve" @click="SupplierApprovePurchaseOrderandAssignCourier(orderId)">
         Approve
-      </button>
-      <button class="reject" @click="SupplierRejectPurchaseOrder(orderId)">
+      </b-button>
+      <b-button class="reject" @click="SupplierRejectPurchaseOrder(orderId)">
         Reject
-      </button>
+      </b-button>
     </div>
-    <div v-else-if="isCourier && isCourierAssigned" class="table-col order-status" style="float: right;">
-      <button class="approve" @click="CourierDelivering(orderId)">
+    <div v-else-if="isCourier && isCourierAssigned" style="float: right;">
+      <b-button class="approve" @click="CourierDelivering(orderId)">
         Delivering
-      </button>
+      </b-button>
     </div>
-    <div v-else-if="isProcurer && !isFinance && isDelivering" class="table-col order-status" style="float: right;">
-      <button class="approve" @click="ProcurerReceivedOrder(orderId)">
+    <div v-else-if="isProcurer && !isFinance && isDelivering" style="float: right;">
+      <b-button class="approve" @click="ProcurerReceivedOrder(orderId)">
         Received
-      </button>
+      </b-button>
     </div>
-    <div v-else-if="isProcurer && !isFinance && isDelivered" class="table-col order-status" style="float: right; display:flex">
+    <div v-else-if="isProcurer && !isFinance && isDelivered" style="float: right; display:flex">
       <StarRating 
         v-model="rating"
         v-bind:increment="1"
@@ -81,9 +81,9 @@
         border-color="gold"
         inactive-color="#FFF">
       </StarRating>
-      <button class="approve" @click="ProcurerAddRating(orderId)" style="margin-left: 15px;">
+      <b-button class="approve" @click="ProcurerAddRating(orderId)" style="margin-left: 15px;">
         Rate
-      </button>
+      </b-button>
     </div>
   </div> 
 </template>
@@ -354,7 +354,7 @@ export default {
 
 .reject {
   display: inline-block;
-  background-color: red;
+  background-color: rgba(255, 0, 0, 0.726);
   font-size: 20px;
   color: #ffffff;
   padding: 7px 20px;
