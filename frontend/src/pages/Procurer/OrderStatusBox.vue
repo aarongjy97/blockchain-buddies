@@ -3,7 +3,7 @@
     <Navbar></Navbar>
     <div class="order_details" style="">
       <h5>Purchase Order {{ po_OrderId }}</h5>
-      <h5 style="margin-left:15px; margin-top: 4px;padding-left:15px; border-left: solid 1px darkgrey; font-size:15px; color: grey" > {{order_msg}} </h5>
+      <h5 style="margin-left:15px; margin-top: 4px;padding-left:15px; border-left: solid 1px darkgrey; font-size:15px; color: grey" > Status: {{order_msg}} </h5>
       <h5 style="margin-left: auto; color:red"> {{po_status}} </h5>
     </div>
     <Hr></hr>
