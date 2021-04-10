@@ -13,6 +13,7 @@
           v-bind:po_date="po.date"
           v-bind:employeeType="employeeType"
           v-bind:product_name="po.product_name"
+          v-bind:courier_name="po.courier_name"
         ></order-status-box>
       </div>
     </div>
@@ -20,7 +21,7 @@
 </template>
 
 <script>
-import OrderStatusBox from "./OrderStatusBox.vue";
+import OrderStatusBox from "../Common/OrderStatusBox.vue";
 import Navbar from "./Navbar.vue";
 import Procurer from "../../api/Procurer";
 
@@ -42,7 +43,7 @@ export default {
         const result = await Procurer.viewAllPurchaseOrders(
           this.$store.state.details.address
         );
-        console.log(result.data);
+        console.log("po:", result.data);
         this.purchaseOrders = result.data.map((po) => ({
           po_id: po.orderId,
           price: po.price,
@@ -52,6 +53,7 @@ export default {
           supplier_name: po.supplierName,
           product_id: po.productId,
           product_name: po.productName,
+          courier_name: po.courierName,
         }));
         console.log("purchaseOrders:", this.purchaseOrders);
       } catch (err) {

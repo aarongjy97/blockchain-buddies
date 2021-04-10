@@ -85,6 +85,7 @@ export default {
           quantity: p.quantityAvailable,
           rating: p.rating,
           supplierName: p.supplierName,
+          
         }));
         console.log("product:", this.products);
 
