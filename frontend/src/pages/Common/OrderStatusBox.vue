@@ -22,11 +22,15 @@
             <span style="color: grey">Supplier:  </span> 
             <span> {{supplier_name}} </span>
           </div>
+          <div style="margin-bottom: 15px;">
+            <span style="color: grey">Procurer:  </span> 
+            <span> {{procurer_name}} </span>
+          </div>
           <div v-if="isSupplier && isInternalApproved" style="margin-bottom: 15px; display:flex">
             <span style="color: grey; margin-top: 4px;">Courier:  </span>
-            <b-form-select size="sm" style="margin-left: 7px;" v-model="courier" :options="couriers" placeholder="Select a courier"></b-form-select>
+            <b-form-select size="sm" style="margin-left: 7px;" v-model="courier" :options="couriers"></b-form-select>
           </div>
-          <div v-else-if="isSupplierApproved || isDelivering || isCourierAssigned || isDelviered" style="margin-bottom: 15px; display:flex">
+          <div v-else-if="isSupplierApproved || isDelivering || isCourierAssigned || isDelivered" style="margin-bottom: 15px; display:flex">
             <span style="color: grey;">Courier:  </span>
             <span style="margin-left: 5px"> {{courier_name}} </span>
           </div>
@@ -105,13 +109,15 @@ export default {
     po_OrderId: String,
     employeeType: String,
     product_name: String,
-    courier_name: String
+    courier_name: String,
+    procurer_name: String,
   },
   data() {
     return {
       isFinance: this.employeeType == "finance",
       isInternalApproved: this.po_status == "Internal Approved",
       isOrdered: this.po_status == "Ordered",
+      isSupplierApproved: this.po_status == "Supplier Approved",
       isSupplierRejected: this.po_status == "Supplier Rejected",
       isCourierAssigned: this.po_status == "Courier Assigned",
       isDelivering: this.po_status == "Delivering",
@@ -120,6 +126,7 @@ export default {
       isProcurer: "",
       isCourier: "",
       couriers: [{ value: null, text: 'Please select a courier', disabled: true, selected: true}],
+      courier: null,
     };
   },
   computed: {
@@ -296,8 +303,8 @@ export default {
   overflow: hidden;
 }
 
-.product_description {
-}
+/* .product_description {
+} */
 
 .product_description img {
   width: 200px;
