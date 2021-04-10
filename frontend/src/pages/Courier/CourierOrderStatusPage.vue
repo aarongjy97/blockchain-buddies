@@ -14,6 +14,7 @@
           v-bind:employeeType="employeeType"
           v-bind:product_name="po.product_name"
           v-bind:courier_name="po.courier_name"
+          v-bind:procurer_name="po.procurer_name"
         ></order-status-box>
       </div>
     </div>
@@ -54,6 +55,7 @@ export default {
           product_id: po.productId,
           product_name: po.productName,
           courier_name: po.courierName,
+          procurer_name: po.procurerName,
         }));
         this.purchaseOrders = this.purchaseOrders.filter(
           (po) =>
