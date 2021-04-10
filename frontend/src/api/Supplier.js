@@ -90,9 +90,9 @@ async function viewAllPurchaseOrders(employeeAddress) {
   });
 }
 
-async function viewPurchaseOrder(orderid, employeeAddress) {
+async function viewPurchaseOrder(orderId, employeeAddress) {
   return await axios.post(`${endpoint}/viewpurchaseorder`, {
-    orderid,
+    orderId,
     employeeAddress,
   });
 }

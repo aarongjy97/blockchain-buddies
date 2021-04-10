@@ -9,6 +9,7 @@ import SupplierMain from "./pages/Supplier/SupplierMain.vue";
 import SupplierProduct from "./pages/Supplier/SupplierProduct.vue";
 import SupplierListing from "./pages/Supplier/SupplierListing.vue";
 import SupplierOrders from "./pages/Supplier/SupplierOrders.vue";
+import SupplierOrderPage from "./pages/Supplier/SupplierOrderPage.vue";
 import CourierMain from "./pages/Courier/CourierMain.vue";
 
 Vue.use(Router);
@@ -19,15 +20,9 @@ export default new Router({
     { path: "/account", name: "account", component: Account },
     { path: "/procurer-main", name: "procurer-main", component: ProcurerMain },
     {
-      path: "/supplier-orders",
-      name: "supplier-orders",
-      component: SupplierOrders,
-    },
-    { path: "/courier-main", name: "courier-main", component: CourierMain },
-    {
       path:
-        "/product/:product_id/:product_name/:product_price/:rating/:product_desc",
-      name: "product",
+        "/procurer-product/:productId-:productName",
+      name: "procurer-product",
       component: ProcurerProduct,
     },
     {
@@ -50,6 +45,11 @@ export default new Router({
       path: "/supplier-orders",
       name: "supplier-orders",
       component: SupplierOrders,
+    },
+    {
+      path: "/supplier-orders/:orderId",
+      name: "supplier-order-page",
+      component: SupplierOrderPage,
     },
     { path: "/courier-main", name: "courier-main", component: CourierMain },
   ],

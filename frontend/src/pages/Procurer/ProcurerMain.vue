@@ -1,9 +1,10 @@
 <template>
   <div class="body">
     <Navbar></Navbar>
-    <h1>Procurer Product Page</h1>
-    <br />
+    
     <b-container v-if="products.length" fluid>
+      <h1 align='center'>Procurer Product Page</h1>
+      <br />
       <b-row align-h="center">
         <b-card-group
           deck
@@ -42,7 +43,7 @@
                 </b-col>
               </b-row>
               <router-link
-                :to="{ name: 'product', params: product }"
+                :to="{ name: 'procurer-product', params: product }"
                 class="stretched-link"
               ></router-link>
             </template>
@@ -83,7 +84,6 @@ export default {
           productName: p.productName,
           quantity: p.quantityAvailable,
           rating: p.rating,
-          product_description: p.description,
           supplierName: p.supplierName,
         }));
         console.log("product:", this.products);
@@ -115,10 +115,6 @@ export default {
 
 .card {
   max-width: 20rem;
-}
-
-.unlistedcard {
-  background-color: #d3d3d3;
 }
 
 .card-footer {
