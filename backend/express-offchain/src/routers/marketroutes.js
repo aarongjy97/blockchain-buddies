@@ -81,4 +81,15 @@ router.get("/viewsupplierproducts", async (req, res, next) => {
   }
 });
 
+router.get("/getmarketaddress", async (req, res, next) => {
+  try {
+    const address = await getMarketAddress();
+    return res.status(200).send(address);
+  } catch (error) {
+    return res
+      .status(500)
+      .send(errorParser(error, `Failed to Retrieve Supplier Products`));
+  }
+})
+
 module.exports = router;

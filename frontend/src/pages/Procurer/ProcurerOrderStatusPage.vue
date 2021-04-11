@@ -10,6 +10,11 @@
         ></order-status-box>
       </div>
     </div>
+    <div v-else class="d-flex align-items-center justify-content-center flex-column">
+      <span class="mt-3" align='center'>
+          No Purchase Orders Found
+      </span>
+    </div>
   </div>
 </template>
 

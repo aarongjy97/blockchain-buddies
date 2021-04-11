@@ -30,6 +30,10 @@
             </b-col>
           </b-row>
           <b-row class="d-flex flex-column justify-content-center align-items-center mt-4">
+            <h5>Status</h5>
+            <span>{{this.order.status}}</span>
+          </b-row>
+          <b-row class="d-flex flex-column justify-content-center align-items-center mt-4">
             <div v-if="isProcurer && !isFinance && isDelivered" class="d-flex flex-column justify-content-center align-items-center">
               <h5>Rating</h5>
               <StarRating 

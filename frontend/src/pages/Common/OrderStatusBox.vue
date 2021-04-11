@@ -203,7 +203,6 @@ export default {
       this.isSupplier = role == "supplier" ? true : false;
       this.isProcurer = role == "procurer" ? true : false;
       this.isCourier = role == "courier" ? true: false;
-      // console.log(this.isProcurer);
     },
 
     async ProcurerApprovePurchaseOrder(orderId) {

@@ -1,9 +1,9 @@
 <template>
   <div class="body">
     <Navbar></Navbar>
-
+    
     <b-container v-if="products.length" fluid>
-      <h3 align="center">Products</h3>
+      <h3 align='center'>Products</h3>
       <br />
       <b-row align-h="center">
         <b-card-group
@@ -37,27 +37,23 @@
                   ><span style="font-weight: bold">{{ product.numSold }}</span>
                   Sold</b-col
                 >
-                <b-col
-                  v-if="product.rating > 0"
-                  class="text-right ml-5 pl-5 pt-1"
-                >
-                  <StarRating
+                <b-col v-if="product.rating > 0" class="text-right ml-5 pl-5 pt-1">
+                  <StarRating 
                     v-model="product.rating"
                     v-bind:increment="1"
                     v-bind:show-rating="false"
                     v-bind:read-only="true"
                     v-bind:star-size="4"
                     v-bind:padding="1"
-                    v-bind:border-width="7"
-                    active-color="gold"
+                    v-bind:border-width="7" 
+                    active-color="gold" 
                     border-color="gold"
-                    inactive-color="#FFF"
-                  >
+                    inactive-color="#FFF">
                   </StarRating>
                 </b-col>
               </b-row>
               <router-link
-                :to="{ name: 'procurer-product', params: product }"
+                :to="{ name: 'product', params: product }"
                 class="stretched-link"
               ></router-link>
             </template>
@@ -77,7 +73,7 @@
 <script>
 import Navbar from "./Navbar.vue";
 import Market from "../../api/Market";
-import StarRating from "vue-star-rating";
+import StarRating from 'vue-star-rating';
 
 export default {
   name: "ProcurerMain",
@@ -95,7 +91,6 @@ export default {
     async viewAllProducts() {
       try {
         const result = await Market.viewAllProducts();
-        console.log(result.data);
         this.products = result.data.map((p) => ({
           description: p.description,
           listed: p.listed,
@@ -106,6 +101,7 @@ export default {
           quantity: p.quantityAvailable,
           rating: p.rating,
           supplierName: p.supplierName,
+          
         }));
         console.log("product:", this.products);
 

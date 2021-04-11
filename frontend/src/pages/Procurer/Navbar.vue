@@ -15,7 +15,7 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
           <b-nav-item to="/procurer-main">Products</b-nav-item>
-          <b-nav-item to="/procurer-orders">Order Status</b-nav-item>
+          <b-nav-item to="/procurer-orders">Orders</b-nav-item>
           <b-nav-item to="/account">Account</b-nav-item>
           <b-nav-item to="/" v-on:click="logout()">Logout</b-nav-item>
         </b-navbar-nav>

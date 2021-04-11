@@ -1,44 +1,62 @@
 <template>
-  <div>
+  <div class="container">
     <Navbar></Navbar>
-    <b-jumbotron
-      header="Account Details"
-      header-level="4"
-      class="pb-4"
-      bg-variant="default"
-    >
-      <hr class="my-4" />
-      <b-card-group deck class="pb-3">
-        <b-card
-          v-for="(item, key) in info"
-          v-bind:key="key"
-          :header="key"
-          bg-variant="light"
-          border-variant="info"
-        >
-          <b-card-text>
-            {{ item }}
-          </b-card-text>
-        </b-card>
-      </b-card-group>
 
-      <b-container class="Information">
-        <b-row>
-          <b-col>Name: {{ details.name }}</b-col>
-        </b-row>
-        <b-row>
-          <b-col>Company: {{ details.company }}</b-col>
-        </b-row>
-        <b-row>
-          <b-col>Role: {{ details.role }}</b-col>
-        </b-row>
-        <b-row>
-          <b-col v-if="details.employeetype">
-            Employee type: {{ details.employeetype }}</b-col
-          >
-        </b-row>
-      </b-container>
-    </b-jumbotron>
+    <h3 style="text-align: center;">Account Details</h3>
+
+    <div class="container mt-5">
+      <div class="d-flex align-items-center justify-content-center flex-column">
+        <h5>Company Account Details</h5>
+      </div>
+      <b-row class="mt-3">
+        <b-col v-for="(item, key) in info" v-bind:key="key">
+          <b-card :header="key">
+            <b-card-text>
+              <h3>{{ item }}</h3>
+            </b-card-text>
+          </b-card>
+        </b-col>
+      </b-row>
+    </div>
+
+    <b-container class="Information mt-5">
+      <div class="d-flex align-items-center justify-content-center flex-column">
+        <h5>Employee Account Details</h5>
+      </div>
+      <b-row class="mt-3">
+        <b-col>
+          <b-card header="Name">
+            <b-card-text>
+              <h3>{{ details.name }}</h3>
+            </b-card-text>
+          </b-card>
+        </b-col>
+      
+        <b-col>
+          <b-card header="Company ID">
+            <b-card-text>
+              <h3>{{ details.company }}</h3>
+            </b-card-text>
+          </b-card>
+        </b-col>
+      
+        <b-col>
+          <b-card header="Role">
+            <b-card-text>
+              <h3>{{ details.role }}</h3>
+            </b-card-text>
+          </b-card>
+        </b-col>
+     
+        <b-col v-if="details.employeetype">
+          <b-card header="Employee Type">
+            <b-card-text>
+              <h3>{{ details.employeetype }}</h3>
+            </b-card-text>
+          </b-card>
+          </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
@@ -59,30 +77,23 @@ export default {
     async viewAll() {
       try {
         const details = this.$store.state.details;
-        console.log("details:", details);
         this.details = details;
-        // console.log(this.info);
 
         if (this.details.role == "courier") {
           const result = await Courier.courierStatistics(this.details.address);
           const balance = await Courier.getTokenBalance(this.details.address);
-          console.log("Stats:", result.data);
-          console.log("Balance", balance.data);
 
           this.info = result.data;
 
-          this.info["Total Earned"] = this.info["totalEarned"];
+          this.info["Total Tokens Earned"] = this.info["totalEarned"];
           delete this.info["totalEarned"];
           this.info["Orders Delivered"] = this.info["ordersDelivered"];
           delete this.info["ordersDelivered"];
-          this.info["Balance"] = balance.data;
+          this.info["Tokens Balance"] = balance.data;
         } else if (this.details.role == "supplier") {
           const result = await Supplier.supplierStatistics(details.address);
           const balance = await Supplier.getTokenBalance(this.details.address);
-          console.log("Stats", result.data);
-
           this.info = result.data;
-
           this.info["Total Earned"] = this.info["totalEarned"];
           delete this.info["totalEarned"];
           this.info["Products Sold"] = this.info["productsSold"];
@@ -93,7 +104,6 @@ export default {
         } else if (this.details.role == "procurer") {
           const result = await Procurer.procurerStatistics(details.address);
           const balance = await Procurer.getTokenBalance(this.details.address);
-          console.log("Stats", result.data);
 
           this.info = result.data;
 
@@ -106,7 +116,6 @@ export default {
           this.info["Balance"] = balance.data;
         }
 
-        console.log("Stats:", this.info);
       } catch (err) {
         console.log(err);
       }
