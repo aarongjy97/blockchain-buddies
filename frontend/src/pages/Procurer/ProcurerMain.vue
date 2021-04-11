@@ -3,7 +3,7 @@
     <Navbar></Navbar>
     
     <b-container v-if="products.length" fluid>
-      <h1 align='center'>Procurer Product Page</h1>
+      <h3 align='center'>Products</h3>
       <br />
       <b-row align-h="center">
         <b-card-group

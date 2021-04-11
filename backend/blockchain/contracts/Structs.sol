@@ -35,6 +35,7 @@ library Structs {
       bool listed;
       string description;
       uint rating;
+      uint ratings;
     }
 
     struct PurchaseOrder {

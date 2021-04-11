@@ -233,7 +233,7 @@ async function procurerAddEmployees(contract, procurer) {
     });
     console.log(
       "\x1b[36m",
-      `********** ${employee.name}, Type ${i} **********`
+      `********** ${employee.name}, Type ${i} **********\n *** Address ${employee.address} ***`
     );
     i++;
   }

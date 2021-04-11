@@ -294,6 +294,7 @@ contract Market {
       require(orders[_orderId].status != Structs.OrderStatus.notCreated, "Order does not exist");
       require(orders[_orderId].procurer == msg.sender, "Only valid Procurer can rate product");
       require(orders[_orderId].status == Structs.OrderStatus.Delivered, "Order not delivered, Unable to give rating");
+      require(orders[_orderId].rating == 0, "Order already rated");
       require(rating > 0 && rating <= 5, "Invalid Rating");
 
       /* Update rating for Order */
@@ -315,6 +316,7 @@ contract Market {
 
       uint newRating = sum / sumOrders;
       products[_productId].rating = newRating;
+      products[_productId].ratings = sumOrders;
    }
 
    /**
@@ -394,6 +396,7 @@ contract Market {
          name,
          true,
          description,
+         0,
          0
       );
 

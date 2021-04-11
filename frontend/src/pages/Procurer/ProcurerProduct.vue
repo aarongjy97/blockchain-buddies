@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+
     <Navbar></Navbar>
 
     <div class="left-column">
@@ -21,52 +22,55 @@
             border-color="gold"
             inactive-color="#FFF">
           </StarRating>
-        <span style="border-left: solid 1px darkgrey; margin-left: 10px; padding-left:10px"> 0 Ratings </span>
+        <span style="border-left: solid 1px darkgrey; margin-left: 10px; padding-left:10px"> {{this.product.ratings}} Ratings </span>
         <span style="border-left: solid 1px darkgrey; margin-left: 10px; padding-left:10px"> {{this.product.numSold}} Sold </span>
       </div>
+        <div style="margin-top: 15px">
+          <span style="color: grey">Supplier:  </span> 
+          <span> {{this.product.supplierName}} </span>
+        </div>
+
         <p style="margin-top: 15px;">
           {{ this.product.description }}
         </p> 
-      <div style="margin-bottom: 15px">
-        <span style="color: grey">Supplier:  </span> 
-        <span> {{this.product.supplierName}} </span>
       </div>
-      <!-- <div style="margin-bottom: 15px">
-        <span style="color: grey">Courier:  </span> 
-        <span> Ninja </span>
-      </div> -->
-    </div>
     </div>
 
     <div class="right-column">
-      <h4> Purchase Order Info </h4>
-      <div style="margin-bottom: 15px">
-        <span style="color: grey">Commission Fee: </span> 
-        <span style="float: right"> 5 Tokens </span>
-      </div>
+      <h4>Create Order</h4>
       <div style="margin-bottom: 15px">
         <span style="color: grey">Courier Fee:  </span> 
-        <span style="float:right"> 2 Tokens </span>
+        <span style="float:right"> 50 Tokens </span>
       </div>
       <div style="margin-bottom: 15px">
         <span style="color: grey">Item Price:  </span> 
         <span style="float:right"> {{qty*this.product.price}} Tokens </span>
       </div>
-      <div style="margin-bottom: 30px;">
-        <span style="color: grey; padding-top: 10px;">Total Payment:  </span> 
-        <span style="float:right; font-size: 25px; color: #7dc855"> {{qty*this.product.price + 7}} Tokens </span>
-      </div>
-      <Hr></hr>
       <div style="margin-bottom: 40px">
-          <span style="color: grey">Input Quantity:  </span> 
+          <span style="color: grey">Quantity:  </span> 
           <b-form-input style="margin-bottom: 10px; float:right; width: 110px;"
             type="number"
             id="quantity"
             v-model="qty"
             value="1"
+            min="1"
+            :max='(this.tokens - 50) / this.product.price'
           ></b-form-input>
-        </div>
-      <b-button style="float:right" v-on:click="createPurchaseOrder" class="cart-btn">Create Order</b-button>
+      </div>
+      <Hr></hr>
+      <div style="margin-bottom: 30px;">
+        <span style="color: grey; padding-top: 10px;">Balance:  </span> 
+        <span style="float:right; font-size: 25px;"> {{this.tokens}} Tokens </span>
+      </div>
+      <div style="margin-bottom: 30px;">
+        <span style="color: grey; padding-top: 10px;">Total Payment:  </span> 
+        <span style="float:right; font-size: 25px; color: #7dc855"> {{qty*this.product.price + 50}} Tokens </span>
+      </div>
+      <div style="margin-bottom: 30px;">
+        <span style="color: grey; padding-top: 10px;">Remaining:  </span> 
+        <span style="float:right; font-size: 25px;"> {{ this.tokens - (qty * this.product.price + 50 ) }} Tokens </span>
+      </div>
+      <b-button :disabled='this.tokens - (qty * this.product.price) < 0' style="float:right" v-on:click="createPurchaseOrder" class="cart-btn">Create Order</b-button>
     </div>
   </div>
 </template>
@@ -74,7 +78,7 @@
 <script>
 import Navbar from "./Navbar.vue";
 import Market from "../../api/Market"
-import Procurer from "../../api/Procurer";
+import Procurer, { getTokenBalance } from "../../api/Procurer";
 import StarRating from 'vue-star-rating'
 export default {
   data() {
@@ -82,6 +86,7 @@ export default {
       details: {},
       product: {},
       qty: '1',
+      tokens: 0
     };
   },
   components: {
@@ -93,7 +98,8 @@ export default {
       this.details = this.$store.state.details;
       const result = await Market.viewProduct(this.$route.params.productId);
       this.product = result.data;
-      console.log(this.product);
+      const tokens = await getTokenBalance(this.details.address);
+      this.tokens = parseInt(tokens.data);
     },
     async createPurchaseOrder() {
       const courierFee = 50;
@@ -107,6 +113,14 @@ export default {
         alert(e.response.data.reason);
       }
     },
+    async getTokenBalance(address) {
+      try {
+        const result = await Procurer.getTokenBalance(address);
+        return result;
+      } catch (error) {
+        alert(error.response.data.reason);
+      }
+    }
   },
   mounted() {
     this.loadPage();
@@ -126,14 +140,14 @@ export default {
 
 /* Columns */
 .left-column {
-  width: 75%;
+  width: 72.5%;
   position: relative;
   display: flex;
   border-right: solid 2px lightgrey;
 }
 
 .right-column {
-  width: 25%;
+  width: 27.5%;
   margin: 0px 0px 0px 20px;
 }
 

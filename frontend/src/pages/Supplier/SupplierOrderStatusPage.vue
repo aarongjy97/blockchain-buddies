@@ -47,6 +47,8 @@ export default {
           quantity: po.quantity,
           status: po.status,
           supplierName: po.supplierName,
+          rating: parseInt(po.rating),
+          rated: parseInt(po.rating) > 0
         }));
         this.purchaseOrders = this.purchaseOrders.filter(
           (po) => (po.status != "Ordered") & (po.status != "Internal Rejected")
