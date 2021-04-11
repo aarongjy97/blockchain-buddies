@@ -72,19 +72,23 @@ contract('Procurer Functions', function(accounts) {
         assert.strictEqual(result, undefined, 'Employee is added even with invalid employee address');
     });
     
+    /* Main Flow Function */
     it('Procurer Add Employee', async () => {
         await googleProcurerInstance.addEmployee(googleFinanceEmployee, 1, 'googleFinanceEmployee', {from: google});
         await googleProcurerInstance.addEmployee(googleLogisticsEmployee, 2, 'googleLogisticsEmployee', {from: google});
     });
 
+    /* Main Flow Function */
     it('Supplier Add Employee', async () => {
         await dellSupplierInstance.addEmployee(dellEmployee, 'dellEmployee', {from: dell});
     });
 
+    /* Main Flow Function */
     it('Courier Add Employee', async () => {
         await dhlCourierInstance.addEmployee(dhlEmployee, 'dhlEmployee', {from: dhl});
     });
 
+    /* Main Flow Function */
     it('Register Stakeholders on Market', async () => {
         let procurer = await googleProcurerInstance.registerAsProcurer({from: google});
         let supplier = await dellSupplierInstance.registerAsSupplier({from: dell});
@@ -93,10 +97,12 @@ contract('Procurer Functions', function(accounts) {
         // truffleAssert.eventEmitted(courier, 'Registered');
     });
 
+    /* Main Flow Function */
     it('Mint Tokens to Procurer', async () => {
         await marketERC20Instance.mintTokens(googleProcurerInstance.address, 10000, {from: erc20});
     });
 
+    /* Main Flow Function */
     it('Supplier List Products', async () => {
         let result = await dellSupplierInstance.listProduct(100, 10, 'Dell Laptop', 'Good Laptop', {from: dellEmployee});
         
@@ -154,6 +160,7 @@ contract('Procurer Functions', function(accounts) {
         assert.strictEqual(result, undefined, 'Purchase order is created even with invalid price');
     });
 
+    /* Main Flow Function */
     it('Procurer Create Purchase Order', async () => {
         await googleProcurerInstance.createPurchaseOrder(1, 1, 10+50, {from: googleLogisticsEmployee});
 
@@ -242,18 +249,22 @@ contract('Procurer Functions', function(accounts) {
         assert.strictEqual(result, undefined, 'Purchase order is approved even when from logistics team');
     });
 
+    /* Main Flow Function */
     it('Procurer Approve Purchase Order', async () => {
         let result = await googleProcurerInstance.approvePurchaseOrder(1, {from: googleFinanceEmployee});
     });
     
+    /* Main Flow Function */
     it('Supplier Approve Purchase Order', async () => {
         let result = await dellSupplierInstance.supplierApprovePurchaseOrder(1, {from: dellEmployee});  
     });
 
+    /* Main Flow Function */
     it('Supplier Assign Courier', async () => {
         let result = await dellSupplierInstance.assignCourier(dhlCourierInstance.address, 1, {from: dellEmployee}); 
     });
 
+    /* Main Flow Function */
     it('Courier Receive Order from Supplier', async () => {
         let result = await dhlCourierInstance.receivedByCourier(1, {from: dhlEmployee});
     });
@@ -290,6 +301,7 @@ contract('Procurer Functions', function(accounts) {
         assert.strictEqual(result, undefined, 'Purchase order is received even when from invalid procurer');
     });
 
+    /* Main Flow Function */
     it('Procurer Receive Delivered Order from Courier', async () => {
         let result = await googleProcurerInstance.deliveredByCourier(1, {from: googleLogisticsEmployee});
     });
@@ -326,6 +338,7 @@ contract('Procurer Functions', function(accounts) {
         assert.strictEqual(result, undefined, 'Rating is added even when invalid');
     });
 
+    /* Main Flow Function */
     it('Procurer Add Rating for Order', async () => {
         let result = await googleProcurerInstance.addRating(5, 1, {from: googleLogisticsEmployee});
     });
