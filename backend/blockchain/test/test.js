@@ -42,7 +42,7 @@ contract('Procurement Marketplace', function(accounts) {
 
     it('Procurer Add Employee', async () => {
         await googleProcurerInstance.addEmployee(googleFinanceEmployee, 1, 'googleFinanceEmployee', {from: google});
-        await googleProcurerInstance.addEmployee(googleLogisticsEmployee, 2, 'googleFinanceEmployee', {from: google});
+        await googleProcurerInstance.addEmployee(googleLogisticsEmployee, 2, 'googleLogisticsEmployee', {from: google});
     });
 
     it('Supplier Add Employee', async () => {
