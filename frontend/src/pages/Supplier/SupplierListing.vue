@@ -1,20 +1,19 @@
 <template>
 <div>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <Navbar></Navbar>
-  <h1>Supplier Listing Page</h1>
+  <h1 id="title">Supplier Listing Page</h1>
 
-  <div>
+  <div class="form">
     <b-form @submit="onSubmit" @reset="onReset" v-if="show">
       <b-form-group
         id="input-group-1"
-        label="Name:"
+        label="Product:"
         label-for="input-1"
-        description="Name of product."
       >
         <b-form-input
           id="input-1"
           v-model="form.name"
-          placeholder="Enter name"
           required
         ></b-form-input>
       </b-form-group>
@@ -23,7 +22,6 @@
         <b-form-input
           id="input-2"
           v-model.number="form.quantity"
-          placeholder="Enter quantity"
           required
         ></b-form-input>
       </b-form-group>
@@ -32,23 +30,28 @@
         <b-form-input
           id="input-3"
           v-model.number="form.price"
-          placeholder="Enter price"
           required
         ></b-form-input>
       </b-form-group>
 
       <b-form-group id="input-group-3" label="Description:" label-for="input-4">
-        <b-form-input
+        <b-form-textarea
           id="input-4"
           v-model="form.description"
-          placeholder="Enter Description"
+          placeholder="Describe what you are selling and include any details a buyer might be interested in."
+          rows="4"
+          maxrows="6"
           required
-        ></b-form-input>
+        ></b-form-textarea>
       </b-form-group>
 
-      <b-button type="submit" variant="primary">Submit</b-button>
-      <b-button type="reset" variant="danger">Reset</b-button>
-    </b-form>
+      <div id="bottompart">
+        <md-icon v-on:click="reset" class="fa fa-refresh" id="refresh"></md-icon>
+        <b-button id="button-1" type="submit" variant="primary">List Now</b-button>
+      </div>
+      
+      <!--<b-button id="button-2" type="reset" variant="danger">Reset</b-button>-->
+    </b-form>    
   </div>
   
 
@@ -90,6 +93,18 @@ export default {
       this.form.name = ''
       this.form.quantity = ''
       this.form.price = ''
+      this.form.description = ''
+      // Trick to reset/clear native browser form validation state
+      this.show = false
+      this.$nextTick(() => {
+        this.show = true
+      })
+    },
+    reset: function () {
+      this.form.name = ''
+      this.form.quantity = ''
+      this.form.price = ''
+      this.form.description = ''
       // Trick to reset/clear native browser form validation state
       this.show = false
       this.$nextTick(() => {
@@ -100,4 +115,50 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.form {
+  border: 2px solid #ededed; 
+  border-radius: 10px;
+  max-width: 50%;
+  position: relative;
+  left:25%;
+  box-shadow: 3px 8px #d3d3d3;
+}
+
+#input-group-1 {
+  margin: 15px;
+}
+
+#input-group-2 {
+  margin: 15px;
+}
+
+#input-group-3 {
+  margin: 15px;
+}
+
+#button-1 {
+  width: 150px;
+  font-weight: bold;
+  background-color: #008F79;
+  border-color:#008F79;
+}
+
+#bottompart {
+  margin: 15px;
+  position: relative;
+  left:77.8%;
+}
+
+#refresh {
+  padding:10px;
+  color:#d3d3d3;
+  cursor: pointer;
+}
+
+#title {
+  position: relative;
+  left:40%;
+  padding-bottom: 20px;
+}
+</style>
