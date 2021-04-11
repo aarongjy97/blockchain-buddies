@@ -277,7 +277,7 @@ router.post("/viewpurchaseorder", async (req, res, next) => {
       address
     );
     const po = await structParser.parsePurchaseOrder(result);
-    return res.status(200).send();
+    return res.status(200).send(po);
   } catch (error) {
     return res
       .status(500)

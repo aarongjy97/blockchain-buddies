@@ -4,16 +4,8 @@
     <div v-if="purchaseOrders.length">
       <div v-for="po in purchaseOrders" :key="po.po_id">
         <order-status-box
-          v-bind:po_OrderId="po.po_id"
-          v-bind:product_id="po.product_id"
-          v-bind:supplier_name="po.supplier_name"
-          v-bind:product_price="po.price"
-          v-bind:product_quantity="po.quantity"
-          v-bind:po_status="po.status"
-          v-bind:po_date="po.date"
+          v-bind="po"
           v-bind:employeeType="employeeType"
-          v-bind:product_name="po.product_name"
-          v-bind:courier_name="po.courier_name"
         ></order-status-box>
       </div>
     </div>
@@ -44,16 +36,17 @@ export default {
           this.$store.state.details.address
         );
         console.log("po:", result.data);
-        this.purchaseOrders = result.data.map((po) => ({
-          po_id: po.orderId,
+        this.purchaseOrders = result.data.map((po) => ({          
+          courierName: po.courierName,
+          dateCreated: po.dateCreated.substring(0,10),
+          orderId: po.orderId,
           price: po.price,
+          procurerName: po.procurerName,
+          productId: po.productId,
+          productName: po.productName,
           quantity: po.quantity,
-          date: po.dateCreated.substring(0, 10),
           status: po.status,
-          supplier_name: po.supplierName,
-          product_id: po.productId,
-          product_name: po.productName,
-          courier_name: po.courierName,
+          supplierName: po.supplierName,
         }));
         this.purchaseOrders = this.purchaseOrders.filter(
           (po) =>

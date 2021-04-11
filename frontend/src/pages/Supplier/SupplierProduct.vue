@@ -58,10 +58,23 @@
           </b-col>
           <b-col>
             <div>
-              <div class="d-flex w-100 justify-content-between">
+              <div class="d-flex w-100 justify-content-between pb-2">
                 <span style="color: darkgray">Rating</span>
               </div>
-              <span v-if='product.rating > 0' style="text-align: left">{{ product.rating }}</span>
+              <span v-if='product.rating > 0' style="text-align: left">
+                <StarRating 
+                  v-model="product.rating"
+                  v-bind:increment="1"
+                  v-bind:show-rating="false"
+                  v-bind:read-only="true"
+                  v-bind:star-size="4"
+                  v-bind:padding="1"
+                  v-bind:border-width="7" 
+                  active-color="gold" 
+                  border-color="gold"
+                  inactive-color="#FFF">
+                </StarRating>
+              </span>
               <span v-else style="text-align: left">Unrated</span>
             </div>
           </b-col>
@@ -100,6 +113,8 @@
 <script>
 import Navbar from "./Navbar.vue";
 import Supplier from "../../api/Supplier";
+import StarRating from 'vue-star-rating';
+
 export default {
   name: "SupplierProducts",
   data() {
@@ -120,6 +135,7 @@ export default {
   },
   components: {
     Navbar,
+    StarRating,
   },
   methods: {
     async loadPage() {

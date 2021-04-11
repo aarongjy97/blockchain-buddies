@@ -4,12 +4,14 @@ import Login from "./pages/Common/Login.vue";
 import Account from "./pages/Common/Account.vue";
 import ProcurerMain from "./pages/Procurer/ProcurerMain.vue";
 import ProcurerProduct from "./pages/Procurer/ProcurerProduct.vue";
-import OrderStatusPage from "./pages/Procurer/OrderStatusPage.vue";
+import ProcurerOrderStatusPage from "./pages/Procurer/ProcurerOrderStatusPage.vue";
 import SupplierMain from "./pages/Supplier/SupplierMain.vue";
 import SupplierProduct from "./pages/Supplier/SupplierProduct.vue";
 import SupplierListing from "./pages/Supplier/SupplierListing.vue";
-import SupplierOrders from "./pages/Supplier/SupplierOrders.vue";
-import CourierMain from "./pages/Courier/CourierMain.vue";
+import SupplierOrders from "./pages/Supplier/SupplierOrderStatusPage.vue";
+import SupplierOrderPage from "./pages/Supplier/SupplierOrderPage.vue";
+// import CourierMain from "./pages/Courier/CourierMain.vue";
+import CourierOrderStatusPage from "./pages/Courier/CourierOrderStatusPage.vue";
 
 Vue.use(Router);
 
@@ -19,21 +21,14 @@ export default new Router({
     { path: "/account", name: "account", component: Account },
     { path: "/procurer-main", name: "procurer-main", component: ProcurerMain },
     {
-      path: "/supplier-orders",
-      name: "supplier-orders",
-      component: SupplierOrders,
-    },
-    { path: "/courier-main", name: "courier-main", component: CourierMain },
-    {
-      path:
-        "/product/:product_id/:product_name/:product_price/:rating/:product_desc",
-      name: "product",
+      path: "/procurer-product/:productId-:productName",
+      name: "procurer-product",
       component: ProcurerProduct,
     },
     {
       path: "/procurer-orders",
       name: "procurer-orders",
-      component: OrderStatusPage,
+      component: ProcurerOrderStatusPage,
     },
     { path: "/supplier-main", name: "supplier-main", component: SupplierMain },
     {
@@ -51,7 +46,17 @@ export default new Router({
       name: "supplier-orders",
       component: SupplierOrders,
     },
-    { path: "/courier-main", name: "courier-main", component: CourierMain },
+    {
+      path: "/supplier-orders/:orderId",
+      name: "supplier-order-page",
+      component: SupplierOrderPage,
+    },
+    // { path: "/courier-main", name: "courier-main", component: CourierMain },
+    {
+      path: "/courier-main",
+      name: "courier-main",
+      component: CourierOrderStatusPage,
+    },
   ],
   mode: "history",
 });

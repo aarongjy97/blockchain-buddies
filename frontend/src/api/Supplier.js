@@ -14,7 +14,13 @@ async function viewAllSelfProducts(employeeAddress) {
   });
 }
 
-async function listProduct(name, price, quantity, description, employeeAddress) {
+async function listProduct(
+  name,
+  price,
+  quantity,
+  description,
+  employeeAddress
+) {
   return await axios.post(`${endpoint}/listproduct`, {
     quantity,
     price,
@@ -54,7 +60,11 @@ async function updateProductQuantity(productId, newQuantity, employeeAddress) {
   });
 }
 
-async function updateProductDescription(productId, description, employeeAddress) {
+async function updateProductDescription(
+  productId,
+  description,
+  employeeAddress
+) {
   return await axios.put(`${endpoint}/updateproductdescription`, {
     productId,
     description,
@@ -90,9 +100,9 @@ async function viewAllPurchaseOrders(employeeAddress) {
   });
 }
 
-async function viewPurchaseOrder(orderid, employeeAddress) {
+async function viewPurchaseOrder(orderId, employeeAddress) {
   return await axios.post(`${endpoint}/viewpurchaseorder`, {
-    orderid,
+    orderId,
     employeeAddress,
   });
 }
@@ -112,9 +122,9 @@ async function getTokenBalance(employeeAddress) {
 async function supplierStatistics(employeeAddress) {
   return await axios.get(`${endpoint}/statistics`, {
     params: {
-      employeeAddress: employeeAddress
-    }
-  })
+      employeeAddress: employeeAddress,
+    },
+  });
 }
 
 module.exports = {
@@ -133,5 +143,5 @@ module.exports = {
   viewPurchaseOrder: viewPurchaseOrder,
   getCouriers: getCouriers,
   getTokenBalance: getTokenBalance,
-  supplierStatistics: supplierStatistics
+  supplierStatistics: supplierStatistics,
 };

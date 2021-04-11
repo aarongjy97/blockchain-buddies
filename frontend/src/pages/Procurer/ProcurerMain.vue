@@ -1,27 +1,10 @@
 <template>
   <div class="body">
-    <!-- <Navbar></Navbar>
-    <div class="row" v-if="products.length">
-      <div v-for="p in products" :key="p.product_id">
-        <div class="col-lg-4" v-if="p.listed">
-          <product-box
-            v-bind:product_id="p.product_id"
-            v-bind:product_name="p.product_name"
-            v-bind:product_price="p.product_price"
-            v-bind:supplier_name="p.supplierName"
-            v-bind:quantity="p.quantity"
-            v-bind:rating="p.rating"
-            v-bind:product_desc="p.product_description"
-          ></product-box>
-        </div>
-      </div>
-    </div>
-  </div>
-<div>  -->
     <Navbar></Navbar>
-    <h1>Procurer Product Page</h1>
-    <br />
+    
     <b-container v-if="products.length" fluid>
+      <h1 align='center'>Procurer Product Page</h1>
+      <br />
       <b-row align-h="center">
         <b-card-group
           deck
@@ -37,16 +20,40 @@
           >
             <b-card-title>{{ product.productName }}</b-card-title>
             <template #footer>
-              <b-row class='mt-n4'>
-                  <b-col class='text-left'><span style="font-weight: bold">{{ product.quantity }}</span> Qty</b-col>
-                  <b-col class='text-right'><span class='price' style="font-weight: bold">{{ product.price }}</span> Tokens</b-col>
-                </b-row>
-                <b-row>
-                  <b-col class='text-left'><span style="font-weight: bold">{{ product.numSold }}</span> Sold</b-col>
-                  <b-col v-if='product.rating > 0' class='text-right'><span class='rating'>{{ product.rating }}</span>/5 </b-col>
-                </b-row>
+              <b-row class="mt-n4">
+                <b-col class="text-left"
+                  ><span style="font-weight: bold">{{ product.quantity }}</span>
+                  Qty</b-col
+                >
+                <b-col class="text-right"
+                  ><span class="price" style="font-weight: bold">{{
+                    product.price
+                  }}</span>
+                  Tokens</b-col
+                >
+              </b-row>
+              <b-row>
+                <b-col class="text-left"
+                  ><span style="font-weight: bold">{{ product.numSold }}</span>
+                  Sold</b-col
+                >
+                <b-col v-if="product.rating > 0" class="text-right ml-5 pl-5 pt-1">
+                  <StarRating 
+                    v-model="product.rating"
+                    v-bind:increment="1"
+                    v-bind:show-rating="false"
+                    v-bind:read-only="true"
+                    v-bind:star-size="4"
+                    v-bind:padding="1"
+                    v-bind:border-width="7" 
+                    active-color="gold" 
+                    border-color="gold"
+                    inactive-color="#FFF">
+                  </StarRating>
+                </b-col>
+              </b-row>
               <router-link
-                :to="{ name: 'product', params: product }"
+                :to="{ name: 'procurer-product', params: product }"
                 class="stretched-link"
               ></router-link>
             </template>
@@ -61,6 +68,7 @@
 <script>
 import Navbar from "./Navbar.vue";
 import Market from "../../api/Market";
+import StarRating from 'vue-star-rating';
 
 export default {
   name: "ProcurerMain",
@@ -72,6 +80,7 @@ export default {
   },
   components: {
     Navbar,
+    StarRating,
   },
   methods: {
     async viewAllProducts() {
@@ -87,8 +96,8 @@ export default {
           productName: p.productName,
           quantity: p.quantityAvailable,
           rating: p.rating,
-          product_description: p.description,
           supplierName: p.supplierName,
+          
         }));
         console.log("product:", this.products);
 
@@ -119,10 +128,6 @@ export default {
 
 .card {
   max-width: 20rem;
-}
-
-.unlistedcard {
-  background-color: #d3d3d3;
 }
 
 .card-footer {
