@@ -1,9 +1,11 @@
 {
   "scripts": {
-    "ganache": "ganache-cli --accounts=21 "
+    "ganache": "ganache-cli --accounts=21 ",
+    "test": "ganache-cli -p 8546 --accounts=21"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^2.5.0",
-    "axios": "^0.21.1"
+    "axios": "^0.21.1",
+    "truffle-assertions": "^0.9.2"
   }
 }
