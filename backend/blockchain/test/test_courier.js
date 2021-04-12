@@ -42,10 +42,15 @@ contract('Courier Functions', function(accounts) {
 
     /* Main Flow Functions */
     it('Main Flow Functions: Add Employee', async () => {
-        await googleProcurerInstance.addEmployee(googleFinanceEmployee, 1, 'googleFinanceEmployee', {from: google});
-        await googleProcurerInstance.addEmployee(googleLogisticsEmployee, 2, 'googleLogisticsEmployee', {from: google});
-        await dellSupplierInstance.addEmployee(dellEmployee, 'dellEmployee', {from: dell});
-        await dhlCourierInstance.addEmployee(dhlEmployee, 'dhlEmployee', {from: dhl});
+        let procurer1 = await googleProcurerInstance.addEmployee(googleFinanceEmployee, 1, 'googleFinanceEmployee', {from: google});
+        let procurer2 = await googleProcurerInstance.addEmployee(googleLogisticsEmployee, 2, 'googleLogisticsEmployee', {from: google});
+        let supplier = await dellSupplierInstance.addEmployee(dellEmployee, 'dellEmployee', {from: dell});
+        let courier = await dhlCourierInstance.addEmployee(dhlEmployee, 'dhlEmployee', {from: dhl});
+
+        assert.isNotNull(procurer1);
+        assert.isNotNull(procurer2);
+        assert.isNotNull(supplier);
+        assert.isNotNull(courier);
     });
     
     /* Testing addEmployee */
@@ -71,9 +76,13 @@ contract('Courier Functions', function(accounts) {
 
     /* Main Flow Functions */
     it('Main Flow Function: Register Stakeholders', async () => {
-        await googleProcurerInstance.registerAsProcurer({from: google});
-        await dellSupplierInstance.registerAsSupplier({from: dell});
-        await dhlCourierInstance.registerAsCourier({from: dhl});
+        let procurer = await googleProcurerInstance.registerAsProcurer({from: google});
+        let supplier = await dellSupplierInstance.registerAsSupplier({from: dell});
+        let courier = await dhlCourierInstance.registerAsCourier({from: dhl});
+
+        assert.isNotNull(procurer);
+        assert.isNotNull(supplier);
+        assert.isNotNull(courier);
     });
 
     /* Testing registerAsCourier */
@@ -99,17 +108,25 @@ contract('Courier Functions', function(accounts) {
 
     /* Main Flow Functions */
     it('Main Flow Function: Mint, List Product, Create PO, Approve PO, Assign Courier, Courier Receive', async () => {
-        await marketERC20Instance.mintTokens(googleProcurerInstance.address, 10000, {from: erc20});
+        let mint = await marketERC20Instance.mintTokens(googleProcurerInstance.address, 10000, {from: erc20});
         
-        await dellSupplierInstance.listProduct(100, 10, 'Dell Laptop', 'Good Laptop', {from: dellEmployee});
+        let list = await dellSupplierInstance.listProduct(100, 10, 'Dell Laptop', 'Good Laptop', {from: dellEmployee});
         
-        await googleProcurerInstance.createPurchaseOrder(1, 1, {from: googleLogisticsEmployee});
-        await googleProcurerInstance.approvePurchaseOrder(1, {from: googleFinanceEmployee});
+        let createPO = await googleProcurerInstance.createPurchaseOrder(1, 1, {from: googleLogisticsEmployee});
+        let approve1 = await googleProcurerInstance.approvePurchaseOrder(1, {from: googleFinanceEmployee});
         
-        await dellSupplierInstance.supplierApprovePurchaseOrder(1, {from: dellEmployee});  
-        await dellSupplierInstance.assignCourier(dhlCourierInstance.address, 1, {from: dellEmployee}); 
+        let approve2 = await dellSupplierInstance.supplierApprovePurchaseOrder(1, {from: dellEmployee});  
+        let assign = await dellSupplierInstance.assignCourier(dhlCourierInstance.address, 1, {from: dellEmployee}); 
        
-        await dhlCourierInstance.receivedByCourier(1, {from: dhlEmployee});
+        let receive = await dhlCourierInstance.receivedByCourier(1, {from: dhlEmployee});
+
+        assert.isNotNull(mint);
+        assert.isNotNull(list);
+        assert.isNotNull(createPO);
+        assert.isNotNull(approve1);
+        assert.isNotNull(approve2);
+        assert.isNotNull(assign);
+        assert.isNotNull(receive);
     });
 
     /* Testing viewPurchaseOrder */
@@ -175,7 +192,10 @@ contract('Courier Functions', function(accounts) {
 
     /* Main Flow Functions */
     it('Main Flow Functions: Procurer Receive, Add Rating', async () => {
-        await googleProcurerInstance.deliveredByCourier(1, {from: googleLogisticsEmployee});
-        await googleProcurerInstance.addRating(5, 1, {from: googleLogisticsEmployee});
+        let delivered = await googleProcurerInstance.deliveredByCourier(1, {from: googleLogisticsEmployee});
+        let rating = await googleProcurerInstance.addRating(5, 1, {from: googleLogisticsEmployee});
+
+        assert.isNotNull(delivered);
+        assert.isNotNull(rating);
     });
 });
