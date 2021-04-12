@@ -73,7 +73,7 @@ contract('Procurement Marketplace', function(accounts) {
     });
 
     it('Procurer Create Purchase Order', async () => {
-        await googleProcurerInstance.createPurchaseOrder(1, 1, 10+50, {from: googleLogisticsEmployee});
+        await googleProcurerInstance.createPurchaseOrder(1, 1, {from: googleLogisticsEmployee});
         // let orderId = await googleProcurerInstance.createPurchaseOrder.call(1, 1, 10+50, {from: googleLogisticsEmployee}); // not working dk why
         // console.log(orderId.toNumber());
 
