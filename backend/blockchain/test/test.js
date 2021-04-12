@@ -3,7 +3,6 @@ var Market = artifacts.require('./Market.sol');
 var MarketERC20 = artifacts.require('./MarketERC20.sol');
 var Procurer = artifacts.require('./Procurer.sol');
 var Supplier = artifacts.require('./Supplier.sol');
-const truffleAssert = require('truffle-assertions');
 
 contract('Procurement Marketplace', function(accounts) {
     let marketERC20Instance;
@@ -69,21 +68,18 @@ contract('Procurement Marketplace', function(accounts) {
     });
 
     it('Register Stakeholders on Market', async () => {
-        let procurer = await googleProcurerInstance.registerAsProcurer({from: google});
-        let supplier = await dellSupplierInstance.registerAsSupplier({from: dell});
-        let courier = await dhlCourierInstance.registerAsCourier({from: dhl});
+        await googleProcurerInstance.registerAsProcurer({from: google});
+        await dellSupplierInstance.registerAsSupplier({from: dell});
+        await dhlCourierInstance.registerAsCourier({from: dhl});
 
-        // truffleAssert.eventEmitted(procurer, 'Registered', (ev) => {
-        //     return ev.registerType === 'Procurer' && ev.registerer === google;
-        // }, 'Procurer is registered incorrectly.');
+        let procurer = await googleProcurerInstance.procurerStatistics.call({from: googleLogisticsEmployee});
+        assert.strictEqual(procurer[0].toNumber(), 0, 'Procurer is registered incorrectly');
 
-        // truffleAssert.eventEmitted(supplier, 'Registered', (ev) => {
-        //     return ev.registerType === 'Supplier' && ev.registerer === dell;
-        // }, 'Supplier is registered incorrectly.');
+        let supplier = await dellSupplierInstance.supplierStatistics.call({from: dellEmployee});
+        assert.strictEqual(supplier[0].toNumber(), 0, 'Supplier is registered incorrectly');
 
-        // truffleAssert.eventEmitted(courier, 'Registered', (ev) => {
-        //     return ev.registerType === 'Courier' && ev.registerer === dhl;
-        // }, 'Courier is registered incorrectly.');
+        let courier = await dhlCourierInstance.courierStatistics.call({from: dhlEmployee});
+        assert.strictEqual(courier[0].toNumber(), 0, 'Courier is registered incorrectly');
     });
 
     it('Mint Tokens to Procurer', async () => {
@@ -94,59 +90,52 @@ contract('Procurement Marketplace', function(accounts) {
     });
 
     it('Supplier List Products', async () => {
-        let result = await dellSupplierInstance.listProduct(100, 10, 'Dell Laptop', 'Good Laptop', {from: dellEmployee});
+        await dellSupplierInstance.listProduct(100, 10, 'Dell Laptop', 'Good Laptop', {from: dellEmployee});
 
-        // truffleAssert.eventEmitted(result, 'Listed', (ev) => {
-        //     return ev.supplier === dellSupplierInstance.address && ev.supplierEmployee === dellEmployee && ev._productId === 1 && ev.quantity === 100 && ev.price === 10;
-        // }, 'Product is not listed correctly');
+        let product = await dellSupplierInstance.viewSelfProduct.call(1, {from: dellEmployee});
+        assert.strictEqual(product.listed, true, 'Product is listed incorrectly');
     });
 
     it('Procurer Create Purchase Order', async () => {
-        let result = await googleProcurerInstance.createPurchaseOrder(1, 1, {from: googleLogisticsEmployee});
+        await googleProcurerInstance.createPurchaseOrder(1, 1, {from: googleLogisticsEmployee});
 
-        // truffleAssert.eventEmitted(result, 'OrderCreated', (ev) => {
-        //     return ev._orderId === 1 && ev.procurer === googleProcurerInstance.address && ev.logisticsEmployee === googleLogisticsEmployee && ev._productId === 1 && ev._quantity === 1 && ev.price === 10+50;
-        // }, 'Purchase order is not created correctly');
+        let po = await googleProcurerInstance.viewPurchaseOrder(1, {from: googleLogisticsEmployee});
+        assert.strictEqual(po.status, '1', 'Purchase order is created incorrectly');
     });
 
     it('Procurer Approve Purchase Order', async () => {
-        let result = await googleProcurerInstance.approvePurchaseOrder(1, {from: googleFinanceEmployee});
+        await googleProcurerInstance.approvePurchaseOrder(1, {from: googleFinanceEmployee});
 
-        // truffleAssert.eventEmitted(result, 'OrderInternalApproved', (ev) => {
-        //     return ev._orderId === 1 && ev.procurer === googleProcurerInstance.address && ev.financeEmployee === googleFinanceEmployee;
-        // }, 'Purchase order is not approved by procurer correctly');
+        let po = await googleProcurerInstance.viewPurchaseOrder(1, {from: googleLogisticsEmployee});
+        assert.strictEqual(po.status, '2', 'Purchase order is approved incorrectly');
     });
 
     it('Supplier Approve Purchase Order', async () => {
-        let result = await dellSupplierInstance.supplierApprovePurchaseOrder(1, {from: dellEmployee});
+        await dellSupplierInstance.supplierApprovePurchaseOrder(1, {from: dellEmployee});
         
-        // truffleAssert.eventEmitted(result, 'OrderSupplierApproved', (ev) => {
-        //     return ev._orderId === 1 && ev.supplier === dell && ev.supplierEmployee === dellEmployee;
-        // }, 'Purchase order is not approved by supplier correctly');
+        let po = await dellSupplierInstance.viewPurchaseOrder(1, {from: dellEmployee});
+        assert.strictEqual(po.status, '3', 'Purchase order is approved incorrectly');
     });
 
     it('Supplier Assign Courier', async () => {
-        let result = await dellSupplierInstance.assignCourier(dhlCourierInstance.address, 1, {from: dellEmployee}); 
+        await dellSupplierInstance.assignCourier(dhlCourierInstance.address, 1, {from: dellEmployee}); 
 
-        // truffleAssert.eventEmitted(result, 'OrderCourierAssigned', (ev) => {
-        //     return ev._orderId === 1 && ev.supplier === dellSupplierInstance.address && ev.supplierEmployee === dellEmployee && ev.courier === dhlCourierInstance.address;
-        // }, 'Purchase order is not assigned to courier by supplier correctly');
+        let po = await dellSupplierInstance.viewPurchaseOrder(1, {from: dellEmployee});
+        assert.strictEqual(po.status, '6', 'Courier is assigned incorrectly');
     });
 
     it('Courier Receive Order from Supplier', async () => {
-        let result = await dhlCourierInstance.receivedByCourier(1, {from: dhlEmployee});
+        await dhlCourierInstance.receivedByCourier(1, {from: dhlEmployee});
 
-        // truffleAssert.eventEmitted(result, 'OrderCourierDelivering', (ev) => {
-        //     return ev._orderId === 1 && ev.supplier === dellSupplierInstance.address && ev.courier === dhlCourierInstance.address && ev.courierEmployee === dhlEmployee;
-        // }, 'Purchase order is not received by courier correctly');
+        let po = await dhlCourierInstance.viewPurchaseOrder(1, {from: dhlEmployee});
+        assert.strictEqual(po.status, '7', 'Purchase order is received incorrectly');
     });
 
     it('Procurer Receive Delivered Order from Courier', async () => {
-        let result = await googleProcurerInstance.deliveredByCourier(1, {from: googleLogisticsEmployee});
+        await googleProcurerInstance.deliveredByCourier(1, {from: googleLogisticsEmployee});
 
-        // truffleAssert.eventEmitted(result, 'OrderDelivered', (ev) => {
-        //     return ev._orderId === 1 && ev.procurer === googleProcurerInstance.address;
-        // }, 'Purchase order is not received by procurer correctly');
+        let po = await googleProcurerInstance.viewPurchaseOrder(1, {from: googleLogisticsEmployee});
+        assert.strictEqual(po.status, '8', 'Purchase order is received incorrectly');
     });
 
     it('Procurer Add Rating for Order', async () => {
