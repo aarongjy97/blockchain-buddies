@@ -1,20 +1,19 @@
 # Express.JS Offchain
 
-Run <code>npm i</code> to install all dependencies.
+Run `npm i` to install all dependencies.
 
-Create a <code>.env</code> in this directory, and copy the format of <code>.env.example</code> to it.
+Create a `.env` in this directory, and copy the format of `.env.example` to it.
 
 Ensure that psql is running at port 5432, and change the login details for psql accordingly.
 
 To initialize the database, using the terminal, run the following commands:
 
-1. <code>cd /sql</code>
-2. <code>psql</code>
-3. If you haven't already, then <code>create database blockchainbuddies;</code>
-4. <code>\c blockchainbuddies</code>
-5. <code>\i init.sql</code>
+1. `cd /sql`
+2. `psql`
+3. If you haven't already, then `create database blockchainbuddies;`
+4. `\c blockchainbuddies`
+5. `\i init.sql`
 
-Ensure that the contracts have been compiled in <code>../blockchain</code> before starting the server.
+Ensure that the contracts have been compiled in `../blockchain` before starting the server.
 
-Run <code>npm start</code> to boot the express server.
-
+Run `npm start` to boot the express server.
