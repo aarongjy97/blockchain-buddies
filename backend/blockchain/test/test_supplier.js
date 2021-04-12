@@ -115,6 +115,11 @@ contract('Supplier Functions', function(accounts) {
         await dhlCourierInstance.registerAsCourier({from: dhl});
     });
 
+    /* Main Flow Function */
+    it('Main Flow Function: Mint Tokens to Procurer', async () => {
+        await marketERC20Instance.mintTokens(googleProcurerInstance.address, 10000, {from: erc20});
+    });
+
     /* Testing Supplier.listProduct() */
     it('Supplier List Products', async () => {
         let result;
@@ -307,20 +312,13 @@ contract('Supplier Functions', function(accounts) {
 
     /* Main Flow Function */
     it('Main Flow Function: Procurer Create Purchase Order', async () => {
-        let result;
-        try {
-            result = await googleProcurerInstance.createPurchaseOrder(1, 1, 70, {from:googleLogisticsEmployee});
-        } 
-        catch(e) {}
+        let result = await googleProcurerInstance.createPurchaseOrder(1, 1, {from:googleLogisticsEmployee});
+        
     });
 
     /* Main Flow Function */
     it('Main Flow Function: Procurer Approve Purchase Order', async () => {
-        let result;
-        try {
-            result = await googleProcurerInstance.approvePurchaseOrder(1, {from:googleFinanceEmployee});
-        } 
-        catch(e) {}
+        let result = await googleProcurerInstance.approvePurchaseOrder(1, {from:googleFinanceEmployee});
     });
 
     /* Testing Supplier.viewPurchaseOrder */
@@ -347,11 +345,12 @@ contract('Supplier Functions', function(accounts) {
 
     /* Testing Supplier.viewPurchaseOrder */
     it('Supplier View Purchase Order', async () => {
-        let po;
-        try {
-            po = await dellSupplierInstance.viewPurchaseOrder.call(1, {from: dellEmployee});
-        }
-        catch(e) {}
+        // let po;
+        // try {
+        //     po = await dellSupplierInstance.viewPurchaseOrder.call(1, {from: dellEmployee});
+        // }
+        // catch(e) {}
+        let po = await dellSupplierInstance.viewPurchaseOrder.call(1, {from: dellEmployee});
 
         assert.strictEqual(po.procurer, googleProcurerInstance.address, "PO procurer is incorrect");
         assert.strictEqual(po.procurerLogisticsEmployee, googleLogisticsEmployee, "PO procurerLogisticsEmployee is incorrect");
@@ -369,13 +368,9 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(po.rating, "0", "PO rating is incorrect");
     });
 
-    /* Testing Supplier.viewAllPurchaseOrder */
+    /* Testing Supplier.supplierViewAllPurchaseOrders */
     it('Supplier View All Purchase Orders', async () => {
-        let po;
-        try {
-            po = await dellSupplierInstance.viewAllPurchaseOrder.call(1, {from: dellEmployee});
-        }
-        catch(e) {}
+        let po = await dellSupplierInstance.supplierViewAllPurchaseOrders.call({from: dellEmployee});
 
         assert.strictEqual(po[0].procurer, googleProcurerInstance.address, "PO procurer is incorrect");
         assert.strictEqual(po[0].procurerLogisticsEmployee, googleLogisticsEmployee, "PO procurerLogisticsEmployee is incorrect");
@@ -393,19 +388,37 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(po[0].rating, "0", "PO rating is incorrect");
     });
 
-    // it('Supplier Approve Purchase Order', async () => {
-    //     let result = await dellSupplierInstance.supplierApprovePurchaseOrder(1, {from:dellEmployee});
-    //     let po = await dellSupplierInstance.viewPurchaseOrder.call(1, {from: dellEmployee});
-    //     assert.strictEqual(po.status, "3", "PO Status is not SupplierApproved")
-    // });
+    /* Testing Supplier.supplierApprovePurchaseOrder */
+    it('Main Flow Function: Supplier Approve Purchase Order', async () => {
+        let result = await dellSupplierInstance.supplierApprovePurchaseOrder(1, {from:dellEmployee});
+        let po = await dellSupplierInstance.viewPurchaseOrder.call(1, {from: dellEmployee});
+        assert.strictEqual(po.status, "3", "PO Status is not SupplierApproved")
+    });
 
-    // it('Supplier Reject Purchase Order', async () => {
-    //     // need to repeat above steps ?? :(
-    // });
+    /* Testing Supplier.supplierRejectPurchaseOrder */
+    it('Supplier Reject Purchase Order', async () => {
+        let result = await dellSupplierInstance.supplierRejectPurchaseOrder.call(1, {from:dellEmployee});
+    });
 
-    // it('Supplier Assign Courier', async () => {
-    //     let result = await dellSupplierInstance.assignCourier(dhlCourierInstance.address, 1, {from: dellEmployee});
-    //     let po = await dellSupplierInstance.viewPurchaseOrder.call(1, {from: dellEmployee});
-    //     assert.strictEqual(po.courier, dhlCourierInstance.address, "Courier is incorrectly assigned")
-    // });
+    /* Testing Supplier.assignCourier */
+    it('Main Flow Function: Supplier Assign Courier', async () => {
+        let result = await dellSupplierInstance.assignCourier(dhlCourierInstance.address, 1, {from: dellEmployee});
+        let po = await dellSupplierInstance.viewPurchaseOrder.call(1, {from: dellEmployee});
+        assert.strictEqual(po.courier, dhlCourierInstance.address, "Courier is incorrectly assigned")
+    });
+
+    /* Main Flow Function */
+    it('Main Flow Function: Courier Receive Order from Supplier', async () => {
+        await dhlCourierInstance.receivedByCourier(1, {from: dhlEmployee});
+    });
+
+    /* Main Flow Function */
+    it('Main Flow Function: Procurer Receive Delivered Order from Courier', async () => {
+        await googleProcurerInstance.deliveredByCourier(1, {from: googleLogisticsEmployee});
+    });
+
+    /* Main Flow Function */
+    it('Main Flow Function: Procurer Add Rating for Order', async () => {
+        await googleProcurerInstance.addRating(5, 1, {from: googleLogisticsEmployee});
+    });
 });
