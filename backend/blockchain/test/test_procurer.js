@@ -3,7 +3,6 @@ var Market = artifacts.require('./Market.sol');
 var MarketERC20 = artifacts.require('./MarketERC20.sol');
 var Procurer = artifacts.require('./Procurer.sol');
 var Supplier = artifacts.require('./Supplier.sol');
-const truffleAssert = require('truffle-assertions');
 
 contract('Procurer Functions', function(accounts) {
     let marketERC20Instance;
@@ -46,6 +45,11 @@ contract('Procurer Functions', function(accounts) {
         await googleProcurerInstance.addEmployee(googleLogisticsEmployee, 2, 'googleLogisticsEmployee', {from: google});
         await dellSupplierInstance.addEmployee(dellEmployee, 'dellEmployee', {from: dell});
         await dhlCourierInstance.addEmployee(dhlEmployee, 'dhlEmployee', {from: dhl});
+
+        let finance = await googleProcurerInstance.viewEmployee.call(googleFinanceEmployee, {from: google});
+        let logistics = await googleProcurerInstance.viewEmployee.call(googleLogisticsEmployee, {from: google});
+        assert.strictEqual(finance.name, 'googleFinanceEmployee', 'Finance employee name is incorrect');
+        assert.strictEqual(logistics.name, 'googleLogisticsEmployee', 'Logistics employee name is incorrect');
     });
 
     /* Testing addEmployee */
@@ -88,13 +92,27 @@ contract('Procurer Functions', function(accounts) {
         await marketERC20Instance.mintTokens(googleProcurerInstance.address, 10000, {from: erc20});
 
         await dellSupplierInstance.listProduct(100, 10, 'Dell Laptop', 'Good Laptop', {from: dellEmployee});
+
+        let procurer = await googleProcurerInstance.procurerStatistics.call({from: googleLogisticsEmployee});
+        assert.strictEqual(procurer[0].toNumber(), 0, 'Procurer is registered incorrectly');
+    });
+
+    /* Testing registerAsProcurer */
+    it('Should Fail, Procurer Registers with Invalid Address', async () => {
+        let result;
+        try {
+            result = await googleProcurerInstance.registerAsProcurer({from: accounts[0]});
+        }
+        catch(e) {}
+
+        assert.strictEqual(result, undefined, 'Procurer is registered even with invalid address');
     });
 
     /* Testing createPurchaseOrder */
     it('Should Fail, Procurer Creates Purchase Order with Finance Employee', async () => {
         let result;
         try {
-            result = await googleProcurerInstance.createPurchaseOrder(1, 1, 10+50, {from: googleFinanceEmployee});
+            result = await googleProcurerInstance.createPurchaseOrder(1, 1, {from: googleFinanceEmployee});
         }
         catch(e) {}
 
@@ -104,7 +122,7 @@ contract('Procurer Functions', function(accounts) {
     it('Should Fail, Procurer Creates Purchase Order with Invalid Product ID', async () => {
         let result;
         try {
-            result = await googleProcurerInstance.createPurchaseOrder(0, 1, 10+50, {from: googleLogisticsEmployee});
+            result = await googleProcurerInstance.createPurchaseOrder(0, 1, {from: googleLogisticsEmployee});
         }
         catch(e) {}
 
@@ -114,30 +132,19 @@ contract('Procurer Functions', function(accounts) {
     it('Should Fail, Procurer Creates Purchase Order with Invalid Quantity', async () => {
         let result;
         try {
-            result = await googleProcurerInstance.createPurchaseOrder(1, -1, 10+50, {from: googleLogisticsEmployee});
+            result = await googleProcurerInstance.createPurchaseOrder(1, -1, {from: googleLogisticsEmployee});
         }
         catch(e) {}
 
         assert.strictEqual(result, undefined, 'Purchase order is created even with invalid quantity');
     });
 
-    it('Should Fail, Procurer Creates Purchase Order with Invalid Price', async () => {
-        let result;
-        try {
-            result = await googleProcurerInstance.createPurchaseOrder(100, 1, 0, {from: googleLogisticsEmployee});
-        }
-        catch(e) {}
-
-        assert.strictEqual(result, undefined, 'Purchase order is created even with invalid price');
-    });
-
     /* Main Flow Function */
     it('Main Flow Function: Procurer Create Purchase Order', async () => {
         await googleProcurerInstance.createPurchaseOrder(1, 1,  {from: googleLogisticsEmployee});
 
-        // truffleAssert.eventEmitted(result, 'OrderCreated', (ev) => {
-        //     return ev._orderId === 1 && ev.procurer === googleProcurerInstance.address && ev.logisticsEmployee === googleLogisticsEmployee && ev._productId === 1 && ev._quantity === 1 && ev.price === 10+50;
-        // }, 'Purchase order is not created correctly');
+        let po = await googleProcurerInstance.viewPurchaseOrder(1, {from: googleLogisticsEmployee});
+        assert.strictEqual(po.status, '1', 'Purchase order is created incorrectly');
     });
 
     /* Testing viewPurchaseOrder */
@@ -202,11 +209,12 @@ contract('Procurer Functions', function(accounts) {
     });
 
     it('Procurer Reject Purchase Order', async () => {
-        let result = await googleProcurerInstance.rejectPurchaseOrder.call(1, {from: googleFinanceEmployee});
+        await googleProcurerInstance.createPurchaseOrder(1, 2,  {from: googleLogisticsEmployee});
 
-        // truffleAssert.eventEmitted(result, 'OrderInternalRejected', (ev) => {
-        //     return ev._orderId === 1 && ev.procurer === googleProcurerInstance.address && ev.financeEmployee === googleFinanceEmployee;
-        // }, 'Purchase order is not rejected by procurer correctly');
+        await googleProcurerInstance.rejectPurchaseOrder(2, {from: googleFinanceEmployee});
+
+        let po = await googleProcurerInstance.viewPurchaseOrder(2, {from: googleLogisticsEmployee});
+        assert.strictEqual(po.status, '4', 'Purchase order is rejected incorrectly');
     });
 
     /* Testing approvePurchaseOrder */
@@ -232,11 +240,10 @@ contract('Procurer Functions', function(accounts) {
 
     /* Main Flow Function */
     it('Main Flow Function: Procurer Approve Purchase Order', async () => {
-        let result = await googleProcurerInstance.approvePurchaseOrder(1, {from: googleFinanceEmployee});
+        await googleProcurerInstance.approvePurchaseOrder(1, {from: googleFinanceEmployee});
 
-        // truffleAssert.eventEmitted(result, 'OrderInternalApproved', (ev) => {
-        //     return ev._orderId === 1 && ev.procurer === googleProcurerInstance.address && ev.financeEmployee === googleFinanceEmployee;
-        // }, 'Purchase order is not approved by procurer correctly');
+        let po = await googleProcurerInstance.viewPurchaseOrder(1, {from: googleLogisticsEmployee});
+        assert.strictEqual(po.status, '2', 'Purchase order is approved incorrectly');
     });
     
     /* Main Flow Function */
@@ -270,11 +277,10 @@ contract('Procurer Functions', function(accounts) {
 
     /* Main Flow Function */
     it('Main Flow Function: Procurer Receive Delivered Order from Courier', async () => {
-        let result = await googleProcurerInstance.deliveredByCourier(1, {from: googleLogisticsEmployee});
+        await googleProcurerInstance.deliveredByCourier(1, {from: googleLogisticsEmployee});
 
-        // truffleAssert.eventEmitted(result, 'OrderDelivered', (ev) => {
-        //     return ev._orderId === 1 && ev.procurer === googleProcurerInstance.address;
-        // }, 'Purchase order is not received by procurer correctly');
+        let po = await googleProcurerInstance.viewPurchaseOrder(1, {from: googleLogisticsEmployee});
+        assert.strictEqual(po.status, '8', 'Purchase order is received incorrectly');
     });
 
     /* Testing addRating */
@@ -310,7 +316,7 @@ contract('Procurer Functions', function(accounts) {
 
     /* Main Flow Function */
     it('Main Flow Function: Procurer Add Rating for Order', async () => {
-        let result = await googleProcurerInstance.addRating(5, 1, {from: googleLogisticsEmployee});
+        await googleProcurerInstance.addRating(5, 1, {from: googleLogisticsEmployee});
 
         let po = await dellSupplierInstance.viewPurchaseOrder.call(1, {from: dellEmployee});
         assert.strictEqual(po.rating, '5', 'Rating is not added correctly');
