@@ -1,7 +1,11 @@
 {
   "scripts": {
     "ganache": "ganache-cli --accounts=21 ",
-    "test": "ganache-cli -p 8546 --accounts=21"
+    "test": "ganache-cli -p 8546 --accounts=21",
+    "test-supplier": "truffle test --compile-none --network test ./test/test_supplier.js",
+    "test-procurer": "truffle test --compile-none --network test ./test/test_procurer.js",
+    "test-courier": "truffle test --compile-none --network test ./test/test_courier.js",
+    "test-all": "truffle test --compile-none --network test ./test/test.js"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^2.5.0",
