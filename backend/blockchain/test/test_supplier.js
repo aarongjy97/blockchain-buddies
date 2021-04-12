@@ -403,7 +403,8 @@ contract('Supplier Functions', function(accounts) {
 
     /* Main Flow Function */
     it('Main Flow Function: Courier Receive Order from Supplier', async () => {
-        await dhlCourierInstance.receivedByCourier(1, {from: dhlEmployee});
+        const result = await dhlCourierInstance.receivedByCourier(1, {from: dhlEmployee});
+        assert.isNotNull(result);
     });
 
     /* Main Flow Function */
