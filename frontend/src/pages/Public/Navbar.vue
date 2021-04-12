@@ -6,7 +6,7 @@
       variant="light"
       class="navbar fixed-top"
     >
-      <b-navbar-brand to="/procurer-main" id="nav">
+      <b-navbar-brand to="/" id="nav">
         Procurement Marketplace
       </b-navbar-brand>
 
