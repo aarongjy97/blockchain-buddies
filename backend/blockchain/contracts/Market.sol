@@ -386,7 +386,7 @@ contract Market {
     * @dev Called by a Supplier contract
     * @return Product ID
     */
-   function listProduct(uint quantityAvailable, uint price, string memory name, string memory description) public supplierOnly returns (uint) {      
+   function listProduct(uint quantityAvailable, uint price, string memory name, string memory description, string memory imageUrl) public supplierOnly returns (uint) {      
       Structs.Product memory _p = Structs.Product(
          msg.sender,
          productId,
@@ -397,7 +397,8 @@ contract Market {
          true,
          description,
          0,
-         0
+         0,
+         imageUrl
       );
 
       products[productId] = _p;
@@ -466,6 +467,16 @@ contract Market {
       require(products[_productId].supplier != address(0), "Product does not exist");
       require(products[_productId].supplier == msg.sender, "Unauthorised supplier");
       products[_productId].description = description;
+   }
+
+   /**
+    * @notice Supplier updates image URL of a product on the marketplace
+    * @dev Called by a Supplier contract
+    */
+   function updateProductImageUrl(uint _productId, string memory _imageUrl) public supplierOnly {
+      require(products[_productId].supplier != address(0), "Product does not exist");
+      require(products[_productId].supplier == msg.sender, "Unauthorised supplier");
+      products[_productId].imageUrl = _imageUrl;
    }
 
    /**

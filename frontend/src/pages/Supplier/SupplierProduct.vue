@@ -6,8 +6,8 @@
     <span style="text-align: center;"><h3>Product Information</h3></span>
 
     <b-row class="product align-items-center">
-      <b-col cols="5" class='leftside'>
-        <b-img src="https://picsum.photos/600/300/?image=25" fluid></b-img>
+      <b-col cols="5" class='leftside d-flex align-items-center justify-content-center'>
+        <b-img :src="this.product.imageurl" fluid></b-img>
       </b-col>
 
       <b-col class='rightside'>

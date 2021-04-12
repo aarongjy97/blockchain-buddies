@@ -36,6 +36,7 @@ library Structs {
       string description;
       uint rating;
       uint ratings;
+      string imageUrl;
     }
 
     struct PurchaseOrder {

@@ -28,7 +28,7 @@
     <div style="display: flex;">
       <div class="product_description" style="display: flex; margin-top: 0px; width: 70%">
         <div class="product_image">
-          <img src="https://picsum.photos/600/300/?image=25" alt="" />
+          <img :src="this.product.imageurl" alt="" />
         </div>
         <div class="product_details" style="margin-left: 15px;">
           <h5 style="margin-bottom: 15px"> {{ productName }} </h5>
@@ -127,6 +127,7 @@
 import Procurer from "../../api/Procurer";
 import Supplier from "../../api/Supplier";
 import Courier from "../../api/Courier";
+import Market from '../../api/Market';
 import StarRating from 'vue-star-rating';
 
 export default {
@@ -164,6 +165,7 @@ export default {
       isCourier: "",
       couriers: [{ value: null, text: 'Select Courier', disabled: true, selected: true}],
       courier: null,
+      product: {}
     };
   },
   computed: {
@@ -204,7 +206,10 @@ export default {
       this.isProcurer = role == "procurer" ? true : false;
       this.isCourier = role == "courier" ? true: false;
     },
-
+    async loadProduct() {
+      const result = await Market.viewProduct(this.productId);
+      this.product = result.data;
+    },
     async ProcurerApprovePurchaseOrder(orderId) {
       try {
         await Procurer.approvePurchaseOrder(
@@ -329,6 +334,7 @@ export default {
   },
   mounted() {
     this.assignRoles();
+    this.loadProduct();
     if (this.isSupplier) {
       this.SupplierFetchCouriers();
     }
@@ -417,5 +423,16 @@ export default {
 .reject:hover {
   background-color: red;
   color: white;
+}
+
+.product_details {
+  width: 50%;
+}
+
+.product_image {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

@@ -77,7 +77,7 @@
 
       <div id="product" class="container d-flex flex-row mt-3">
         <div class="product_image">
-          <img src="https://picsum.photos/600/300/?image=25" alt="" />
+          <img :src="this.product.imageurl" alt="" />
         </div>
         <div class="product-description">
           <h4>{{ this.product.productName }}</h4>

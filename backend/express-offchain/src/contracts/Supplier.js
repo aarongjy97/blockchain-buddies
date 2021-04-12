@@ -24,6 +24,7 @@ async function listProduct(
   price,
   name,
   description,
+  imageurl,
   employeeAddress,
   contractAddress
 ) {
@@ -33,6 +34,7 @@ async function listProduct(
     price,
     name,
     description,
+    imageurl,
     {
       from: employeeAddress,
     }

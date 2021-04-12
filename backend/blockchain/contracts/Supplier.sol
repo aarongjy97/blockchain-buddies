@@ -93,8 +93,8 @@ contract Supplier {
     * @dev Calls Market Contract
     * @return Product ID
     */
-   function listProduct(uint quantityAvailable, uint price, string memory name, string memory description) public employeeOnly returns (uint) {
-      return market.listProduct(quantityAvailable, price, name, description);
+   function listProduct(uint quantityAvailable, uint price, string memory name, string memory description, string memory imageUrl) public employeeOnly returns (uint) {
+      return market.listProduct(quantityAvailable, price, name, description, imageUrl);
    }
 
    /**
@@ -136,6 +136,14 @@ contract Supplier {
     */
    function updateProductDescription(uint _productId, string memory description) public employeeOnly {
       market.updateProductDescription(_productId, description);
+   }
+
+   /**
+    * @notice Supplier updates the image URL path of a product on the marketplace
+    * @dev Calls Market Contract
+    */
+   function updateProductImageUrl(uint _productId, string memory imageUrl) public employeeOnly {
+      market.updateProductImageUrl(_productId, imageUrl);
    }
 
    /* ==================== Order Functions ==================== */

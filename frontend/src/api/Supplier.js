@@ -19,6 +19,7 @@ async function listProduct(
   price,
   quantity,
   description,
+  imageurl,
   employeeAddress
 ) {
   return await axios.post(`${endpoint}/listproduct`, {
@@ -26,6 +27,7 @@ async function listProduct(
     price,
     name,
     description,
+    imageurl,
     employeeAddress,
   });
 }

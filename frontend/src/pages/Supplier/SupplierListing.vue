@@ -41,8 +41,17 @@
             ></b-form-input>
           </b-form-group>
 
+          <b-form-group id="input-group-5" label="Image URL" label-for="input-5">
+            <b-form-input
+              id="input-5"
+              v-model.number="form.imageurl"
+              placeholder="Enter Image URL"
+              required
+            ></b-form-input>
+          </b-form-group>
+
           <b-form-group
-            id="input-group-3"
+            id="input-group-4"
             label="Description"
             label-for="input-4"
           >
@@ -77,6 +86,7 @@ export default {
         quantity: "",
         price: "",
         description: "",
+        imageurl: '',
       },
       show: true,
     };
@@ -95,6 +105,7 @@ export default {
         this.form.price,
         this.form.quantity,
         this.form.description,
+        this.form.imageurl,
         details.address
       );
       console.log(result.data);

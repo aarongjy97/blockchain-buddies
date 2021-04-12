@@ -10,14 +10,14 @@
           deck
           v-for="product in listedProducts"
           :key="product.productId"
-          class="col-md-6 col-lg-4 col-xl-3"
+          class="col-md-6 col-lg-4 col-xl-3 mt-3 mb-3"
         >
-          <b-card
-            img-src="https://picsum.photos/600/300/?image=25"
-            img-alt="Image"
-            img-top
-            class="mb-4"
-          >
+          <b-card>
+            <b-card-body>
+              <div style="min-height: 250px;" class="d-flex justify-content-center align-items-center"> 
+                <img class="w-100" :src="product.imageurl" alt="https://picsum.photos/600/300/?image=25">
+              </div>
+            </b-card-body>
             <b-card-title>{{ product.productName }}</b-card-title>
             <template #footer>
               <b-row class="mt-n4">
@@ -106,6 +106,7 @@ export default {
           quantity: p.quantityAvailable,
           rating: p.rating,
           supplierName: p.supplierName,
+          imageurl: p.imageurl
         }));
         console.log("product:", this.products);
 

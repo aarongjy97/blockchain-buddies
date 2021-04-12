@@ -15,7 +15,8 @@ async function parseProduct(product) {
     listed: product[6],
     description: product[7],
     rating: parseFloat(product[8]),
-    ratings: parseInt(product[9])
+    ratings: parseInt(product[9]),
+    imageurl: product[10]
   };
 
   try {

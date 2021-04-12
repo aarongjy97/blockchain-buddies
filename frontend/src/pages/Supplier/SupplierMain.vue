@@ -8,14 +8,13 @@
     <b-tab title="All Products" active>
       <b-container v-if='products.length' fluid>
         <b-row align-h='center'>
-          <b-card-group deck v-for="product in products" :key="product.productId" class="col-md-6 col-lg-4 col-xl-3">
-            <b-card
-              img-src="https://picsum.photos/600/300/?image=25"
-              img-alt="Image"
-              img-top
-              class="mb-4"
-              v-if='product.listed'
-            >
+          <b-card-group deck v-for="product in products" :key="product.productId" class="col-md-6 col-lg-4 col-xl-3 mt-3 mb-3">
+            <b-card v-if='product.listed'>
+              <b-card-body>
+                <div style="min-height: 250px;" class="d-flex justify-content-center align-items-center"> 
+                  <img class="w-100" :src="product.imageurl" alt="https://picsum.photos/600/300/?image=25">
+                </div>
+              </b-card-body>
               <b-card-title>{{ product.productName }}</b-card-title>
               <template #footer>
                 <b-row class='mt-n4'>
@@ -42,13 +41,12 @@
                 <router-link :to="{name: 'supplier-product', params: product}" class='stretched-link'></router-link>
               </template>
             </b-card>
-            <b-card
-              img-src="https://picsum.photos/600/300/?image=25"
-              img-alt="Image"
-              img-top
-              class="mb-4 unlistedcard"
-              v-if='!product.listed'
-            >
+            <b-card v-if='!product.listed' class="unlistedcard">
+              <b-card-body>
+                <div style="min-height: 250px;" class="d-flex justify-content-center align-items-center"> 
+                  <img class="w-100" :src="product.imageurl" alt="https://picsum.photos/600/300/?image=25">
+                </div>
+              </b-card-body>
               <b-card-title>{{ product.productName }}</b-card-title>
               <template #footer>
                 <b-row class='mt-n4'>
@@ -89,12 +87,12 @@
       <b-container v-if='listedProducts.length' fluid>
         <b-row align-h='center'>
           <b-card-group deck v-for="product in listedProducts" :key="product.productId" class="col-md-6 col-lg-4 col-xl-3">
-            <b-card
-              img-src="https://picsum.photos/600/300/?image=25"
-              img-alt="Image"
-              img-top
-              class="mb-4"
-            >
+            <b-card>
+              <b-card-body>
+                <div style="min-height: 250px;" class="d-flex justify-content-center align-items-center"> 
+                  <img class="w-100" :src="product.imageurl" alt="https://picsum.photos/600/300/?image=25">
+                </div>
+              </b-card-body>
               <b-card-title>{{ product.productName }}</b-card-title>
               <template #footer>
                 <b-row class='mt-n4'>
@@ -134,13 +132,13 @@
     <b-tab title="Unlisted Products">
       <b-container v-if='unlistedProducts.length' fluid>
         <b-row align-h='center'>
-          <b-card-group deck v-for="product in unlistedProducts" :key="product.productId" class="col-md-6 col-lg-4 col-xl-3">
-            <b-card
-              img-src="https://picsum.photos/600/300/?image=25"
-              img-alt="Image"
-              img-top
-              class="mb-4 unlistedcard"
-            >
+          <b-card-group deck v-for="product in unlistedProducts" :key="product.productId" class="col-md-6 col-lg-4 col-xl-3 mt-3 mb-3">
+            <b-card v-if='!product.listed' class="unlistedcard">
+              <b-card-body>
+                <div style="min-height: 250px;" class="d-flex justify-content-center align-items-center"> 
+                  <img class="w-100" :src="product.imageurl" alt="https://picsum.photos/600/300/?image=25">
+                </div>
+              </b-card-body>
               <b-card-title>{{ product.productName }}</b-card-title>
               <template #footer>
                 <b-row class='mt-n4'>
@@ -214,6 +212,7 @@ export default {
           productName: p.productName,
           quantity: p.quantityAvailable,
           rating: p.rating,
+          imageurl: p.imageurl
         }));
 
         this.products.forEach(x => {

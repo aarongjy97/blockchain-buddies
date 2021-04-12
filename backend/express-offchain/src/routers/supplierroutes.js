@@ -67,8 +67,8 @@ router.post("/viewallselfproducts", async (req, res, next) => {
 });
 
 router.post("/listproduct", async (req, res, next) => {
-  const { employeeAddress, quantity, name, price, description } = req.body;
-
+  const { employeeAddress, quantity, name, price, description, imageurl } = req.body;
+  console.log(employeeAddress)
   try {
     const address = await getSupplierContractAddress(employeeAddress);
     const result = await supplier.listProduct(
@@ -76,11 +76,13 @@ router.post("/listproduct", async (req, res, next) => {
       price,
       name,
       description,
+      imageurl,
       employeeAddress,
       address
     );
     return res.status(202).send("Product Listed");
   } catch (error) {
+    console.log(error);
     return res
       .status(500)
       .send(errorParser(error, "Listing of Product Failed"));
