@@ -9,8 +9,8 @@
         ></order-status-box>
       </div>
     </div>
-    <div v-else>
-      <span style="text-align: center;">
+    <div v-else style="text-align: center;">
+      <span>
           No Purchase Orders Found
       </span>
     </div>

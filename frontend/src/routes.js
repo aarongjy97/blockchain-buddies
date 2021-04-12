@@ -30,7 +30,7 @@ export default new Router({
   routes: [
 
     { path: "/", name: "landing", component: Landing },
-    { path: "/product:id", name: 'product', component: Product },
+    { path: "/product/:productId", name: 'product', component: Product },
     { path: "/register", name: 'register', component: Register },
     { path: "/login", name: "login", component: Login },
 
@@ -89,7 +89,7 @@ export default new Router({
       component: SupplierLanding
     },
     {
-      path: "/supplier-viewproduct/:id",
+      path: "/supplier-viewproduct/:productId",
       name: "supplier-viewproduct",
       component: ViewProduct
     }
