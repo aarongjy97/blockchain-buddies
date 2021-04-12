@@ -8,7 +8,6 @@ procurerContractInterface.setProvider(provider);
 async function createPurchaseOrder(
   productId,
   quantity,
-  price,
   employeeAddress,
   contractAddress
 ) {
@@ -16,7 +15,6 @@ async function createPurchaseOrder(
   return await procurerContract.createPurchaseOrder(
     productId,
     quantity,
-    price,
     { from: employeeAddress }
   );
 }

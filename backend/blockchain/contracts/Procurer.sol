@@ -75,8 +75,8 @@ contract Procurer {
      * Only Logistics Employees are allowed to create purchase orders.
      * @dev Calls Market contract
      */
-    function createPurchaseOrder(uint _productId, uint quantity, uint price) public isLogisticsEmployee returns (uint) {
-        market.createPurchaseOrder(_productId, quantity, price);
+    function createPurchaseOrder(uint _productId, uint quantity) public isLogisticsEmployee returns (uint) {
+        market.createPurchaseOrder(_productId, quantity);
     }
     
     /**

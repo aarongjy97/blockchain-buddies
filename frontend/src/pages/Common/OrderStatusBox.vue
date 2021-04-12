@@ -1,9 +1,27 @@
 <template>
-  <div class="container">
-    <Navbar></Navbar>
+  <div class="container position-relative">
+
+    <router-link
+      :to="{ name: 'procurer-order', params: { id: orderId } }"
+      class="stretched-link"
+      v-if='isProcurer'
+    ></router-link>
+
+    <router-link
+      :to="{ name: 'supplier-order', params: { id: orderId } }"
+      class="stretched-link"
+      v-if='isSupplier'
+    ></router-link>
+
+    <router-link
+      :to="{ name: 'courier-order', params: { id: orderId } }"
+      class="stretched-link"
+      v-if='isCourier'
+    ></router-link>
+
     <div class="order_details">
       <h5>Purchase Order {{ orderId }}</h5>
-      <h5 style="margin-left:15px; margin-top: 4px;padding-left:15px; border-left: solid 1px darkgrey; font-size:15px; color: grey" > Details: {{order_msg}} </h5>
+      <h5 style="margin-left:15px; margin-top: 4px;padding-left:15px; border-left: solid 1px darkgrey; font-size:15px; color: grey" > {{order_msg}} </h5>
       <h5 style="margin-left: auto; color:red"> {{status}} </h5>
     </div>
     <Hr style="margin-top: 0px"></hr>
@@ -26,7 +44,7 @@
             <span style="color: grey">Procurer:  </span> 
             <span> {{procurerName}} </span>
           </div>
-          <div v-if="isSupplier && isInternalApproved" style="margin-bottom: 15px; display:flex">
+          <div v-if="isSupplier && isInternalApproved" style="margin-bottom: 15px; display:flex; z-index: 2; position: relative;">
             <span style="color: grey; margin-top: 4px;">Courier:  </span>
             <b-form-select size="sm" style="margin-left: 7px;" v-model="courier" :options="couriers"></b-form-select>
           </div>
@@ -39,7 +57,7 @@
       <div class="subtotal" style="width: 30%; display:inline-block; align-self: flex-end; margin-bottom: 0px;">
         <div style="float: right">
           <span style="color: grey">Order Total:  </span> 
-          <span style="font-size: 30px"> {{price * quantity + 7}} Tokens</span>
+          <span style="font-size: 30px"> {{price}} Tokens</span>
         </div>
       </div>
     </div>
@@ -71,6 +89,7 @@
     </div>
     <div v-else-if="isProcurer && !isFinance && isDelivered" style="float: right; display:flex">
       <StarRating 
+        :read-only='rated'
         v-model="rating"
         v-bind:increment="1"
         v-bind:show-rating="false"
@@ -79,11 +98,27 @@
         v-bind:border-width="7" 
         active-color="gold" 
         border-color="gold"
-        inactive-color="#FFF">
+        inactive-color="#FFF"
+        style="margin-top: 10px; z-index: 2; position: relative;">
       </StarRating>
-      <b-button class="approve" @click="ProcurerAddRating(orderId)" style="margin-left: 15px;">
+      <b-button v-if='!rated' :disabled='rating == 0' class="approve" @click="ProcurerAddRating(orderId)" style="margin-left: 15px;">
         Rate
       </b-button>
+    </div>
+    <div v-else-if="isSupplier && isDelivered" style="float: right; display:flex">
+        <StarRating 
+          :read-only='true'
+          v-model="rating"
+          v-bind:increment="1"
+          v-bind:show-rating="false"
+          v-bind:star-size="14"
+          v-bind:padding="1"
+          v-bind:border-width="7" 
+          active-color="gold" 
+          border-color="gold"
+          inactive-color="#FFF"
+          style="margin-top: 10px;">
+        </StarRating>
     </div>
   </div> 
 </template>
@@ -111,6 +146,8 @@ export default {
     quantity: String,
     status: String,
     supplierName: String,
+    rating: Number,
+    rated: Boolean
   },
   data() {
     return {
@@ -125,36 +162,35 @@ export default {
       isSupplier: "",
       isProcurer: "",
       isCourier: "",
-      couriers: [{ value: null, text: 'Please select a courier', disabled: true, selected: true}],
+      couriers: [{ value: null, text: 'Select Courier', disabled: true, selected: true}],
       courier: null,
-      rating: 0,
     };
   },
   computed: {
     order_msg: function() {
       if (this.isOrdered) {
-        return "Awaiting approval from finance department";
+        return "Awaiting Approval from Finance Department";
       }
       else if (this.isInternalApproved) {
-        return "Awaiting approval from supplier";
+        return "Awaiting Approval from Supplier";
       }
       else if (this.status == "isInternalRejected") {
-        return "Order rejected, contact finance department"
+        return "Order Rejected, Contact Finance Department"
       }
       else if (this.status == "Supplier Approved") {
-        return "Awaiting approval from courier";
+        return "Awaiting Approval from Courier";
       }
       else if (this.status == "Supplier Rejected") {
-        return "Order rejected, contact supplier"
+        return "Order Rejected, Contact Supplier"
       }
       else if (this.status == "Courier Assigned") {
-        return "Item packed and ready to be delivered"
+        return "Order Ready to be Delivered"
       }
       else if (this.status == "Delivering") {
-        return "Item is out for delivery"
+        return "Order Delivering"
       }
       else if (this.status == "Delivered") {
-        return "Item has been delivered"
+        return "Order Delivered"
       }
       else {
         return "" 
@@ -167,7 +203,6 @@ export default {
       this.isSupplier = role == "supplier" ? true : false;
       this.isProcurer = role == "procurer" ? true : false;
       this.isCourier = role == "courier" ? true: false;
-      // console.log(this.isProcurer);
     },
 
     async ProcurerApprovePurchaseOrder(orderId) {
@@ -294,7 +329,9 @@ export default {
   },
   mounted() {
     this.assignRoles();
-    this.SupplierFetchCouriers();
+    if (this.isSupplier) {
+      this.SupplierFetchCouriers();
+    }
   }
 };
 </script>
@@ -307,6 +344,12 @@ export default {
   width: auto;
   height: auto;
   overflow: hidden;
+  margin-top: 20px;
+  transition: all 0.5s;
+}
+
+.container:hover {
+  box-shadow: 0 4px 6px 0 gray;
 }
 
 /* .product_description {
@@ -347,6 +390,9 @@ export default {
   transition: all 0.5s;
   border: none;
   width: 125px;
+  margin-top: 5px;
+  z-index: 2;
+  position: relative;
 }
 
 .approve:hover {
@@ -355,16 +401,21 @@ export default {
 
 .reject {
   display: inline-block;
-  background-color: rgba(255, 0, 0, 0.726);
+  color: rgba(255, 0, 0, 0.726);
+  background-color: white;
   font-size: 20px;
-  color: #ffffff;
   padding: 7px 20px;
   transition: all 0.5s;
   border: none;
   width: 125px;
+  margin-left: 5px;
+  margin-top: 5px;
+  z-index: 2;
+  position: relative;
 }
 
 .reject:hover {
   background-color: red;
+  color: white;
 }
 </style>

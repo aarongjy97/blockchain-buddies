@@ -176,7 +176,7 @@ contract('Procurer Functions', function(accounts) {
         }
         catch(e) {}
 
-        assert.strictEqual(result, undefined, 'Purchase order is created even with invalid ID');
+        assert.strictEqual(result, undefined, 'Purchase order is viewed even with invalid ID');
     });
     
     it('Procurer View Purchase Order', async () => {

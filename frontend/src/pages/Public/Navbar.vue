@@ -1,23 +1,24 @@
 <template>
   <div>
-    <b-navbar toggleable="md" type="light" variant="light" class='navbar fixed-top'>
-        <b-navbar-brand to="/supplier-main" id="nav">
-          Procurement Marketplace
-        </b-navbar-brand>
-          
+    <b-navbar
+      toggleable="md"
+      type="light"
+      variant="light"
+      class="navbar fixed-top"
+    >
+      <b-navbar-brand to="/" id="nav">
+        Procurement Marketplace
+      </b-navbar-brand>
+
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
-          <b-nav-item to="/supplier-listing">List</b-nav-item>
-          <b-nav-item to="/supplier-main">Listed Products</b-nav-item>
-          <b-nav-item to="/supplier-orders">Orders</b-nav-item>
-          <b-nav-item to="/supplier-viewproducts">Products</b-nav-item>
-          <b-nav-item to="/account">Account</b-nav-item>
-          <b-nav-item to="/" v-on:click='logout()'>Logout</b-nav-item>
+          <b-nav-item to="/">Products</b-nav-item>
+          <b-nav-item to="/register">Register</b-nav-item>
+          <b-nav-item to="/login">Login</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
-      
     </b-navbar>
   </div>
 </template>
@@ -26,10 +27,10 @@
 export default {
   methods: {
     logout() {
-      this.$store.dispatch('clearData');
-    }
-  }
-}
+      this.$store.dispatch("clearData");
+    },
+  },
+};
 </script>
 
 <style scoped>

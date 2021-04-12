@@ -14,7 +14,8 @@ async function parseProduct(product) {
     productName: product[5],
     listed: product[6],
     description: product[7],
-    rating: parseFloat(product[8])
+    rating: parseFloat(product[8]),
+    ratings: parseInt(product[9])
   };
 
   try {
@@ -83,6 +84,7 @@ async function parsePurchaseOrder(purchaseOrder) {
     price: purchaseOrder[11],
     dateCreated: new Date(parseInt(purchaseOrder[12]) * 1000),
     status: orderStatus[parseInt(purchaseOrder[13])],
+    rating: purchaseOrder[14]
   };
 
   try {

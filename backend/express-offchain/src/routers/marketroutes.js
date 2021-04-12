@@ -45,7 +45,12 @@ router.get("/viewallproducts", async (req, res, next) => {
     const address = await getMarketAddress();
     const result = await market.viewAllProducts(address);
     const products = await Promise.all(
-      result.map((p) => structParser.parseProduct(p))
+      result
+        .filter(
+          (product) =>
+            product[0] !== "0x0000000000000000000000000000000000000000"
+        )
+        .map((p) => structParser.parseProduct(p))
     );
     return res.status(200).send(products);
   } catch (error) {
@@ -75,5 +80,16 @@ router.get("/viewsupplierproducts", async (req, res, next) => {
       .send(errorParser(error, `Failed to Retrieve Supplier Products`));
   }
 });
+
+router.get("/getmarketaddress", async (req, res, next) => {
+  try {
+    const address = await getMarketAddress();
+    return res.status(200).send(address);
+  } catch (error) {
+    return res
+      .status(500)
+      .send(errorParser(error, `Failed to Retrieve Supplier Products`));
+  }
+})
 
 module.exports = router;

@@ -1,6 +1,7 @@
 <template>
   <div>
     <Navbar></Navbar>
+    <h3 style="text-align: center;">Purchase Orders</h3>
     <div v-if="purchaseOrders.length">
       <div v-for="po in purchaseOrders" :key="po.po_id">
         <order-status-box
@@ -8,6 +9,11 @@
           v-bind:employeeType="employeeType"
         ></order-status-box>
       </div>
+    </div>
+    <div v-else class="d-flex align-items-center justify-content-center flex-column">
+      <span class="mt-3" align='center'>
+          No Purchase Orders Found
+      </span>
     </div>
   </div>
 </template>
@@ -47,6 +53,8 @@ export default {
           quantity: po.quantity,
           status: po.status,
           supplierName: po.supplierName,
+          rating: parseInt(po.rating),
+          rated: parseInt(po.rating) > 0
         }));
         console.log("purchaseOrders:", this.purchaseOrders);
       } catch (err) {
