@@ -175,5 +175,8 @@ contract Procurer {
     function registerAsProcurer() public ownerOnly {
         market.registerAsProcurer();
     }
-    
+
+    function viewEmployee(address employeeAddress) public view ownerOnly returns (Employee memory) {
+        return employees[employeeAddress];
+    }
 }

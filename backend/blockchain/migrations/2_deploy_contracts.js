@@ -9,6 +9,8 @@ const supplier = artifacts.require("Supplier");
 const courier = artifacts.require("Courier");
 
 module.exports = async function (deployer, network, accounts) {
+  if (network == 'test') return; // test maintains its own contracts 
+
   const stakeholders = {
     ERC20: accounts[0],
     Market: accounts[1],

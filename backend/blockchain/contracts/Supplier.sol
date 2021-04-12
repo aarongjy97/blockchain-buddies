@@ -22,9 +22,9 @@ contract Supplier {
 
    /* ==================== Constructor ==================== */
 
-   constructor(Market _marketAdress, MarketERC20 _erc20Address) public {
+   constructor(Market _marketAddress, MarketERC20 _erc20Address) public {
       _owner = msg.sender;
-      market = _marketAdress;
+      market = _marketAddress;
       erc20 = _erc20Address;
    }
 
@@ -64,6 +64,10 @@ contract Supplier {
 
    function registerAsSupplier() public ownerOnly {
       market.registerAsSupplier();
+   }
+
+   function viewEmployee(address employeeAddress) public view ownerOnly returns (Employee memory) {
+      return employees[employeeAddress];
    }
 
    /* ==================== Product Functions ==================== */
