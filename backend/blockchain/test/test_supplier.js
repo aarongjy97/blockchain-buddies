@@ -178,19 +178,17 @@ contract('Supplier Functions', function(accounts) {
     /* Testing Supplier.viewAllSelfProducts */
     it('Should Fail, Supplier Unlist Product that does not exist', async () => {
         let result;
-        let products;
         try {
             result = await dellSupplierInstance.unlistProduct(5, {from: dellEmployee});
         } 
         catch(e) {}
 
-        assert.strictEqual(result, undefined, "Product that does not exist have been unlisted");
+        assert.strictEqual(result, undefined, "Product that does not exist has been unlisted");
     });
 
     /* Testing Supplier.viewAllSelfProducts */
     it('Should Fail, Wrong address used to unlist product', async () => {
         let result;
-        let products;
         try {
             result = await dellSupplierInstance.unlistProduct(1, {from: googleLogisticsEmployee});
         } 
@@ -215,7 +213,6 @@ contract('Supplier Functions', function(accounts) {
     /* Testing Supplier.relistProduct */
     it('Should Fail, Supplier relist a product that is already listed', async () => {
         let result;
-        let products;
         try {
             await dellSupplierInstance.listProduct(100, 10, 'Dell Laptop', 'Good Laptop', {from: dellEmployee});
             result = await dellSupplierInstance.relistProduct(2, {from: dellEmployee});
@@ -345,13 +342,12 @@ contract('Supplier Functions', function(accounts) {
 
     /* Testing Supplier.viewPurchaseOrder */
     it('Supplier View Purchase Order', async () => {
-        // let po;
-        // try {
-        //     po = await dellSupplierInstance.viewPurchaseOrder.call(1, {from: dellEmployee});
-        // }
-        // catch(e) {}
-        let po = await dellSupplierInstance.viewPurchaseOrder.call(1, {from: dellEmployee});
-
+        let po;
+        try {
+            po = await dellSupplierInstance.viewPurchaseOrder.call(1, {from: dellEmployee});
+        }
+        catch(e) {}
+            
         assert.strictEqual(po.procurer, googleProcurerInstance.address, "PO procurer is incorrect");
         assert.strictEqual(po.procurerLogisticsEmployee, googleLogisticsEmployee, "PO procurerLogisticsEmployee is incorrect");
         assert.strictEqual(po.procurerFinanceEmployee, googleFinanceEmployee, "PO procurerFinanceEmployee is incorrect");
@@ -363,14 +359,17 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(po.orderId, "1", "PO orderId is incorrect");
         assert.strictEqual(po.quantity, "1", "PO quantity is incorrect");
         assert.strictEqual(po.price, "70", "PO price is incorrect");
-        // assert.strictEqual(po[0].dateCreated, zero_address, "PPO courierEmployee is incorrect");
         assert.strictEqual(po.status, "2", "PO status is incorrect");
         assert.strictEqual(po.rating, "0", "PO rating is incorrect");
     });
 
     /* Testing Supplier.supplierViewAllPurchaseOrders */
     it('Supplier View All Purchase Orders', async () => {
-        let po = await dellSupplierInstance.supplierViewAllPurchaseOrders.call({from: dellEmployee});
+        let po;
+        try {
+            po = await dellSupplierInstance.supplierViewAllPurchaseOrders.call({from: dellEmployee});
+        }
+        catch(e) {}
 
         assert.strictEqual(po[0].procurer, googleProcurerInstance.address, "PO procurer is incorrect");
         assert.strictEqual(po[0].procurerLogisticsEmployee, googleLogisticsEmployee, "PO procurerLogisticsEmployee is incorrect");
@@ -383,42 +382,157 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(po[0].orderId, "1", "PO orderId is incorrect");
         assert.strictEqual(po[0].quantity, "1", "PO quantity is incorrect");
         assert.strictEqual(po[0].price, "70", "PO price is incorrect");
-        // assert.strictEqual(po[0].dateCreated, zero_address, "PPO courierEmployee is incorrect");
         assert.strictEqual(po[0].status, "2", "PO status is incorrect");
         assert.strictEqual(po[0].rating, "0", "PO rating is incorrect");
     });
 
     /* Testing Supplier.supplierApprovePurchaseOrder */
+    it('Should Fail, Supplier approve purchase order that does not exist', async () => {
+        let result;
+        try {
+            result = await dellSupplierInstance.supplierApprovePurchaseOrder(5, {from:dellEmployee});
+        }
+        catch(e) {}
+
+        assert.strictEqual(result, undefined, "PO that does not exist has been approved");
+    });
+    
+    /* Testing Supplier.supplierApprovePurchaseOrder */
+    it('Should Fail, Wrong address used to approve purchase order', async () => {
+        let result;
+        try {
+            result = await dellSupplierInstance.supplierApprovePurchaseOrder(1, {from:googleFinanceEmployee});
+        }
+        catch(e) {}
+
+        assert.strictEqual(result, undefined, "Wrong address used to approve purchase order");
+    });
+
+    /* Testing Supplier.supplierApprovePurchaseOrder */
+    it('Should Fail, Supplier approve purchase order that has not been Internal Approved', async () => {
+        let result;
+        try {
+            await googleProcurerInstance.createPurchaseOrder(1, 1, {from:googleLogisticsEmployee}); // po2
+            result = await dellSupplierInstance.supplierApprovePurchaseOrder(2, {from:dellEmployee}); 
+        }
+        catch(e) {}
+
+        assert.strictEqual(result, undefined, "Supplier approved PO that has not been InternalApproved ");
+    });
+
+    /* Testing Supplier.supplierApprovePurchaseOrder */
     it('Main Flow Function: Supplier Approve Purchase Order', async () => {
-        let result = await dellSupplierInstance.supplierApprovePurchaseOrder(1, {from:dellEmployee});
-        let po = await dellSupplierInstance.viewPurchaseOrder.call(1, {from: dellEmployee});
-        assert.strictEqual(po.status, "3", "PO Status is not SupplierApproved")
+        let po;
+        try {
+            await dellSupplierInstance.supplierApprovePurchaseOrder(1, {from:dellEmployee});
+            po = await dellSupplierInstance.viewPurchaseOrder.call(1, {from: dellEmployee});
+        }
+        catch(e) {}
+
+        assert.strictEqual(po.status, "3", "PO that does not exist has been rejected");
+    });
+
+    /* Testing Supplier.supplierRejectPurchaseOrder */
+    it('Should Fail, Supplier reject purchase order that does not exist', async () => {
+        let result; 
+        try {
+            result = await dellSupplierInstance.supplierRejectPurchaseOrder(6, {from:dellEmployee});
+        } 
+        catch(e) {}
+        
+        assert.strictEqual(result, undefined, "PO that does not exist have been rejected");
+    });
+
+    /* Testing Supplier.supplierRejectPurchaseOrder */
+    it('Should Fail, Wrong address used to reject purchase order', async () => {
+        let result; 
+        try {
+            await googleProcurerInstance.approvePurchaseOrder(2, {from:googleFinanceEmployee}); // approve po2
+            result = await dellSupplierInstance.supplierRejectPurchaseOrder(2, {from: googleLogisticsEmployee});
+        } 
+        catch(e) {}
+        
+        assert.strictEqual(result, undefined, "Wrong address used to reject PO");
+    });
+
+    /* Testing Supplier.supplierRejectPurchaseOrder */
+    it('Should Fail, Supplier reject purchase order that has not been Internal Approved', async () => {
+        let result; 
+        try {
+            await googleProcurerInstance.createPurchaseOrder(1, 1, {from:googleLogisticsEmployee}); // po3
+            await googleProcurerInstance.approvePurchaseOrder(3, {from:googleFinanceEmployee});
+            result = await dellSupplierInstance.supplierRejectPurchaseOrder(3, {from: googleFinanceEmployee});
+        } 
+        catch(e) {}
+        
+        assert.strictEqual(result, undefined, "Wrong address used to reject PO");
     });
 
     /* Testing Supplier.supplierRejectPurchaseOrder */
     it('Supplier Reject Purchase Order', async () => {
-        let result = await dellSupplierInstance.supplierRejectPurchaseOrder.call(1, {from:dellEmployee});
+        let po; 
+        try {
+            await dellSupplierInstance.supplierRejectPurchaseOrder(3, {from:dellEmployee});
+            po = await dellSupplierInstance.viewPurchaseOrder.call(3, {from:dellEmployee});
+        } 
+        catch(e) {}
+        
+        assert.strictEqual(po.status, "5", "PO Status is not SupplierRejected");
+    });
+
+    /* Testing Supplier.assignCourier */
+    it('Should Fail, Supplier assign courier to a purchase order that does not exist', async () => {
+        let result; 
+        try {
+            result = await dellSupplierInstance.assignCourier(dhl, 6, {from:dellEmployee});
+        } 
+        catch(e) {}
+        
+        assert.strictEqual(result, undefined, "Supplier is able to assign courier to a purchase order that does not exist");
+    });
+
+    /* Testing Supplier.assignCourier */
+    it('Should Fail, Wrong address used to assign courier', async () => {
+        let result; 
+        try {
+            result = await dellSupplierInstance.assignCourier(dhl, 1, {from:googleLogisticsEmployee});
+        } 
+        catch(e) {}
+        
+        assert.strictEqual(result, undefined, "Wrong address used to assign courier");
+    });
+
+    /* Testing Supplier.assignCourier */
+    it('Should Fail, Supplier assign courier to a purchase order that has not been SupplierApproved', async () => {
+        let result; 
+        try {
+            result = await dellSupplierInstance.assignCourier(dhl, 2, {from:dellEmployee});
+        } 
+        catch(e) {}
+        
+        assert.strictEqual(result, undefined, "Supplier is able to assgin a courier to a purchase order that has not been SupplierApproved");
+    });
+
+    /* Testing Supplier.assignCourier */
+    it('Should Fail, Supplier assign courier to an invalid courier', async () => {
+        let result; 
+        try {
+            result = await dellSupplierInstance.assignCourier(google, 1, {from:dellEmployee});
+        } 
+        catch(e) {}
+        
+        assert.strictEqual(result, undefined, "Supplier is able to assign a courier that does not exist to a purchase order");
     });
 
     /* Testing Supplier.assignCourier */
     it('Main Flow Function: Supplier Assign Courier', async () => {
-        let result = await dellSupplierInstance.assignCourier(dhlCourierInstance.address, 1, {from: dellEmployee});
-        let po = await dellSupplierInstance.viewPurchaseOrder.call(1, {from: dellEmployee});
-        assert.strictEqual(po.courier, dhlCourierInstance.address, "Courier is incorrectly assigned")
-    });
-
-    /* Main Flow Function */
-    it('Main Flow Function: Courier Receive Order from Supplier', async () => {
-        await dhlCourierInstance.receivedByCourier(1, {from: dhlEmployee});
-    });
-
-    /* Main Flow Function */
-    it('Main Flow Function: Procurer Receive Delivered Order from Courier', async () => {
-        await googleProcurerInstance.deliveredByCourier(1, {from: googleLogisticsEmployee});
-    });
-
-    /* Main Flow Function */
-    it('Main Flow Function: Procurer Add Rating for Order', async () => {
-        await googleProcurerInstance.addRating(5, 1, {from: googleLogisticsEmployee});
+        let po;
+        try {
+            await dellSupplierInstance.assignCourier(dhlCourierInstance.address, 1, {from: dellEmployee});
+            po =await dellSupplierInstance.viewPurchaseOrder.call(1, {from: dellEmployee});
+        }
+        catch(e) {}
+        assert.strictEqual(po.status, "6", "PO status is not CourierAssigned")
+        assert.strictEqual(po.courier, dhlCourierInstance.address, "Courier is incorrectly assigned");
     });
 });
