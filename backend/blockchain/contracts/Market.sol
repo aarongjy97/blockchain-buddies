@@ -553,7 +553,7 @@ contract Market {
       uint avgRating = 0;
 
       if (_productsRated > 0) {
-         avgRating = _totalRating / _productsSold;
+         avgRating = _totalRating / _productsRated;
       }
 
       return (_totalEarned, _productsSold, avgRating);
