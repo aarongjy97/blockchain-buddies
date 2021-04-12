@@ -85,17 +85,8 @@ contract('Supplier Functions', function(accounts) {
 
     /* Testing Supplier.registerAsSupplier */
     it('Should emit Registered event, Supplier registers itself correctly', async () => {
-        let result;
-        try {
-            result = await dellSupplierInstance.registerAsSupplier({from: dell});
-        }
-        catch(e) {
-            console.log(e);
-        }
-
-        // truffleAssert.eventEmitted(result, "Registered", (ev) => { 
-        //     return (ev.registerType === "Supplier" && ev.registerer === dell);
-        // }, "Registered event should be emitted");
+        let result = await dellSupplierInstance.registerAsSupplier({from: dell});
+        assert.isNotNull(result);
     });
 
     /* Testing Supplier.registerAsSupplier */ 
@@ -111,26 +102,23 @@ contract('Supplier Functions', function(accounts) {
 
     /* Main Flow Function */
     it("Main Flow Function: Register Stakeholders", async () => {
-        await googleProcurerInstance.registerAsProcurer({from: google});
-        await dhlCourierInstance.registerAsCourier({from: dhl});
+        let result = await googleProcurerInstance.registerAsProcurer({from: google});
+        assert.isNotNull(result);
+
+        result = await dhlCourierInstance.registerAsCourier({from: dhl});
+        assert.isNotNull(result);
     });
 
     /* Main Flow Function */
     it('Main Flow Function: Mint Tokens to Procurer', async () => {
-        await marketERC20Instance.mintTokens(googleProcurerInstance.address, 10000, {from: erc20});
+        const result = await marketERC20Instance.mintTokens(googleProcurerInstance.address, 10000, {from: erc20});
+        assert.isNotNull(result);
     });
 
     /* Testing Supplier.listProduct() */
     it('Supplier List Products', async () => {
-        let result;
-        try {
-            result = await dellSupplierInstance.listProduct(100, 10, 'Dell Laptop', 'Good Laptop', {from: dellEmployee});
-        }
-        catch(e) {}
-
-        // truffleAssert.eventEmitted(result, 'Listed', (ev) => {
-        //     return ev.supplier === dell && ev.supplierEmployee === dellEmployee;
-        // }, 'Product is not listed correctly');
+        let result = await dellSupplierInstance.listProduct(100, 10, 'Dell Laptop', 'Good Laptop', {from: dellEmployee});
+        assert.isNotNull(result);
     });
 
     it('Should Fail, Wrong address used to list product', async () => {
@@ -141,10 +129,6 @@ contract('Supplier Functions', function(accounts) {
         catch(e) {}
 
         assert.strictEqual(result, undefined, "Wrong address can be used to list a product")
-
-        // truffleAssert.eventEmitted(result, 'Listed', (ev) => {
-        //     return ev.supplier === dell && ev.supplierEmployee === dellEmployee;
-        // }, 'Product is not listed correctly');
     });
 
     /* Testing Supplier.viewSelfProduct */
@@ -178,7 +162,6 @@ contract('Supplier Functions', function(accounts) {
     /* Testing Supplier.viewAllSelfProducts */
     it('Should Fail, Supplier Unlist Product that does not exist', async () => {
         let result;
-        let products;
         try {
             result = await dellSupplierInstance.unlistProduct(5, {from: dellEmployee});
         } 
@@ -190,7 +173,6 @@ contract('Supplier Functions', function(accounts) {
     /* Testing Supplier.viewAllSelfProducts */
     it('Should Fail, Wrong address used to unlist product', async () => {
         let result;
-        let products;
         try {
             result = await dellSupplierInstance.unlistProduct(1, {from: googleLogisticsEmployee});
         } 
@@ -265,12 +247,20 @@ contract('Supplier Functions', function(accounts) {
         let result1;
         let result2;
         let result3;
+
         try {
             result1 = await dellSupplierInstance.updateProductPrice(5, 20, {from: dellEmployee});
-            result2 = await dellSupplierInstance.updateProductQuantity(5, 150, {from: dellEmployee});
-            result3 = await dellSupplierInstance.updateProductDescription(5, "Bad Laptop", {from: dellEmployee});
         }
         catch(e) {}
+
+        try {
+            result2 = await dellSupplierInstance.updateProductQuantity(5, 150, {from: dellEmployee});
+        } catch (error) {}
+
+        try {
+            result3 = await dellSupplierInstance.updateProductDescription(5, "Bad Laptop", {from: dellEmployee});
+    
+        } catch (error) {}
         
         assert.strictEqual(result1, undefined, 'Product that does not exist has been updated');
         assert.strictEqual(result2, undefined, 'Product that does not exist has been updated');
@@ -282,12 +272,19 @@ contract('Supplier Functions', function(accounts) {
         let result1;
         let result2;
         let result3;
+
         try {
             result1 = await dellSupplierInstance.updateProductPrice(1, 20, {from: googleLogisticsEmployee});
-            result2 = await dellSupplierInstance.updateProductQuantity(1, 150, {from: googleLogisticsEmployee});
-            result3 = await dellSupplierInstance.updateProductDescription(1, "Bad Laptop", {from: googleLogisticsEmployee});
         }
         catch(e) {}
+
+        try {
+            result2 = await dellSupplierInstance.updateProductQuantity(1, 150, {from: googleLogisticsEmployee});
+        } catch (error) {}
+
+        try {
+            result3 = await dellSupplierInstance.updateProductDescription(1, "Bad Laptop", {from: googleLogisticsEmployee});
+        } catch (error) {}
         
         assert.strictEqual(result1, undefined, 'Wrong address can be used to update a product');
         assert.strictEqual(result2, undefined, 'Wrong address can be used to update a product');
@@ -313,12 +310,13 @@ contract('Supplier Functions', function(accounts) {
     /* Main Flow Function */
     it('Main Flow Function: Procurer Create Purchase Order', async () => {
         let result = await googleProcurerInstance.createPurchaseOrder(1, 1, {from:googleLogisticsEmployee});
-        
+        assert.isNotNull(result);
     });
 
     /* Main Flow Function */
     it('Main Flow Function: Procurer Approve Purchase Order', async () => {
         let result = await googleProcurerInstance.approvePurchaseOrder(1, {from:googleFinanceEmployee});
+        assert.isNotNull(result);
     });
 
     /* Testing Supplier.viewPurchaseOrder */
@@ -345,11 +343,6 @@ contract('Supplier Functions', function(accounts) {
 
     /* Testing Supplier.viewPurchaseOrder */
     it('Supplier View Purchase Order', async () => {
-        // let po;
-        // try {
-        //     po = await dellSupplierInstance.viewPurchaseOrder.call(1, {from: dellEmployee});
-        // }
-        // catch(e) {}
         let po = await dellSupplierInstance.viewPurchaseOrder.call(1, {from: dellEmployee});
 
         assert.strictEqual(po.procurer, googleProcurerInstance.address, "PO procurer is incorrect");
@@ -398,6 +391,7 @@ contract('Supplier Functions', function(accounts) {
     /* Testing Supplier.supplierRejectPurchaseOrder */
     it('Supplier Reject Purchase Order', async () => {
         let result = await dellSupplierInstance.supplierRejectPurchaseOrder.call(1, {from:dellEmployee});
+        assert.isNotNull(result);
     });
 
     /* Testing Supplier.assignCourier */
@@ -414,11 +408,13 @@ contract('Supplier Functions', function(accounts) {
 
     /* Main Flow Function */
     it('Main Flow Function: Procurer Receive Delivered Order from Courier', async () => {
-        await googleProcurerInstance.deliveredByCourier(1, {from: googleLogisticsEmployee});
+        const result = await googleProcurerInstance.deliveredByCourier(1, {from: googleLogisticsEmployee});
+        assert.isNotNull(result);
     });
 
     /* Main Flow Function */
     it('Main Flow Function: Procurer Add Rating for Order', async () => {
-        await googleProcurerInstance.addRating(5, 1, {from: googleLogisticsEmployee});
+        const result = await googleProcurerInstance.addRating(5, 1, {from: googleLogisticsEmployee});
+        assert.isNotNull(result);
     });
 });
