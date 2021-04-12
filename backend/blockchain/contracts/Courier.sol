@@ -66,6 +66,10 @@ contract Courier {
         market.registerAsCourier();
     }
 
+    function viewEmployee(address employeeAddress) public view ownerOnly returns (Employee memory) {
+        return employees[employeeAddress];
+    }
+
     /* ==================== Order Functions ==================== */
 
     /**
