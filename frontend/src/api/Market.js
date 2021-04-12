@@ -18,8 +18,13 @@ async function viewSupplierProducts(supplier) {
   });
 }
 
+async function getMarketAddress() {
+  return await axios.get(`${endpoint}/getmarketaddress`);
+}
+
 module.exports = {
     viewProduct: viewProduct,
     viewAllProducts: viewAllProducts,
-    viewSupplierProducts: viewSupplierProducts
+    viewSupplierProducts: viewSupplierProducts,
+    getMarketAddress: getMarketAddress
 }

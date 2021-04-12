@@ -185,12 +185,15 @@ contract Market {
     * @dev Called by a Procurer contract, from the logistics team only
     * @return Order ID of the newly created purchase order
     */
-   function createPurchaseOrder(uint _productId, uint quantity, uint price) public procurerOnly returns (uint) {
+   function createPurchaseOrder(uint _productId, uint quantity) public procurerOnly returns (uint) {
       
       require(_productId > 0, "Invalid Product ID");
       require(quantity > 0, "Invalid Quantity");
       require(products[_productId].supplier != address(0), "Product does not exist");
-      require(courierFee + (products[_productId].price * quantity) == price, "Invalid Price");
+
+      uint price = courierFee + (products[_productId].price * quantity);
+
+      require(erc20.balanceOf(msg.sender) >= price, "Insufficient Tokens");
 
       Structs.PurchaseOrder memory po = Structs.PurchaseOrder(
          msg.sender,
@@ -291,6 +294,7 @@ contract Market {
       require(orders[_orderId].status != Structs.OrderStatus.notCreated, "Order does not exist");
       require(orders[_orderId].procurer == msg.sender, "Only valid Procurer can rate product");
       require(orders[_orderId].status == Structs.OrderStatus.Delivered, "Order not delivered, Unable to give rating");
+      require(orders[_orderId].rating == 0, "Order already rated");
       require(rating > 0 && rating <= 5, "Invalid Rating");
 
       /* Update rating for Order */
@@ -312,6 +316,7 @@ contract Market {
 
       uint newRating = sum / sumOrders;
       products[_productId].rating = newRating;
+      products[_productId].ratings = sumOrders;
    }
 
    /**
@@ -391,6 +396,7 @@ contract Market {
          name,
          true,
          description,
+         0,
          0
       );
 

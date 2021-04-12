@@ -70,7 +70,7 @@ export default {
           this.$router.push("procurer-main");
         }
         catch(e) {
-          alert('Wrong Employee Type');
+          alert('Login Failed. Please check credentials and employee type.');
         }
       }
       else if (this.employee == 'Supplier') {
@@ -81,7 +81,7 @@ export default {
           this.$router.push("supplier-main");
         }
         catch(e) {
-          alert('Wrong Employee Type');
+          alert('Login Failed. Please check credentials and employee type.');
         }
       }
       else if (this.employee == 'Courier') {
@@ -92,7 +92,7 @@ export default {
           this.$router.push("courier-main");
         }
         catch(e) {
-          alert('Wrong Employee Type');
+          alert('Login Failed. Please check credentials and employee type.');
         }
       }
     },

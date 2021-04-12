@@ -1,10 +1,9 @@
 <template>
 <div>
   <Navbar></Navbar>
-  <h1 style="text-align: center">Products</h1>
-  <br>
+  <h3 style="text-align: center">Listed Products</h3>
 
-  <b-tabs content-class="mt-3" align="center">
+  <b-tabs content-class="mt-4" align="center">
 
     <b-tab title="All Products" active>
       <b-container v-if='products.length' fluid>
@@ -79,7 +78,11 @@
           </b-card-group>
         </b-row>
       </b-container>
-      <div v-else>No Products Listed</div>
+      <div v-else class="d-flex justify-content-center">
+        <span style="text-align: center;">
+          No Products Listed
+        </span>
+      </div>
     </b-tab>
 
     <b-tab title="Listed Products">
@@ -121,7 +124,11 @@
           </b-card-group>
         </b-row>
       </b-container>
-      <div v-else>No Products Listed</div>
+      <div v-else class="d-flex justify-content-center">
+        <span style="text-align: center;">
+          No Products Listed
+        </span>
+      </div>
     </b-tab>
 
     <b-tab title="Unlisted Products">
@@ -163,7 +170,11 @@
           </b-card-group>
         </b-row>
       </b-container>
-      <div v-else>No Products Unlisted</div>
+      <div v-else class="d-flex justify-content-center">
+        <span style="text-align: center;">
+          No Products Unlisted
+        </span>
+      </div>
     </b-tab>
   </b-tabs>
 </div>
