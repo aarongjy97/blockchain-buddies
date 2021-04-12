@@ -133,7 +133,7 @@ contract('Courier Functions', function(accounts) {
     it('Should Fail, Courier Views Purchase Order with Invalid ID', async () => {
         let result;
         try {
-            await dhlCourierInstance.viewPurchaseOrder.call(10, {from: dhlEmployee});
+            result = await dhlCourierInstance.viewPurchaseOrder.call(10, {from: dhlEmployee});
         }
         catch(e) {}
 
@@ -153,7 +153,7 @@ contract('Courier Functions', function(accounts) {
     it('Should Fail, Non-Courier Views All Purchase Orders', async () => {
         let result;
         try {
-            await dhlCourierInstance.courierViewAllPurchaseOrders.call({from: accounts[0]});
+            result = await dhlCourierInstance.courierViewAllPurchaseOrders.call({from: accounts[0]});
         }
         catch(e) {}
 

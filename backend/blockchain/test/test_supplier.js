@@ -50,7 +50,7 @@ contract('Supplier Functions', function(accounts) {
         await dhlCourierInstance.addEmployee(dhlEmployee, 'dhlEmployee', {from: dhl});
     });
 
-    /* Testing Supplier.addEmployee */
+    /* Testing addEmployee */
     it('Should Fail, Non-Owner Supplier Adds Employee', async () => {
         let result;
         try {
@@ -61,7 +61,6 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(result, undefined, 'Employee is added even from non-owner');
     });
 
-    /* Testing Supplier.addEmployee */
     it('Should Fail, Supplier Adds Employee with Invalid Employee Address', async () => {
         let result;
         try {
@@ -72,7 +71,7 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(result, undefined, 'Employee is added even with invalid employee address');
     });
 
-    /* Testing Supplier.registerAsSupplier */ 
+    /* Testing registerAsSupplier */ 
     it('Should Fail, Supplier registers itself as Supplier with Invalid Address', async () => {
         let result;
         try {
@@ -83,13 +82,11 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(result, undefined, "Supplier is registered with an Invalid Address");
     });
 
-    /* Testing Supplier.registerAsSupplier */
     it('Should emit Registered event, Supplier registers itself correctly', async () => {
         let result = await dellSupplierInstance.registerAsSupplier({from: dell});
         assert.isNotNull(result);
     });
 
-    /* Testing Supplier.registerAsSupplier */ 
     it('Should Fail, Supplier registers itself again', async () => {
         let result;
         try {
@@ -115,7 +112,7 @@ contract('Supplier Functions', function(accounts) {
         assert.isNotNull(result);
     });
 
-    /* Testing Supplier.listProduct() */
+    /* Testing listProduct */
     it('Supplier List Products', async () => {
         let result = await dellSupplierInstance.listProduct(100, 10, 'Dell Laptop', 'Good Laptop', {from: dellEmployee});
         assert.isNotNull(result);
@@ -131,7 +128,7 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(result, undefined, "Wrong address can be used to list a product")
     });
 
-    /* Testing Supplier.viewSelfProduct */
+    /* Testing viewSelfProduct */
     it('Supplier View Product', async () => {
         let product;
         try {
@@ -145,7 +142,7 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(product.description, 'Good Laptop', 'Product description is not correct');
     });
 
-    /* Testing Supplier.viewAllSelfProducts */
+    /* Testing viewAllSelfProducts */
     it('Supplier View All Products', async () => {
         let products;
         try {
@@ -159,7 +156,7 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(products[0].description, 'Good Laptop', 'Product description is not correct');
     });
 
-    /* Testing Supplier.viewAllSelfProducts */
+    /* Testing unlistProduct */
     it('Should Fail, Supplier Unlist Product that does not exist', async () => {
         let result;
         try {
@@ -170,7 +167,6 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(result, undefined, "Product that does not exist has been unlisted");
     });
 
-    /* Testing Supplier.viewAllSelfProducts */
     it('Should Fail, Wrong address used to unlist product', async () => {
         let result;
         try {
@@ -181,7 +177,6 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(result, undefined, "Wrong address can be used to unlist a product");
     });
 
-    /* Testing Supplier.unlistProduct */
     it('Supplier Unlist Product', async () => {
         let result;
         let products;
@@ -194,7 +189,7 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(products[0].listed, false, "Product is not unlisted correctly");
     });
 
-    /* Testing Supplier.relistProduct */
+    /* Testing relistProduct */
     it('Should Fail, Supplier relist a product that is already listed', async () => {
         let result;
         try {
@@ -206,7 +201,6 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(result, undefined, "Supplier relist a product that is already listed");
     });
     
-    /* Testing Supplier.relistProduct */
     it('Should Fail, Supplier relist a product that does not exist', async () => {
         let result;
         try {
@@ -217,7 +211,6 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(result, undefined, "Supplier relist a product that deos not exist");
     });    
 
-    /* Testing Supplier.relistProduct */
     it('Should Fail, Wrong address is used to relist a product', async () => {
         let result;
         try {
@@ -228,7 +221,6 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(result, undefined, "Wrong address can be used to relist a product");
     });    
     
-    /* Testing Supplier.relistProduct */
     it('Supplier Relist Product', async () => {
         let result;
         let products;
@@ -241,7 +233,7 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(products[0].listed, true, "Product is not relisted correctly");
     });
 
-    /* Testing Supplier.updateProductPrice, Supplier.updateProductQuantity, Supplier.updateProductDescription */
+    /* Testing updateProductPrice, updateProductQuantity, updateProductDescription */
     it('Should Fail, Supplier update product that does not exist', async () => {
         let result1;
         let result2;
@@ -266,7 +258,6 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(result3, undefined, 'Product that does not exist has been updated');
     });
 
-    /* Testing Supplier.updateProductPrice, Supplier.updateProductQuantity, Supplier.updateProductDescription */
     it('Should Fail, Wrong address used to update product', async () => {
         let result1;
         let result2;
@@ -290,7 +281,6 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(result3, undefined, 'Wrong address can be used to update a product');
     });
 
-    /* Testing Supplier.updateProductPrice, Supplier.updateProductQuantity, Supplier.updateProductDescription */
     it('Supplier Update Product (Price, Quantity and Description)', async () => {
         let products;
         try {
@@ -307,18 +297,15 @@ contract('Supplier Functions', function(accounts) {
     });
 
     /* Main Flow Function */
-    it('Main Flow Function: Procurer Create Purchase Order', async () => {
-        let result = await googleProcurerInstance.createPurchaseOrder(1, 1, {from:googleLogisticsEmployee});
-        assert.isNotNull(result);
+    it('Main Flow Function: Create Purchase Order, Approve Purchase Order', async () => {
+        let createPO = await googleProcurerInstance.createPurchaseOrder(1, 1, {from:googleLogisticsEmployee});
+        let approvePO = await googleProcurerInstance.approvePurchaseOrder(1, {from:googleFinanceEmployee});
+
+        assert.isNotNull(createPO);
+        assert.isNotNull(approvePO);
     });
 
-    /* Main Flow Function */
-    it('Main Flow Function: Procurer Approve Purchase Order', async () => {
-        let result = await googleProcurerInstance.approvePurchaseOrder(1, {from:googleFinanceEmployee});
-        assert.isNotNull(result);
-    });
-
-    /* Testing Supplier.viewPurchaseOrder */
+    /* Testing viewPurchaseOrder */
     it('Should Fail: Supplier view a PO that does not exist', async () => {
         let po;
         try {
@@ -329,7 +316,6 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(po, undefined, 'Supplier is viewing a PO that does not exist');
     });
 
-    /* Testing Supplier.viewPurchaseOrder */
     it('Should Fail: Wrong address used to view supplier PO', async () => {
         let po;
         try {
@@ -340,7 +326,6 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(po, undefined, 'Wrong address can be used to view supplier PO');
     });
 
-    /* Testing Supplier.viewPurchaseOrder */
     it('Supplier View Purchase Order', async () => {
         let po;
         try {
@@ -363,7 +348,7 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(po.rating, "0", "PO rating is incorrect");
     });
 
-    /* Testing Supplier.supplierViewAllPurchaseOrders */
+    /* Testing supplierViewAllPurchaseOrders */
     it('Supplier View All Purchase Orders', async () => {
         let po;
         try {
@@ -386,7 +371,7 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(po[0].rating, "0", "PO rating is incorrect");
     });
 
-    /* Testing Supplier.supplierApprovePurchaseOrder */
+    /* Testing supplierApprovePurchaseOrder */
     it('Should Fail, Supplier approve purchase order that does not exist', async () => {
         let result;
         try {
@@ -397,7 +382,6 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(result, undefined, "PO that does not exist has been approved");
     });
     
-    /* Testing Supplier.supplierApprovePurchaseOrder */
     it('Should Fail, Wrong address used to approve purchase order', async () => {
         let result;
         try {
@@ -408,7 +392,6 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(result, undefined, "Wrong address used to approve purchase order");
     });
 
-    /* Testing Supplier.supplierApprovePurchaseOrder */
     it('Should Fail, Supplier approve purchase order that has not been Internal Approved', async () => {
         let result;
         try {
@@ -420,7 +403,6 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(result, undefined, "Supplier approved PO that has not been InternalApproved ");
     });
 
-    /* Testing Supplier.supplierApprovePurchaseOrder */
     it('Main Flow Function: Supplier Approve Purchase Order', async () => {
         let po;
         try {
@@ -432,7 +414,7 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(po.status, "3", "PO that does not exist has been rejected");
     });
 
-    /* Testing Supplier.supplierRejectPurchaseOrder */
+    /* Testing supplierRejectPurchaseOrder */
     it('Should Fail, Supplier reject purchase order that does not exist', async () => {
         let result; 
         try {
@@ -443,7 +425,6 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(result, undefined, "PO that does not exist have been rejected");
     });
 
-    /* Testing Supplier.supplierRejectPurchaseOrder */
     it('Should Fail, Wrong address used to reject purchase order', async () => {
         let result; 
         try {
@@ -455,7 +436,6 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(result, undefined, "Wrong address used to reject PO");
     });
 
-    /* Testing Supplier.supplierRejectPurchaseOrder */
     it('Should Fail, Supplier reject purchase order that has not been Internal Approved', async () => {
         let result; 
         try {
@@ -468,7 +448,6 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(result, undefined, "Wrong address used to reject PO");
     });
 
-    /* Testing Supplier.supplierRejectPurchaseOrder */
     it('Supplier Reject Purchase Order', async () => {
         let po; 
         try {
@@ -480,7 +459,7 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(po.status, "5", "PO Status is not SupplierRejected");
     });
 
-    /* Testing Supplier.assignCourier */
+    /* Testing assignCourier */
     it('Should Fail, Supplier assign courier to a purchase order that does not exist', async () => {
         let result; 
         try {
@@ -491,7 +470,6 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(result, undefined, "Supplier is able to assign courier to a purchase order that does not exist");
     });
 
-    /* Testing Supplier.assignCourier */
     it('Should Fail, Wrong address used to assign courier', async () => {
         let result; 
         try {
@@ -502,7 +480,6 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(result, undefined, "Wrong address used to assign courier");
     });
 
-    /* Testing Supplier.assignCourier */
     it('Should Fail, Supplier assign courier to a purchase order that has not been SupplierApproved', async () => {
         let result; 
         try {
@@ -513,7 +490,6 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(result, undefined, "Supplier is able to assgin a courier to a purchase order that has not been SupplierApproved");
     });
 
-    /* Testing Supplier.assignCourier */
     it('Should Fail, Supplier assign courier to an invalid courier', async () => {
         let result; 
         try {
@@ -524,7 +500,6 @@ contract('Supplier Functions', function(accounts) {
         assert.strictEqual(result, undefined, "Supplier is able to assign a courier that does not exist to a purchase order");
     });
 
-    /* Testing Supplier.assignCourier */
     it('Main Flow Function: Supplier Assign Courier', async () => {
         let po;
         try {
