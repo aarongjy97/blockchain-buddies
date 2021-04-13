@@ -190,6 +190,7 @@ contract Market {
       require(_productId > 0, "Invalid Product ID");
       require(quantity > 0, "Invalid Quantity");
       require(products[_productId].supplier != address(0), "Product does not exist");
+      require(products[_productId].quantityAvailable >= quantity, "Insufficient Quantity");
 
       uint price = courierFee + (products[_productId].price * quantity);
 
@@ -218,6 +219,8 @@ contract Market {
 
       orders[orderId] = po;
       orderId++;
+
+      products[_productId].quantityAvailable -= quantity;
 
       emit OrderCreated(po.orderId, msg.sender, tx.origin, _productId, quantity, price);
 
@@ -248,7 +251,13 @@ contract Market {
       require(orders[_orderId].status == Structs.OrderStatus.Ordered, "Current status of order is not ordered");
       orders[_orderId].status = Structs.OrderStatus.InternalRejected;
       orders[_orderId].procurerFinanceEmployee = tx.origin;
-   
+
+      uint _productId = orders[_orderId].productId;
+      products[_productId].quantityAvailable += orders[_orderId].quantity;
+
+      if (!products[_productId].listed) {
+         relistProduct(_productId);
+      }
       emit OrderInternalRejected(_orderId, msg.sender, tx.origin);
    }
 
@@ -374,6 +383,13 @@ contract Market {
       orders[_orderId].status = Structs.OrderStatus.SupplierRejected;
       orders[_orderId].supplierEmployee = tx.origin;
 
+      uint _productId = orders[_orderId].productId;
+      products[_productId].quantityAvailable += orders[_orderId].quantity;
+
+      if (!products[_productId].listed) {
+         relistProduct(_productId);
+      }
+
       /* Decrease Allowance of Market */
       Procurer _p = Procurer(orders[_orderId].procurer);
       _p.supplierRejectPurchaseOrder(orders[_orderId].price);
@@ -417,6 +433,8 @@ contract Market {
    function unlistProduct(uint _productId) public supplierOnly {
       require(products[_productId].supplier != address(0), "Product does not exist");
       require(products[_productId].supplier == msg.sender, "Unauthorised supplier");
+      require(products[_productId].listed, "Product unlisted, cannot be unlisted");
+
       products[_productId].listed = false;
 
       emit Unlisted(msg.sender, tx.origin, _productId);
@@ -430,6 +448,8 @@ contract Market {
       require(products[_productId].supplier != address(0), "Product does not exist");
       require(products[_productId].supplier == msg.sender, "Unauthorised supplier");
       require(!products[_productId].listed, "Product listed, cannot be relisted");
+      require(products[_productId].quantityAvailable > 0, "Not enough Qty to Relist");
+
       products[_productId].listed = true;   
 
       emit Relisted(msg.sender, tx.origin, _productId);

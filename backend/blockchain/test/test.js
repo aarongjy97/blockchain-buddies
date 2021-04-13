@@ -90,7 +90,7 @@ contract('Procurement Marketplace', function(accounts) {
     });
 
     it('Supplier List Products', async () => {
-        await dellSupplierInstance.listProduct(100, 10, 'Dell Laptop', 'Good Laptop', {from: dellEmployee});
+        await dellSupplierInstance.listProduct(100, 10, 'Dell Laptop', 'Good Laptop', '', {from: dellEmployee});
 
         let product = await dellSupplierInstance.viewSelfProduct.call(1, {from: dellEmployee});
         assert.strictEqual(product.listed, true, 'Product is listed incorrectly');

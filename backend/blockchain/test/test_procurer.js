@@ -91,7 +91,7 @@ contract('Procurer Functions', function(accounts) {
 
         let mint = await marketERC20Instance.mintTokens(googleProcurerInstance.address, 10000, {from: erc20});
 
-        let list = await dellSupplierInstance.listProduct(100, 10, 'Dell Laptop', 'Good Laptop', {from: dellEmployee});
+        let list = await dellSupplierInstance.listProduct(100, 10, 'Dell Laptop', 'Good Laptop', '', {from: dellEmployee});
 
         assert.isNotNull(procurer);
         assert.isNotNull(supplier);

@@ -114,14 +114,14 @@ contract('Supplier Functions', function(accounts) {
 
     /* Testing listProduct */
     it('Supplier List Products', async () => {
-        let result = await dellSupplierInstance.listProduct(100, 10, 'Dell Laptop', 'Good Laptop', {from: dellEmployee});
+        let result = await dellSupplierInstance.listProduct(100, 10, 'Dell Laptop', 'Good Laptop', '', {from: dellEmployee});
         assert.isNotNull(result);
     });
 
     it('Should Fail, Wrong address used to list product', async () => {
         let result;
         try {
-            result = await dellSupplierInstance.listProduct.call(100, 10, 'Dell Laptop', 'Good Laptop', {from: googleLogisticsEmployee});
+            result = await dellSupplierInstance.listProduct.call(100, 10, 'Dell Laptop', 'Good Laptop', '', {from: googleLogisticsEmployee});
         }
         catch(e) {}
 
@@ -193,7 +193,7 @@ contract('Supplier Functions', function(accounts) {
     it('Should Fail, Supplier relist a product that is already listed', async () => {
         let result;
         try {
-            await dellSupplierInstance.listProduct(100, 10, 'Dell Laptop', 'Good Laptop', {from: dellEmployee});
+            await dellSupplierInstance.listProduct(100, 10, 'Dell Laptop', 'Good Laptop', '', {from: dellEmployee});
             result = await dellSupplierInstance.relistProduct(2, {from: dellEmployee});
         }
         catch(e) {}
