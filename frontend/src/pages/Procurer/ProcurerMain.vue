@@ -15,7 +15,7 @@
           <b-card>
             <b-card-body>
               <div style="min-height: 250px;" class="d-flex justify-content-center align-items-center"> 
-                <img class="w-100" :src="product.imageurl" alt="https://picsum.photos/600/300/?image=25">
+                <img class="w-100" :src="product.imageurl">
               </div>
             </b-card-body>
             <b-card-title>{{ product.productName }}</b-card-title>

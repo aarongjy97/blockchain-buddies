@@ -28,7 +28,7 @@
     <div style="display: flex;">
       <div class="product_description" style="display: flex; margin-top: 0px; width: 70%">
         <div class="product_image">
-          <img :src="this.product.imageurl" alt="" />
+          <img :src="this.product.imageurl"/>
         </div>
         <div class="product_details" style="margin-left: 15px;">
           <h5 style="margin-bottom: 15px"> {{ productName }} </h5>

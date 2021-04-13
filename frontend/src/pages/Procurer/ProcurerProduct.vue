@@ -5,7 +5,7 @@
 
     <div class="left-column">
       <div class="product_image">
-        <img :src="this.product.imageurl" alt="" />
+        <img :src="this.product.imageurl"/>
       </div>
       <div class="product-description">
         <h4>{{ this.product.productName }}</h4>
