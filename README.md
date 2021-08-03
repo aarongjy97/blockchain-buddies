@@ -1,4 +1,4 @@
-# Procurement Blockchain Marketplace Platform
+# IS4302 AY2020/21 Sem 2 Procurement Blockchain Marketplace Platform
 
 1. Run `npm run ganache` in backend/blockchain
 
